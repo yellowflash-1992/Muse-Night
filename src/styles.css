@@ -1,0 +1,448 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Spectral", serif;
+  --font-josefin: "Josefin Sans", sans-serif;
+  --font-karla: "Karla", sans-serif;
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-paper-faint: var(--paper-faint);
+  --color-neon: var(--neon);
+  --color-rose: var(--rose);
+  --color-mist: var(--mist);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
+    overflow-y: scroll; /* Force vertical scrollbar on desktop */
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    min-height: 100vh;
+  }
+}
+
+/* Custom aesthetic scrollbar for desktop */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid oklch(0.845 0.125 176 / 10%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.26 0.024 265);
+  border-radius: 9999px;
+  border: 2px solid var(--ink);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon);
+}
+
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.3 0.03 265) var(--ink);
+}
+
+/* Muse Books design system — lamplit literary press */
+:root,
+html.dark {
+  --ink: oklch(0.14 0.022 265);
+  --ink-2: oklch(0.18 0.024 265);
+  --ink-3: oklch(0.24 0.026 265);
+  --paper: oklch(0.93 0.016 85);
+  --paper-dim: oklch(0.74 0.019 85);
+  --paper-faint: oklch(0.52 0.015 85);
+  --neon: oklch(0.845 0.125 176);
+  --rose: oklch(0.74 0.145 15);
+  --mist: oklch(0.65 0.09 265);
+
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: var(--ink-2);
+  --card-foreground: var(--paper);
+  --popover: var(--ink-2);
+  --popover-foreground: var(--paper);
+  --primary: var(--neon);
+  --primary-foreground: var(--ink);
+  --secondary: var(--ink-3);
+  --secondary-foreground: var(--paper);
+  --muted: var(--ink-3);
+  --muted-foreground: var(--paper-dim);
+  --accent: var(--ink-3);
+  --accent-foreground: var(--paper);
+  --border: oklch(0.845 0.125 176 / 12%);
+  --input: oklch(0.845 0.125 176 / 18%);
+  --ring: var(--neon);
+}
+
+/* Sunlit Florentine Press — High Dopamine, Luxury Warm Parchment & Vibrant Emerald/Lapis */
+html.light {
+  --ink: #f7f5f1;
+  --ink-2: #edeae2;
+  --ink-3: #ded8cb;
+  --paper: #1c1917;
+  --paper-dim: #44403c;
+  --paper-faint: #78716c;
+  --neon: #0f766e;
+  --rose: #be123c;
+  --mist: #4338ca;
+
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: var(--ink-2);
+  --card-foreground: var(--paper);
+  --popover: var(--ink-2);
+  --popover-foreground: var(--paper);
+  --primary: var(--neon);
+  --primary-foreground: #fafaf9;
+  --secondary: var(--ink-3);
+  --secondary-foreground: var(--paper);
+  --muted: var(--ink-3);
+  --muted-foreground: var(--paper-dim);
+  --accent: var(--ink-3);
+  --accent-foreground: var(--paper);
+  --border: rgb(15 118 110 / 18%);
+  --input: rgb(15 118 110 / 24%);
+  --ring: var(--neon);
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid oklch(0.48 0.17 172 / 12%);
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: oklch(0.82 0.02 85);
+  border: 2px solid var(--ink);
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: var(--neon);
+}
+
+html.light * {
+  scrollbar-color: oklch(0.75 0.03 85) var(--ink);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--neon);
+    color: var(--ink);
+  }
+}
+
+@utility gridbg {
+  background-image:
+    linear-gradient(to right, oklch(0.845 0.125 176 / 24%) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, oklch(0.845 0.125 176 / 24%) 1.5px, transparent 1.5px),
+    linear-gradient(to right, oklch(0.845 0.125 176 / 12%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.845 0.125 176 / 12%) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px,
+    16px 16px,
+    16px 16px;
+}
+
+html.light .gridbg {
+  background-image:
+    linear-gradient(to right, oklch(0.48 0.17 172 / 26%) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, oklch(0.48 0.17 172 / 26%) 1.5px, transparent 1.5px),
+    linear-gradient(to right, oklch(0.48 0.17 172 / 14%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.48 0.17 172 / 14%) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px,
+    16px 16px,
+    16px 16px;
+}
+
+@utility inkline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.1em;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.font-josefin {
+  font-family: var(--font-josefin);
+}
+
+.font-karla {
+  font-family: var(--font-karla);
+}
+
+.hero-bg {
+  background:
+    linear-gradient(rgba(10, 12, 18, 0.55), rgba(10, 12, 18, 0.7)),
+    url("https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1920&q=80")
+      center/cover no-repeat;
+}
+
+@keyframes stepSlideShow {
+  /* Item 1: Stay still */
+  0%,
+  20% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Item 2: Slide & Stay */
+  25%,
+  45% {
+    transform: translate3d(-100vw, 0, 0);
+  }
+
+  /* Item 3: Slide & Stay */
+  50%,
+  70% {
+    transform: translate3d(-200vw, 0, 0);
+  }
+
+  /* Item 4: Slide & Stay */
+  75%,
+  95% {
+    transform: translate3d(-300vw, 0, 0);
+  }
+
+  /* Seamless jump to Item 1 via clone */
+  100% {
+    transform: translate3d(-400vw, 0, 0);
+  }
+}
+
+.step-slider-track {
+  display: flex;
+  width: 500vw;
+  height: 100%;
+  will-change: transform;
+  animation: stepSlideShow 20s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes muse-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: muse-rise 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@utility d1 {
+  animation-delay: 0.05s;
+}
+@utility d2 {
+  animation-delay: 0.15s;
+}
+@utility d3 {
+  animation-delay: 0.25s;
+}
+@utility d4 {
+  animation-delay: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
