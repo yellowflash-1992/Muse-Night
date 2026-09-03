@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false # Changed to false to prevent deployment cleanups from colliding
 
 jobs:
   build:
@@ -42,8 +42,21 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: production-build
-          path: .output
+          # Targets the exact public static output folder mentioned in your README
+          path: .output/public
+
+  deploy:
+    # Only deploy if the build succeeded and changes were pushed directly to main/master
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
