@@ -43,6 +43,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [poemIndex, setPoemIndex] = useState(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   // 4 Alternating background panels + 1 cloned first panel for seamless looping
   const desktopPanels = [
@@ -160,7 +161,15 @@ function Index() {
       {/* DESKTOP-ONLY EDITORIAL VIEW */}
       <div className="hidden md:block">
         {/* MASTHEAD / HERO WITH STEP-BY-STEP SEAMLESS SLIDER BACKGROUND */}
-        <section className="border-b border-neon/10 py-16 lg:py-24 relative overflow-hidden min-h-[500px] flex items-center isolate">
+        <section
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className={`hero-slider-container border-b border-neon/10 py-16 lg:py-24 relative overflow-hidden min-h-[500px] flex items-center isolate ${
+            isPaused ? "is-paused" : ""
+          }`}
+        >
           {/* STEP-BY-STEP SLIDER TRACK (Item 1 -> Item 2 -> Item 3 -> Item 4 -> Clone Item 1) */}
           <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none bg-ink">
             <div className="step-slider-track">

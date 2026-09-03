@@ -223,17 +223,18 @@ html.dark {
   --ring: var(--neon);
 }
 
-/* Sunlit Florentine Press — High Dopamine, Luxury Warm Parchment & Vibrant Emerald/Lapis */
+/* Vibrant Amber Sunlight Mode */
 html.light {
-  --ink: #f7f5f1;
-  --ink-2: #edeae2;
-  --ink-3: #ded8cb;
-  --paper: #1c1917;
-  --paper-dim: #44403c;
-  --paper-faint: #78716c;
-  --neon: #0f766e;
-  --rose: #be123c;
-  --mist: #4338ca;
+  --ink: #b45309;
+  --ink-2: #9a4406;
+  --ink-3: #78350f;
+  --paper: #ffffff;
+  --paper-dim: #fef3c7;
+  --paper-faint: #fde68a;
+  --neon: #fef08a;
+  --rose: #fca5a5;
+  --mist: #fed7aa;
+  --sun-ray: rgba(254, 240, 138, 0.4);
 
   --background: var(--ink);
   --foreground: var(--paper);
@@ -242,25 +243,38 @@ html.light {
   --popover: var(--ink-2);
   --popover-foreground: var(--paper);
   --primary: var(--neon);
-  --primary-foreground: #fafaf9;
+  --primary-foreground: #78350f;
   --secondary: var(--ink-3);
   --secondary-foreground: var(--paper);
   --muted: var(--ink-3);
   --muted-foreground: var(--paper-dim);
   --accent: var(--ink-3);
   --accent-foreground: var(--paper);
-  --border: rgb(15 118 110 / 18%);
-  --input: rgb(15 118 110 / 24%);
+  --border: rgb(254 240 138 / 25%);
+  --input: rgb(254 240 138 / 30%);
   --ring: var(--neon);
+}
+
+html.light .gridbg {
+  background-image:
+    linear-gradient(to right, rgb(254 240 138 / 18%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(254 240 138 / 18%) 1px, transparent 1px),
+    linear-gradient(to right, rgb(254 240 138 / 8%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(254 240 138 / 8%) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px,
+    16px 16px,
+    16px 16px;
 }
 
 html.light ::-webkit-scrollbar-track {
   background: var(--ink);
-  border-left: 1px solid oklch(0.48 0.17 172 / 12%);
+  border-left: 1px solid rgb(254 240 138 / 15%);
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: oklch(0.82 0.02 85);
+  background: #9a4406;
   border: 2px solid var(--ink);
 }
 
@@ -269,7 +283,7 @@ html.light ::-webkit-scrollbar-thumb:hover {
 }
 
 html.light * {
-  scrollbar-color: oklch(0.75 0.03 85) var(--ink);
+  scrollbar-color: #9a4406 var(--ink);
 }
 
 @layer base {
@@ -298,10 +312,10 @@ html.light * {
 
 html.light .gridbg {
   background-image:
-    linear-gradient(to right, oklch(0.48 0.17 172 / 26%) 1.5px, transparent 1.5px),
-    linear-gradient(to bottom, oklch(0.48 0.17 172 / 26%) 1.5px, transparent 1.5px),
-    linear-gradient(to right, oklch(0.48 0.17 172 / 14%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.48 0.17 172 / 14%) 1px, transparent 1px);
+    linear-gradient(to right, rgb(15 118 110 / 8%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 118 110 / 8%) 1px, transparent 1px),
+    linear-gradient(to right, rgb(15 118 110 / 4%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 118 110 / 4%) 1px, transparent 1px);
   background-size:
     64px 64px,
     64px 64px,
@@ -380,6 +394,14 @@ html.light .gridbg {
   height: 100%;
   will-change: transform;
   animation: stepSlideShow 20s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Pause sliding animation when mouse hovers, focus occurs, or finger touches the screen */
+.hero-slider-container:hover .step-slider-track,
+.hero-slider-container:active .step-slider-track,
+.hero-slider-container:focus-within .step-slider-track,
+.hero-slider-container.is-paused .step-slider-track {
+  animation-play-state: paused !important;
 }
 
 @keyframes fadeIn {

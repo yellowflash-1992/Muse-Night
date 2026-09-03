@@ -15,6 +15,7 @@ export function MobileLanding() {
   const [lineIndex, setLineIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [phase, setPhase] = useState<"typing" | "holding" | "erasing">("typing");
+  const [isPaused, setIsPaused] = useState(false);
 
   // 4 Alternating background panels + 1 cloned first panel for seamless looping
   const panels = [
@@ -22,7 +23,7 @@ export function MobileLanding() {
       id: "muse-night-image-1",
       type: "image",
       src: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1920&q=80",
-      overlay: "bg-black/50",
+      overlay: "bg-black/50 dark:bg-black/50 light:bg-[#f7f5f1]/40",
       title: "Night Study",
     },
     {
@@ -35,7 +36,7 @@ export function MobileLanding() {
       id: "muse-night-image-2",
       type: "image",
       src: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1920&q=80",
-      overlay: "bg-black/55",
+      overlay: "bg-black/55 dark:bg-black/55 light:bg-[#f7f5f1]/40",
       title: "Nocturnal Paper",
     },
     {
@@ -49,7 +50,7 @@ export function MobileLanding() {
       id: "muse-night-image-1-clone",
       type: "image",
       src: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1920&q=80",
-      overlay: "bg-black/50",
+      overlay: "bg-black/50 dark:bg-black/50 light:bg-[#f7f5f1]/40",
       title: "Night Study Clone",
       isClone: true,
     },
@@ -120,7 +121,16 @@ export function MobileLanding() {
   return (
     <div className="block md:hidden bg-ink font-karla text-paper selection:bg-neon selection:text-ink">
       {/* MUSE NIGHT HERO CONTAINER WITH STEP-BY-STEP SEAMLESS SLIDER BACKGROUND */}
-      <section className="relative min-h-[92vh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden isolate">
+      <section
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        onTouchCancel={() => setIsPaused(false)}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className={`hero-slider-container relative min-h-[92vh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden isolate ${
+          isPaused ? "is-paused" : ""
+        }`}
+      >
         {/* STEP-BY-STEP SLIDER TRACK (Item 1 -> Item 2 -> Item 3 -> Item 4 -> Seamless Clone Item 1) */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-ink">
           <div className="step-slider-track">
@@ -154,17 +164,18 @@ export function MobileLanding() {
         {/* MAIN HERO CONTENT */}
         <main className="w-full max-w-7xl mx-auto my-auto px-2 sm:px-4 py-8 relative z-10">
           {/* Animated Typewriter Tagline */}
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/30 backdrop-blur-sm px-3.5 py-1 text-xs font-medium text-amber-300">
-            <Sparkles className="h-3 w-3 text-neon" />
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm px-3.5 py-1 text-xs font-medium text-[#fef08a] shadow-sm">
+            <Sparkles className="h-3.5 w-3.5 text-[#fef08a] animate-pulse" />
             <span>{displayed}</span>
-            <span className="inline-block h-3 w-0.5 animate-pulse bg-neon align-middle" />
+            <span className="inline-block h-3.5 w-0.5 animate-pulse bg-[#fef08a] align-middle" />
           </div>
 
           <h1 className="font-josefin font-bold text-white leading-[1.1] text-[clamp(2.4rem,8vw,4.5rem)] text-balance">
-            Websites that turn words into worlds
+            Websites that turn words into{" "}
+            <span className="text-[#fef08a] italic font-normal drop-shadow-sm">worlds</span>
           </h1>
 
-          <p className="mt-4 font-karla text-sm text-stone-300 leading-relaxed max-w-md text-pretty">
+          <p className="mt-4 font-karla text-sm text-stone-200 leading-relaxed max-w-md text-pretty">
             A small lamplit press for poetry, hand-bound chapbooks, and literature from Adaeze
             Okafor &amp; Theo Lindqvist.
           </p>
