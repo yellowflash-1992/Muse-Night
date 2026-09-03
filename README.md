@@ -59,42 +59,86 @@ Open [http://localhost:3000](http://localhost:3000) or [http://localhost:8080](h
 
 ---
 
-## 🌐 Deploying to GitHub & Beyond
+## 🌐 Deploying to Vercel (Recommended)
 
-### 1. GitHub Repository Setup
+### 1. Vercel Dashboard (Easiest)
 
-1. Initialize git and push to GitHub:
+1. Push your code to GitHub.
+2. Import your GitHub repository on [Vercel](https://vercel.com).
+3. Vercel will auto-detect the project settings from `vercel.json`:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `.output/public`
+4. Click **Deploy**. Your site will be live at `https://<your-project>.vercel.app`.
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit of Muse Books"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git push -u origin main
-   ```
+### 2. Vercel CLI
 
-2. **Automated CI/CD**: The repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically runs linting and builds on every push to `main`.
+```bash
+npm i -g vercel
+vercel
+```
 
-### 2. Deploying to Vercel
+### 3. GitHub Repository Setup
 
-1. Import your GitHub repository on [Vercel](https://vercel.com).
-2. Framework Preset: **Other** / **Vite**.
-3. Build Command: `npm run build`
-4. Output Directory: `.output/public` or standard build output.
-5. Deploy!
+```bash
+git init
+git add .
+git commit -m "Initial commit of Muse Books"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+git push -u origin main
+```
 
-### 3. Deploying to Cloudflare Pages
+### 4. Automated CI/CD with GitHub Actions
+
+The repository includes a GitHub Actions workflow (`.github/workflows/vercel-deploy.yml`) that automatically deploys to Vercel on every push to `main`.
+
+**Setup:**
+
+1. Create a new project on Vercel and link it to your GitHub repository.
+2. In your Vercel project settings, get your **Vercel Project ID** and **Vercel Token**.
+3. Add these secrets to your GitHub repository:
+   - `VERCEL_TOKEN`: Your Vercel API token
+   - `VERCEL_PROJECT_ID`: Your Vercel project ID
+   - `VERCEL_ORG_ID`: Your Vercel organization ID (optional, for team accounts)
+
+The workflow will automatically deploy preview branches and production releases.
+
+---
+
+## Other Deployment Options
+
+### Cloudflare Pages
+
+To deploy to Cloudflare Pages, you need to change the Nitro preset in `vite.config.ts` back to `cloudflare-module`:
+
+```typescript
+nitro: {
+  preset: "cloudflare-module",
+}
+```
+
+Then:
 
 1. Connect repository on [Cloudflare Dashboard](https://dash.cloudflare.com) -> Workers & Pages.
 2. Build command: `npm run build`
 3. Deploy!
 
-### 4. Deploying to Netlify
+### Netlify
+
+To deploy to Netlify, change the Nitro preset in `vite.config.ts` to `netlify`:
+
+```typescript
+nitro: {
+  preset: "netlify",
+}
+```
+
+Then:
 
 1. Connect repository on [Netlify](https://netlify.com).
 2. Build command: `npm run build`
-3. Publish directory: `.output/public`
+3. Publish directory: `.vercel/output/static`
 
 ---
 
@@ -104,7 +148,8 @@ Open [http://localhost:3000](http://localhost:3000) or [http://localhost:8080](h
 muse-books/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # GitHub Actions CI/CD Pipeline
+│       └── vercel-deploy.yml     # Vercel CI/CD Pipeline
+├── vercel.json                    # Vercel deployment configuration
 ├── src/
 │   ├── components/
 │   │   ├── layout/
@@ -119,16 +164,16 @@ muse-books/
 │   │   └── error-reporting.ts  # Generic Standalone Error Logger
 │   ├── routes/
 │   │   ├── __root.tsx          # Root Layout & Head Meta
-│   │   ├── index.tsx           # Homepage / Portals
+│   │   ├── index.tsx           # Homepage
 │   │   ├── poems/
-│   │   │   ├── index.tsx       # Poems Library & Search
-│   │   │   └── $id.tsx         # Dedicated Poem Reading Room
+│   │   │   ├── index.tsx       # Poem Library
+│   │   │   └── $id.tsx         # Immersive Reading Room
 │   │   ├── collections/
-│   │   │   ├── index.tsx       # Collections Archive
-│   │   │   └── $id.tsx         # Collection Details & Contents
+│   │   │   ├── index.tsx       # Poetry Collections
+│   │   │   └── $id.tsx         # Collection Detail
 │   │   ├── books/
 │   │   │   ├── index.tsx       # Chapbooks Catalog
-│   │   │   └── $id.tsx         # Chapbook Details & Reservation Modal
+│   │   │   └── $id.tsx         # Chapbook Detail & Order Modal
 │   │   ├── musings/
 │   │   │   ├── index.tsx       # Essays & Journal Directory
 │   │   │   └── $id.tsx         # Essay Reader

@@ -117,7 +117,7 @@ export function Navbar() {
       </header>
 
       {/* MOBILE FLOATING NAVBAR CARD */}
-      <div className="block md:hidden sticky top-3 z-50 px-4 py-1 pointer-events-none">
+      <div className="block md:hidden fixed top-3 left-0 right-0 z-50 px-4 pointer-events-none">
         <header className="w-full max-w-7xl mx-auto bg-ink-2/95 backdrop-blur-md rounded-2xl px-5 py-3 flex items-center justify-between shadow-2xl border border-neon/20 pointer-events-auto">
           {/* Logo */}
           <Link

@@ -1,0 +1,30 @@
+const __vite__mapDeps = (
+  i,
+  m = __vite__mapDeps,
+  d = m.f ||
+    (m.f = [
+      "assets/_id-DL8U_KUV.js",
+      "assets/createLucideIcon-BnNKfcXr.js",
+      "assets/arrow-left-CaFqYGEK.js",
+      "assets/clock-BN_e3-oT.js",
+      "assets/literature-j2lTA6at.js",
+    ]),
+) => i.map((i) => d[i]);
+import { n as e, r as t, t as n } from "./preload-helper-BC4arR-S.js";
+import { c as r } from "./literature-j2lTA6at.js";
+var i = t(`/musings/$id`)({
+  head: ({ params: e }) => {
+    let t = r(e.id);
+    return {
+      meta: [
+        { title: `${t ? t.title : `Musing`} — Muse Books` },
+        { name: `description`, content: t ? t.excerpt : `Literary essay by Muse Books.` },
+      ],
+    };
+  },
+  component: e(
+    () => n(() => import(`./_id-DL8U_KUV.js`), __vite__mapDeps([0, 1, 2, 3, 4])),
+    `component`,
+  ),
+});
+export { i as t };

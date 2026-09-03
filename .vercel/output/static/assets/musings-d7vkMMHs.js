@@ -1,0 +1,104 @@
+import { c as e, n as t } from "./createLucideIcon-BnNKfcXr.js";
+import { t as n } from "./arrow-right-Z_xHovhc.js";
+import { t as r } from "./clock-BN_e3-oT.js";
+import { t as i } from "./sparkles-arFjGQUh.js";
+import { r as a } from "./literature-j2lTA6at.js";
+var o = e();
+function s() {
+  return (0, o.jsx)(`div`, {
+    className: `py-12 sm:py-16`,
+    children: (0, o.jsxs)(`div`, {
+      className: `mx-auto max-w-[1240px] px-6 sm:px-10`,
+      children: [
+        (0, o.jsxs)(`div`, {
+          className: `border-b border-neon/10 pb-10`,
+          children: [
+            (0, o.jsxs)(`div`, {
+              className: `flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-3`,
+              children: [
+                (0, o.jsx)(i, { className: `h-3.5 w-3.5` }),
+                (0, o.jsx)(`span`, { children: `The Literary Journal` }),
+              ],
+            }),
+            (0, o.jsx)(`h1`, {
+              className: `font-display text-4xl sm:text-6xl font-medium text-paper`,
+              children: `Musings & Essays`,
+            }),
+            (0, o.jsx)(`p`, {
+              className: `mt-4 text-base sm:text-lg text-paper-dim max-w-[50ch] text-pretty`,
+              children: `Essays on poetic craft, letterpress philosophy, and reflections written during the quiet intervals between poems.`,
+            }),
+          ],
+        }),
+        (0, o.jsx)(`div`, {
+          className: `mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8`,
+          children: a.map((e) =>
+            (0, o.jsxs)(
+              `article`,
+              {
+                className: `group rounded-xl border border-neon/15 bg-ink-2 p-6 sm:p-8 flex flex-col justify-between hover:border-neon/40 hover:-translate-y-1 transition-all`,
+                children: [
+                  (0, o.jsxs)(`div`, {
+                    children: [
+                      (0, o.jsxs)(`div`, {
+                        className: `flex items-center justify-between text-xs text-paper-faint uppercase tracking-[0.2em] mb-4`,
+                        children: [
+                          (0, o.jsx)(`span`, {
+                            className: `text-neon/90 font-medium`,
+                            children: e.category,
+                          }),
+                          (0, o.jsxs)(`span`, {
+                            className: `flex items-center gap-1`,
+                            children: [(0, o.jsx)(r, { className: `h-3 w-3` }), e.readTime],
+                          }),
+                        ],
+                      }),
+                      (0, o.jsx)(`h2`, {
+                        className: `font-display text-2xl sm:text-3xl font-medium text-paper leading-tight group-hover:text-neon transition-colors`,
+                        children: (0, o.jsx)(t, {
+                          to: `/musings/$id`,
+                          params: { id: e.id },
+                          children: e.title,
+                        }),
+                      }),
+                      (0, o.jsx)(`p`, {
+                        className: `mt-4 text-sm text-paper-dim leading-relaxed`,
+                        children: e.excerpt,
+                      }),
+                    ],
+                  }),
+                  (0, o.jsxs)(`div`, {
+                    className: `mt-8 pt-5 border-t border-neon/10 flex items-center justify-between`,
+                    children: [
+                      (0, o.jsxs)(`div`, {
+                        className: `text-xs text-paper-faint`,
+                        children: [
+                          (0, o.jsxs)(`span`, { children: [`By `, e.author] }),
+                          (0, o.jsx)(`span`, {
+                            className: `block text-[10px] text-paper-faint mt-0.5`,
+                            children: e.date,
+                          }),
+                        ],
+                      }),
+                      (0, o.jsxs)(t, {
+                        to: `/musings/$id`,
+                        params: { id: e.id },
+                        className: `inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium`,
+                        children: [
+                          (0, o.jsx)(`span`, { children: `Read Essay` }),
+                          (0, o.jsx)(n, { className: `h-3.5 w-3.5` }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              },
+              e.id,
+            ),
+          ),
+        }),
+      ],
+    }),
+  });
+}
+export { s as component };

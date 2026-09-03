@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Feather, Layers, Quote, Send, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CHAPBOOKS, COLLECTIONS, POEMS, POETS } from "@/data/literature";
 
@@ -118,8 +118,81 @@ export function MobileLanding() {
     },
   ];
 
+  const testimonials = [
+    {
+      quote:
+        "The silence between words is where the poem lives. I am always writing toward that silence.",
+      author: "Elara Voss",
+      work: "Cartographies of Grief",
+      image:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+      rotation: "-rotate-2",
+    },
+    {
+      quote:
+        "To write about water is to write about everything that cannot be held — and everything we keep trying to hold anyway.",
+      author: "Soren Adeyemi",
+      work: "The Glass River",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      rotation: "rotate-1",
+    },
+    {
+      quote:
+        "I never know a poem is finished. I only know when I have stopped being able to change it for the better.",
+      author: "Elara Voss",
+      work: "On Craft",
+      image:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+      rotation: "-rotate-1",
+    },
+    {
+      quote:
+        "Memory is the first editor. It cuts what we cannot bear and keeps what we cannot release.",
+      author: "Soren Adeyemi",
+      work: "A Museum of Unfinished Things",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      rotation: "rotate-2",
+    },
+    {
+      quote:
+        "Language is the oldest technology. We forget that every word was once invented — by someone desperate to be understood.",
+      author: "Elara Voss",
+      work: "The Weight of Dusk",
+      image:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+      rotation: "-rotate-3",
+    },
+  ];
+
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const scrollAmount = 460;
+
+  const updateSliderButtons = () => {
+    const el = sliderRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth - 1);
+  };
+
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateSliderButtons);
+    window.addEventListener("resize", updateSliderButtons);
+    updateSliderButtons();
+    return () => {
+      el.removeEventListener("scroll", updateSliderButtons);
+      window.removeEventListener("resize", updateSliderButtons);
+    };
+  }, []);
+
   return (
-    <div className="block md:hidden bg-ink font-karla text-paper selection:bg-neon selection:text-ink">
+    <div className="block md:hidden bg-ink font-karla text-paper selection:bg-neon selection:text-ink pt-20">
       {/* MUSE NIGHT HERO CONTAINER WITH STEP-BY-STEP SEAMLESS SLIDER BACKGROUND */}
       <section
         onTouchStart={() => setIsPaused(true)}
@@ -318,6 +391,104 @@ export function MobileLanding() {
               </Link>
             );
           })}
+        </div>
+      </section>
+
+      {/* TESTIMONIALS / VOICES FROM THE PAGE */}
+      <section className="bg-ink overflow-hidden">
+        <div className="px-5 pt-12 pb-8">
+          <div className="flex items-end justify-between mb-2">
+            <div>
+              <span className="text-amber-300 text-[10px] font-bold tracking-[0.4em] uppercase block mb-3">
+                // In Their Words
+              </span>
+              <h2 className="font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold text-paper leading-[1.15]">
+                Voices from
+                <br />
+                <span className="italic font-light text-paper-dim">the page</span>
+              </h2>
+            </div>
+
+            <div className="flex gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() =>
+                  sliderRef.current?.scrollBy({ left: -scrollAmount, behavior: "smooth" })
+                }
+                disabled={!canScrollLeft}
+                className="w-9 h-9 rounded-full border border-neon/30 flex items-center justify-center text-neon hover:border-neon hover:bg-neon/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Previous quote"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  sliderRef.current?.scrollBy({ left: scrollAmount, behavior: "smooth" })
+                }
+                disabled={!canScrollRight}
+                className="w-9 h-9 rounded-full bg-neon text-ink flex items-center justify-center hover:bg-amber-300 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Next quote"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-ink to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-ink to-transparent z-10" />
+
+          <div
+            ref={sliderRef}
+            className="flex gap-4 overflow-x-auto pb-6 px-5"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {testimonials.map((item, idx) => (
+              <article
+                key={idx}
+                className={`min-w-[280px] sm:min-w-[340px] max-w-[380px] shrink-0 rounded-2xl border border-white/10 bg-ink-2/70 backdrop-blur-lg p-6 shadow-2xl shadow-black/40 ${item.rotation} transition-all duration-300 hover:scale-[1.03] hover:shadow-neon/10 active:scale-[0.98] active:rotate-0 relative`}
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
+                <div className="font-display text-5xl text-neon/25 leading-none mb-2 select-none">"</div>
+                <p className="font-display italic text-paper-dim text-base leading-relaxed mb-5 relative will-change-transform">
+                  {item.quote}
+                </p>
+                <div className="flex items-center gap-3 relative will-change-transform">
+                  <div className="h-10 w-10 rounded-xl overflow-hidden shrink-0 border border-neon/20">
+                    <img
+                      alt={item.author}
+                      className="h-full w-full object-cover"
+                      src={item.image}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-paper">{item.author}</p>
+                    <p className="text-[11px] text-paper-faint">{item.work}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
