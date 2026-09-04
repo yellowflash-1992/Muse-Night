@@ -117,25 +117,28 @@ export function Navbar() {
       </header>
 
       {/* MOBILE FLOATING NAVBAR CARD */}
-      <div className="block md:hidden fixed top-3 left-0 right-0 z-50 px-4 pointer-events-none">
-        <header className="w-full max-w-7xl mx-auto bg-ink-2/95 backdrop-blur-md rounded-2xl px-5 py-3 flex items-center justify-between shadow-2xl border border-neon/20 pointer-events-auto">
+      <div
+        className="block md:hidden fixed top-3 left-0 right-0 z-50 px-3 pointer-events-none"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
+        <header className="w-full max-w-7xl mx-auto bg-ink-2/95 backdrop-blur-md rounded-2xl px-4 py-3 flex items-center justify-between shadow-2xl border border-neon/20 pointer-events-auto min-h-[56px]">
           {/* Logo */}
           <Link
             to="/"
-            className="font-josefin text-xl font-bold tracking-tight text-paper flex items-center gap-2"
+            className="font-josefin text-lg font-bold tracking-tight text-paper flex items-center gap-2 shrink-0 whitespace-nowrap"
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-neon/15 border border-neon/40 text-neon">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neon/15 border border-neon/40 text-neon">
               <Feather className="h-4 w-4" />
             </div>
             <span>muse night</span>
           </Link>
 
           {/* Right Navigation Group */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 shrink-0">
             {/* CTA Button */}
             <Link
               to="/poems"
-              className="font-karla text-xs sm:text-sm font-semibold text-ink bg-neon hover:bg-neon/90 px-3.5 sm:px-4 py-2 rounded-xl transition-all shadow-md active:scale-95"
+              className="font-karla text-xs font-semibold text-ink bg-neon hover:bg-neon/90 px-3.5 py-2 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
             >
               Start reading
             </Link>
@@ -145,7 +148,7 @@ export function Navbar() {
               type="button"
               aria-label="Open mobile menu"
               onClick={() => setMobileOpen(true)}
-              className="p-2 text-paper hover:bg-neon/10 rounded-xl transition-all active:scale-95 focus:outline-none"
+              className="p-2 -mr-1 text-paper hover:bg-neon/10 rounded-xl transition-all active:scale-95 focus:outline-none shrink-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
