@@ -469,7 +469,9 @@ export function MobileLanding() {
                 className={`min-w-[280px] sm:min-w-[340px] max-w-[380px] shrink-0 rounded-2xl border border-white/10 bg-ink-2/70 backdrop-blur-lg p-6 shadow-2xl shadow-black/40 ${item.rotation} transition-all duration-300 hover:scale-[1.03] hover:shadow-neon/10 active:scale-[0.98] active:rotate-0 relative`}
               >
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
-                <div className="font-display text-5xl text-neon/25 leading-none mb-2 select-none">"</div>
+                <div className="font-display text-5xl text-neon/25 leading-none mb-2 select-none">
+                  "
+                </div>
                 <p className="font-display italic text-paper-dim text-base leading-relaxed mb-5 relative will-change-transform">
                   {item.quote}
                 </p>
