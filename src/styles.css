@@ -19,10 +19,10 @@
  */
 
 @theme inline {
-  --font-display: "Cormorant Garamond", serif;
-  --font-body: "Spectral", serif;
-  --font-josefin: "Josefin Sans", sans-serif;
-  --font-karla: "Karla", sans-serif;
+  --font-display: "Cormorant Garamond", "Cormorant Garamond Fallback", serif;
+  --font-body: "Spectral", "Spectral Fallback", serif;
+  --font-josefin: "Josefin Sans", "Josefin Sans Fallback", sans-serif;
+  --font-karla: "Karla", "Karla Fallback", sans-serif;
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
@@ -467,4 +467,50 @@ html.light .gridbg {
     transform: none;
     animation: none;
   }
+}
+
+/*
+ * Fallback font tuning — reduces layout shift while webfonts load.
+ * The local fallbacks below are metric-adjusted (size-adjust / ascent /
+ * descent overrides) so they occupy nearly the same space as the real
+ * Google Fonts, keeping CLS close to zero with `display: swap`.
+ */
+@font-face {
+  font-family: "Cormorant Garamond Fallback";
+  src: local("Georgia"), local("Times New Roman"), local("serif");
+  size-adjust: 108%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Spectral Fallback";
+  src: local("Georgia"), local("Times New Roman"), local("serif");
+  size-adjust: 104%;
+  ascent-override: 94%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Josefin Sans Fallback";
+  src: local("Arial"), local("Helvetica"), local("sans-serif");
+  size-adjust: 82%;
+  ascent-override: 108%;
+  descent-override: 28%;
+  line-gap-override: 0%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Karla Fallback";
+  src: local("Arial"), local("Helvetica"), local("sans-serif");
+  size-adjust: 98%;
+  ascent-override: 96%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  font-display: swap;
 }

@@ -51,43 +51,45 @@ export function Navbar() {
   return (
     <>
       {/* DESKTOP NAVBAR */}
-      <header className="hidden md:block sticky top-0 z-50 bg-ink/90 backdrop-blur-md border-b border-neon/10 transition-colors">
-        <div className="mx-auto max-w-[1240px] px-6 sm:px-10">
-          {/* Top minimal bar */}
-          <div className="flex items-center justify-between py-2 text-[10px] uppercase tracking-[0.28em] text-paper-faint border-b border-neon/5">
-            <span>Vol. II — Winter 2024</span>
-            <span>A Small Press for Two Poets &amp; Literary Works</span>
-            <span>Est. Edinburgh &amp; Stockholm</span>
+      <header className="hidden lg:block sticky top-0 z-50 bg-ink/90 backdrop-blur-md border-b border-neon/10 transition-colors">
+        <div className="mx-auto flex w-full max-w-[1240px] flex-col px-4 sm:px-6 lg:px-10">
+          {/* Top minimal bar (middle text hidden on narrow screens to prevent squashing) */}
+          <div className="flex items-center justify-between py-2 text-[9px] lg:text-[10px] uppercase tracking-[0.2em] lg:tracking-[0.28em] text-paper-faint border-b border-neon/5">
+            <span className="shrink-0 whitespace-nowrap">Vol. II — Winter 2024</span>
+            <span className="hidden xl:inline">
+              A Small Press for Two Poets &amp; Literary Works
+            </span>
+            <span className="shrink-0 whitespace-nowrap">Est. Edinburgh &amp; Stockholm</span>
           </div>
 
-          {/* Main Desktop Navbar */}
-          <div className="flex items-center justify-between py-4">
+          {/* Main Desktop Navbar — flex-nowrap so it can never squash/wrap */}
+          <div className="flex flex-nowrap items-center justify-between gap-4 py-4">
             <Link
               to="/"
-              className="group flex items-center gap-3 transition-transform hover:opacity-95"
+              className="group flex shrink-0 items-center gap-3 transition-transform hover:opacity-95"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-neon/10 border border-neon/30 text-neon group-hover:bg-neon/20 transition-all">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-neon/10 border border-neon/30 text-neon group-hover:bg-neon/20 transition-all">
                 <Feather className="h-4 w-4" />
               </div>
               <div>
-                <span className="font-display text-2xl sm:text-3xl font-medium tracking-[-0.01em] text-paper block leading-none">
+                <span className="whitespace-nowrap font-display text-xl lg:text-3xl font-medium tracking-[-0.01em] text-paper block leading-none">
                   Muse Books
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.25em] text-neon/70 block mt-1">
+                <span className="hidden xl:block text-[9px] uppercase tracking-[0.25em] text-neon/70 whitespace-nowrap mt-1">
                   Poetry &amp; Literature
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav Links */}
-            <nav className="flex items-center gap-7">
+            {/* Desktop Nav Links — tighter gap + smaller tracking at md so nothing squeezes */}
+            <nav className="flex flex-nowrap items-center gap-3 xl:gap-7 min-w-0">
               {links.map((link) => {
                 const active = isActive(link.to);
                 return (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`text-xs uppercase tracking-[0.22em] transition-all relative py-1 ${
+                    className={`whitespace-nowrap text-[10px] xl:text-xs uppercase tracking-[0.14em] xl:tracking-[0.22em] transition-all relative py-1 ${
                       active ? "text-neon font-medium" : "text-paper-dim hover:text-paper inkline"
                     }`}
                   >
@@ -101,10 +103,10 @@ export function Navbar() {
             </nav>
 
             {/* Desktop Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 xl:gap-3">
               <Link
                 to="/poems"
-                className="inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/5 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-neon transition-all hover:bg-neon/15 hover:border-neon"
+                className="hidden lg:inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/5 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-neon transition-all hover:bg-neon/15 hover:border-neon"
               >
                 <BookOpen className="h-3.5 w-3.5" />
                 <span>Read Poems</span>
@@ -118,7 +120,7 @@ export function Navbar() {
 
       {/* MOBILE FLOATING NAVBAR CARD */}
       <div
-        className="block md:hidden fixed top-3 left-0 right-0 z-50 px-3 pointer-events-none"
+        className="block lg:hidden fixed top-3 left-0 right-0 z-50 px-3 pointer-events-none"
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
         <header className="w-full max-w-7xl mx-auto bg-ink-2/95 backdrop-blur-md rounded-2xl px-4 py-3 flex items-center justify-between shadow-2xl border border-neon/20 pointer-events-auto min-h-[56px]">
@@ -134,11 +136,13 @@ export function Navbar() {
           </Link>
 
           {/* Right Navigation Group */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <ThemeToggle />
+
             {/* CTA Button */}
             <Link
               to="/poems"
-              className="font-karla text-xs font-semibold text-ink bg-neon hover:bg-neon/90 px-3.5 py-2 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
+              className="font-karla text-xs font-semibold text-ink bg-neon hover:bg-neon/90 px-3 sm:px-3.5 py-2 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
             >
               Start reading
             </Link>
@@ -171,7 +175,7 @@ export function Navbar() {
 
       {/* FULLSCREEN MOBILE NAVIGATION DRAWER */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-ink/80 backdrop-blur-md flex flex-col p-4 animate-[fadeIn_0.2s_ease-out]">
+        <div className="lg:hidden fixed inset-0 z-50 bg-ink/80 backdrop-blur-md flex flex-col p-4 animate-[fadeIn_0.2s_ease-out]">
           <div className="w-full max-w-md mx-auto bg-ink-2 border border-neon/20 rounded-2xl p-5 shadow-2xl flex flex-col justify-between h-full max-h-[92vh] overflow-y-auto">
             <div className="space-y-5">
               {/* Drawer Header */}

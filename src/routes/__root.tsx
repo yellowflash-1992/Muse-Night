@@ -102,6 +102,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
+        // Preload the font CSS so the browser fetches it in parallel with the
+        // main bundle instead of discovering it late during CSS parsing.
+        rel: "preload",
+        as: "style",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Josefin+Sans:wght@600;700&family=Karla:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap",
+      },
+      {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Josefin+Sans:wght@600;700&family=Karla:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap",
       },
@@ -121,19 +128,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark overflow-x-hidden">
+    <html lang="en" className="light overflow-x-hidden">
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
                 const saved = localStorage.getItem('muse-theme');
-                if (saved === 'light') {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.classList.add('light');
-                } else {
-                  document.documentElement.classList.remove('light');
+                if (saved === 'dark') {
                   document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
+                } else {
+                  // light is the default — nothing to do, html already has class="light"
                 }
               } catch (e) {}
             `,
