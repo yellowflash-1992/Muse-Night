@@ -22,22 +22,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci || npm install
-
-      - name: Lint code
-        run: npm run lint
-        timeout-minutes: 5
-
-      - name: Build project
-        run: npm run build
-
+      # No local install/build/lint here: vercel-action with --prod triggers a
+      # remote build on Vercel's servers, so building locally would just
+      # duplicate that work and add several minutes to every deploy.
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
