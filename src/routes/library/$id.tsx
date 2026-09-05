@@ -15,15 +15,15 @@ import {
 
 import { POEMS, getPoemById } from "@/data/literature";
 
-export const Route = createFileRoute("/poems/$id")({
+export const Route = createFileRoute("/library/$id")({
   head: ({ params }) => {
     const poem = getPoemById(params.id);
     return {
       meta: [
-        { title: `${poem ? poem.title : "Poem"} — Muse Books` },
+        { title: `${poem ? poem.title : "Work"} — Muse Books` },
         {
           name: "description",
-          content: poem ? `Read "${poem.title}" by ${poem.author}.` : "Read poems from Muse Books.",
+          content: poem ? `Read "${poem.title}" by ${poem.author}.` : "Browse works from Muse Books.",
         },
       ],
     };
@@ -42,17 +42,17 @@ function PoemReader() {
   if (!poem) {
     return (
       <div className="py-20 text-center mx-auto max-w-lg px-6">
-        <h1 className="font-display text-4xl text-paper">Poem not found</h1>
+          <h1 className="font-display text-4xl text-paper">Work not found</h1>
         <p className="mt-3 text-paper-dim">
-          The poem you are looking for does not exist or may have been re-indexed.
+          The work you are looking for does not exist or may have been re-indexed.
         </p>
         <div className="mt-6">
           <Link
-            to="/poems"
+            to="/library"
             className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Return to Poems Library</span>
+            <span>Return to Library</span>
           </Link>
         </div>
       </div>
@@ -91,11 +91,11 @@ function PoemReader() {
         {/* Navigation & Desktop Controls Bar */}
         <div className="flex items-center justify-between gap-4 pb-6 border-b border-neon/10">
           <Link
-            to="/poems"
+            to="/library"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-paper-dim hover:text-paper transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>All Poems</span>
+            <span>All Works</span>
           </Link>
 
           {/* Desktop Reader controls */}
@@ -228,7 +228,7 @@ function PoemReader() {
             {poem.tags.map((t) => (
               <Link
                 key={t}
-                to="/poems"
+                to="/library"
                 className="text-[11px] uppercase tracking-[0.16em] text-paper-faint hover:text-neon bg-ink-2 border border-neon/15 px-2.5 py-1 rounded-full transition-colors"
               >
                 #{t}
@@ -241,13 +241,13 @@ function PoemReader() {
         <nav className="mt-12 sm:mt-16 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {prevPoem ? (
             <Link
-              to="/poems/$id"
+              to="/library/$id"
               params={{ id: prevPoem.id }}
               className="group p-4 sm:p-5 rounded-xl border border-neon/15 bg-ink-2 hover:border-neon/40 active:scale-[0.98] transition-all flex flex-col items-start"
             >
               <span className="text-[10px] uppercase tracking-[0.22em] text-paper-faint flex items-center gap-1.5 mb-1">
                 <ArrowLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" />
-                Previous Poem
+                Previous Work
               </span>
               <span className="font-display text-lg sm:text-xl text-paper group-hover:text-neon transition-colors">
                 {prevPoem.title}
@@ -260,12 +260,12 @@ function PoemReader() {
 
           {nextPoem ? (
             <Link
-              to="/poems/$id"
+              to="/library/$id"
               params={{ id: nextPoem.id }}
               className="group p-4 sm:p-5 rounded-xl border border-neon/15 bg-ink-2 hover:border-neon/40 active:scale-[0.98] transition-all flex flex-col items-end text-right"
             >
               <span className="text-[10px] uppercase tracking-[0.22em] text-paper-faint flex items-center gap-1.5 mb-1">
-                Next Poem
+                Next Work
                 <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
               </span>
               <span className="font-display text-lg sm:text-xl text-paper group-hover:text-neon transition-colors">

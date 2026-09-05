@@ -16,10 +16,10 @@ import { Route as BooksIndexRouteImport } from './routes/books/index'
 import { Route as BooksIdRouteImport } from './routes/books/$id'
 import { Route as CollectionsIndexRouteImport } from './routes/collections/index'
 import { Route as CollectionsIdRouteImport } from './routes/collections/$id'
+import { Route as LibraryIndexRouteImport } from './routes/library/index'
+import { Route as LibraryIdRouteImport } from './routes/library/$id'
 import { Route as MusingsIndexRouteImport } from './routes/musings/index'
 import { Route as MusingsIdRouteImport } from './routes/musings/$id'
-import { Route as PoemsIndexRouteImport } from './routes/poems/index'
-import { Route as PoemsIdRouteImport } from './routes/poems/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -56,6 +56,16 @@ const CollectionsIdRoute = CollectionsIdRouteImport.update({
   path: '/collections/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LibraryIndexRoute = LibraryIndexRouteImport.update({
+  id: '/library/',
+  path: '/library/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryIdRoute = LibraryIdRouteImport.update({
+  id: '/library/$id',
+  path: '/library/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MusingsIndexRoute = MusingsIndexRouteImport.update({
   id: '/musings/',
   path: '/musings/',
@@ -66,16 +76,6 @@ const MusingsIdRoute = MusingsIdRouteImport.update({
   path: '/musings/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PoemsIndexRoute = PoemsIndexRouteImport.update({
-  id: '/poems/',
-  path: '/poems/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoemsIdRoute = PoemsIdRouteImport.update({
-  id: '/poems/$id',
-  path: '/poems/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,12 +83,12 @@ export interface FileRoutesByFullPath {
   '/submit': typeof SubmitRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/library/$id': typeof LibraryIdRoute
   '/musings/$id': typeof MusingsIdRoute
-  '/poems/$id': typeof PoemsIdRoute
   '/books/': typeof BooksIndexRoute
   '/collections/': typeof CollectionsIndexRoute
+  '/library/': typeof LibraryIndexRoute
   '/musings/': typeof MusingsIndexRoute
-  '/poems/': typeof PoemsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -96,12 +96,12 @@ export interface FileRoutesByTo {
   '/submit': typeof SubmitRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/library/$id': typeof LibraryIdRoute
   '/musings/$id': typeof MusingsIdRoute
-  '/poems/$id': typeof PoemsIdRoute
   '/books': typeof BooksIndexRoute
   '/collections': typeof CollectionsIndexRoute
+  '/library': typeof LibraryIndexRoute
   '/musings': typeof MusingsIndexRoute
-  '/poems': typeof PoemsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,12 +110,12 @@ export interface FileRoutesById {
   '/submit': typeof SubmitRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/library/$id': typeof LibraryIdRoute
   '/musings/$id': typeof MusingsIdRoute
-  '/poems/$id': typeof PoemsIdRoute
   '/books/': typeof BooksIndexRoute
   '/collections/': typeof CollectionsIndexRoute
+  '/library/': typeof LibraryIndexRoute
   '/musings/': typeof MusingsIndexRoute
-  '/poems/': typeof PoemsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -125,12 +125,12 @@ export interface FileRouteTypes {
     | '/submit'
     | '/books/$id'
     | '/collections/$id'
+    | '/library/$id'
     | '/musings/$id'
-    | '/poems/$id'
     | '/books/'
     | '/collections/'
+    | '/library/'
     | '/musings/'
-    | '/poems/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -138,12 +138,12 @@ export interface FileRouteTypes {
     | '/submit'
     | '/books/$id'
     | '/collections/$id'
+    | '/library/$id'
     | '/musings/$id'
-    | '/poems/$id'
     | '/books'
     | '/collections'
+    | '/library'
     | '/musings'
-    | '/poems'
   id:
     | '__root__'
     | '/'
@@ -151,12 +151,12 @@ export interface FileRouteTypes {
     | '/submit'
     | '/books/$id'
     | '/collections/$id'
+    | '/library/$id'
     | '/musings/$id'
-    | '/poems/$id'
     | '/books/'
     | '/collections/'
+    | '/library/'
     | '/musings/'
-    | '/poems/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,12 +165,12 @@ export interface RootRouteChildren {
   SubmitRoute: typeof SubmitRoute
   BooksIdRoute: typeof BooksIdRoute
   CollectionsIdRoute: typeof CollectionsIdRoute
+  LibraryIdRoute: typeof LibraryIdRoute
   MusingsIdRoute: typeof MusingsIdRoute
-  PoemsIdRoute: typeof PoemsIdRoute
   BooksIndexRoute: typeof BooksIndexRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
+  LibraryIndexRoute: typeof LibraryIndexRoute
   MusingsIndexRoute: typeof MusingsIndexRoute
-  PoemsIndexRoute: typeof PoemsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/library/': {
+      id: '/library/'
+      path: '/library'
+      fullPath: '/library/'
+      preLoaderRoute: typeof LibraryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library/$id': {
+      id: '/library/$id'
+      path: '/library/$id'
+      fullPath: '/library/$id'
+      preLoaderRoute: typeof LibraryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/musings/': {
       id: '/musings/'
       path: '/musings'
@@ -238,20 +252,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MusingsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/poems/': {
-      id: '/poems/'
-      path: '/poems'
-      fullPath: '/poems/'
-      preLoaderRoute: typeof PoemsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/poems/$id': {
-      id: '/poems/$id'
-      path: '/poems/$id'
-      fullPath: '/poems/$id'
-      preLoaderRoute: typeof PoemsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -261,12 +261,12 @@ const rootRouteChildren: RootRouteChildren = {
   SubmitRoute: SubmitRoute,
   BooksIdRoute: BooksIdRoute,
   CollectionsIdRoute: CollectionsIdRoute,
+  LibraryIdRoute: LibraryIdRoute,
   MusingsIdRoute: MusingsIdRoute,
-  PoemsIdRoute: PoemsIdRoute,
   BooksIndexRoute: BooksIndexRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,
+  LibraryIndexRoute: LibraryIndexRoute,
   MusingsIndexRoute: MusingsIndexRoute,
-  PoemsIndexRoute: PoemsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

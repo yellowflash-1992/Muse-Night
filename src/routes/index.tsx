@@ -101,13 +101,13 @@ function Index() {
 
   const portals = [
     {
-      title: "Poem Library",
-      desc: "An open archive of standalone verses, epistles, and nocturnal observations.",
-      to: "/poems",
-      count: `${POEMS.length} Poems`,
+      title: "Library Archive",
+      desc: "An open archive of poems, prose poetry, epistles, and literary works.",
+      to: "/library",
+      count: `${POEMS.length} works`,
       icon: BookOpen,
-      action: "Browse poems",
-      badge: "Fast 1-min reads",
+      action: "Browse archive",
+      badge: "Poems & prose",
     },
     {
       title: "Collections",
@@ -259,11 +259,11 @@ function Index() {
 
                 <div className="mt-6 flex gap-3">
                   <Link
-                    to="/poems"
+                    to="/library"
                     className="inline-flex items-center gap-2 rounded bg-neon px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-ink transition-all hover:bg-neon/90 shadow-md"
                   >
                     <BookOpen className="h-4 w-4" />
-                    <span>Explore Library</span>
+                    <span>Explore Archive</span>
                   </Link>
                   <Link
                     to="/submit"
@@ -339,11 +339,11 @@ function Index() {
                       "Hand-printed under single lamplight for readers who take time."}
                   </p>
                   <Link
-                    to="/poems/$id"
+                    to="/library/$id"
                     params={{ id: activePoem.id }}
                     className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
                   >
-                    <span>Read full poem in reader</span>
+                    <span>Read full work in reader</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
@@ -420,7 +420,7 @@ function Index() {
                 <p className="text-sm text-paper-dim leading-relaxed pt-2">{featuredPoem.note}</p>
                 <div className="pt-2">
                   <Link
-                    to="/poems/$id"
+                    to="/library/$id"
                     params={{ id: featuredPoem.id }}
                     className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all"
                   >
@@ -442,11 +442,11 @@ function Index() {
                   ))}
                   <div className="pt-4 text-right">
                     <Link
-                      to="/poems/$id"
+                      to="/library/$id"
                       params={{ id: featuredPoem.id }}
                       className="text-xs uppercase tracking-[0.2em] text-neon hover:underline"
                     >
-                      Read complete poem with reader controls &rarr;
+                      Read complete work with reader controls &rarr;
                     </Link>
                   </div>
                 </div>

@@ -266,11 +266,11 @@ export function MobileLanding() {
           {/* Quick Category Chips */}
           <div className="mt-6 flex flex-wrap gap-2.5">
             <Link
-              to="/poems"
+              to="/library"
               className="inline-flex items-center gap-1.5 rounded-xl bg-neon px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-ink shadow-lg shadow-neon/20 active:scale-95 transition-all"
             >
               <Feather className="h-3.5 w-3.5" />
-              <span>Read Poems</span>
+              <span>Read Library</span>
             </Link>
             <Link
               to="/collections"
@@ -307,9 +307,9 @@ export function MobileLanding() {
       {/* STATS BAR */}
       <section className="border-y border-neon/15 bg-ink-2/90 px-4 py-4">
         <div className="grid grid-cols-4 gap-2 text-center text-xs">
-          <Link to="/poems" className="flex flex-col items-center">
+          <Link to="/library" className="flex flex-col items-center">
             <span className="font-display text-lg font-medium text-neon">{POEMS.length}</span>
-            <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">Poems</span>
+            <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">Works</span>
           </Link>
           <Link to="/collections" className="flex flex-col items-center">
             <span className="font-display text-lg font-medium text-amber-300">
@@ -342,7 +342,7 @@ export function MobileLanding() {
             </h2>
           </div>
           <Link
-            to="/poems"
+            to="/library"
             className="text-[11px] uppercase tracking-[0.16em] text-neon font-medium"
           >
             All {POEMS.length} &rarr;
@@ -355,7 +355,7 @@ export function MobileLanding() {
             return (
               <Link
                 key={poem.id}
-                to="/poems/$id"
+                to="/library/$id"
                 params={{ id: poem.id }}
                 className="group relative flex flex-col text-left active:scale-[0.98] transition-transform"
               >

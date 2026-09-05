@@ -12,11 +12,11 @@ export function Navbar() {
 
   const links = [
     {
-      to: "/poems",
-      label: "Poems",
-      icon: Feather,
+      to: "/library",
+      label: "Library",
+      icon: BookOpen,
       color: "text-amber-400",
-      count: `${POEMS.length} poems`,
+      count: `${POEMS.length} works`,
     },
     {
       to: "/collections",
@@ -105,11 +105,11 @@ export function Navbar() {
             {/* Desktop Actions */}
             <div className="flex shrink-0 items-center gap-2 xl:gap-3">
               <Link
-                to="/poems"
+                to="/library"
                 className="hidden lg:inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/5 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-neon transition-all hover:bg-neon/15 hover:border-neon"
               >
                 <BookOpen className="h-3.5 w-3.5" />
-                <span>Read Poems</span>
+                <span>Browse Library</span>
               </Link>
 
               <ThemeToggle />
@@ -139,7 +139,7 @@ export function Navbar() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* CTA Button */}
             <Link
-              to="/poems"
+              to="/library"
               className="font-karla text-xs font-semibold text-ink bg-neon hover:bg-neon/90 px-3 sm:px-3.5 py-2 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
             >
               Start reading

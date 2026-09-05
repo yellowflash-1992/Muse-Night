@@ -4,13 +4,13 @@ import { useMemo, useState } from "react";
 
 import { POEMS, POETS } from "@/data/literature";
 
-export const Route = createFileRoute("/poems/")({
+export const Route = createFileRoute("/library/")({
   head: () => ({
     meta: [
-      { title: "Poems Library — Muse Books" },
+      { title: "Library Archive — Muse Books" },
       {
         name: "description",
-        content: "Browse all poems, epistles, and verses published by Muse Books.",
+        content: "Browse all poems, prose poetry, epistles, and literary works in the Muse Books archive.",
       },
     ],
   }),
@@ -51,12 +51,12 @@ function PoemsIndex() {
         <div className="border-b border-neon/10 pb-10">
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-3">
             <Feather className="h-3.5 w-3.5" />
-            <span>The Verse Library</span>
+            <span>Library Archive</span>
           </div>
-          <h1 className="font-display text-4xl sm:text-6xl font-medium text-paper">Poem Library</h1>
-          <p className="mt-4 text-base sm:text-lg text-paper-dim max-w-[50ch] text-pretty">
-            An archive of verses, epistles, and quiet observations written by lamplight and printed
-            on cotton paper.
+          <h1 className="font-display text-4xl sm:text-6xl font-medium text-paper">Library &amp; Archive</h1>
+          <p className="mt-4 text-base sm:text-lg text-paper-dim max-w-[56ch] text-pretty">
+            An archive of poems, prose poetry, epistles, and literary works — from our two founding
+            poets and invited contributors writing by lamplight.
           </p>
         </div>
 
@@ -86,7 +86,7 @@ function PoemsIndex() {
                     : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
                 }`}
               >
-                All Poets ({POEMS.length})
+                All Works ({POEMS.length})
               </button>
               {Object.values(POETS).map((poet) => (
                 <button
@@ -143,9 +143,9 @@ function PoemsIndex() {
           {filteredPoems.length === 0 ? (
             <div className="text-center py-20 rounded-lg border border-dashed border-neon/20 bg-ink-2/40">
               <BookOpen className="mx-auto h-8 w-8 text-paper-faint mb-3" />
-              <p className="font-display text-2xl text-paper">No poems found</p>
+              <p className="font-display text-2xl text-paper">No works found</p>
               <p className="text-sm text-paper-dim mt-1">
-                Try loosening your search term or selecting another theme filter.
+                Try loosening your search term or selecting another theme or author.
               </p>
               <button
                 type="button"
@@ -214,7 +214,7 @@ function PoemsIndex() {
                       params={{ id: poem.id }}
                       className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
                     >
-                      <span>Read Poem</span>
+                      <span>Read</span>
                       <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>

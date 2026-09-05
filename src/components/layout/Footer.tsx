@@ -49,8 +49,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/poems" className="hover:text-paper transition-colors inkline">
-                  Poem Library
+                <Link to="/library" className="hover:text-paper transition-colors inkline">
+                  Library
                 </Link>
               </li>
               <li>
