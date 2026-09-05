@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Feather, Layers, Quote, Send, Sparkles } from "lu
 import { useEffect, useRef, useState } from "react";
 
 import { CHAPBOOKS, COLLECTIONS, POEMS, POETS } from "@/data/literature";
+import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
 const heroLines = [
   "Words that breathe.",
@@ -16,6 +17,8 @@ export function MobileLanding() {
   const [displayed, setDisplayed] = useState("");
   const [phase, setPhase] = useState<"typing" | "holding" | "erasing">("typing");
   const [isPaused, setIsPaused] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const swipeHandlers = useSwipeSlider(heroRef);
 
   // 4 Alternating background panels + 1 cloned first panel for seamless looping
   const panels = [
@@ -195,8 +198,15 @@ export function MobileLanding() {
     <div className="block md:hidden bg-ink font-karla text-paper selection:bg-neon selection:text-ink pt-20">
       {/* MUSE NIGHT HERO CONTAINER WITH STEP-BY-STEP SEAMLESS SLIDER BACKGROUND */}
       <section
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
+        ref={heroRef}
+        onTouchStart={(e) => {
+          swipeHandlers.onTouchStart(e);
+          setIsPaused(true);
+        }}
+        onTouchEnd={(e) => {
+          swipeHandlers.onTouchEnd(e);
+          setIsPaused(false);
+        }}
         onTouchCancel={() => setIsPaused(false)}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -395,14 +405,16 @@ export function MobileLanding() {
       </section>
 
       {/* TESTIMONIALS / VOICES FROM THE PAGE */}
-      <section className="bg-ink overflow-hidden">
+      <section className="relative overflow-hidden border-y border-white/10 bg-[linear-gradient(145deg,var(--ink),var(--ink-2)_52%,var(--ink))]">
+        <div className="pointer-events-none absolute -left-24 top-16 h-56 w-56 rounded-full bg-neon/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-8 h-64 w-64 rounded-full bg-rose/10 blur-3xl" />
         <div className="px-5 pt-12 pb-8">
           <div className="flex items-end justify-between mb-2">
             <div>
-              <span className="text-amber-300 text-[10px] font-bold tracking-[0.4em] uppercase block mb-3">
+              <span className="text-neon text-[10px] font-bold tracking-[0.4em] uppercase block mb-3">
                 // In Their Words
               </span>
-              <h2 className="font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold text-paper leading-[1.15]">
+              <h2 className="font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold text-paper leading-[1.1]">
                 Voices from
                 <br />
                 <span className="italic font-light text-paper-dim">the page</span>
@@ -455,37 +467,41 @@ export function MobileLanding() {
         </div>
 
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-ink to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-ink to-transparent z-10" />
+          {/* Subtle edge fades that do not clip card borders */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-ink to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l from-ink to-transparent" />
+
+          {/* Ambient backlight under track so the intense glass blur pops dramatically */}
+          <div className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 h-36 w-36 rounded-full bg-neon/20 blur-3xl" />
+          <div className="pointer-events-none absolute top-1/2 right-1/4 -translate-y-1/2 h-40 w-40 rounded-full bg-rose/20 blur-3xl" />
 
           <div
             ref={sliderRef}
-            className="flex gap-4 overflow-x-auto pb-6 px-5"
+            className="flex gap-5 overflow-x-auto px-5 pt-8 pb-12 -my-4"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {testimonials.map((item, idx) => (
               <article
                 key={idx}
-                className={`min-w-[280px] sm:min-w-[340px] max-w-[380px] shrink-0 rounded-2xl border border-white/10 bg-ink-2/70 backdrop-blur-lg p-6 shadow-2xl shadow-black/40 ${item.rotation} transition-all duration-300 hover:scale-[1.03] hover:shadow-neon/10 active:scale-[0.98] active:rotate-0 relative`}
+                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[440px] max-w-[520px] p-8 shrink-0 ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
               >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
-                <div className="font-display text-5xl text-neon/25 leading-none mb-2 select-none">
+                <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
                   "
                 </div>
-                <p className="font-display italic text-paper-dim text-base leading-relaxed mb-5 relative will-change-transform">
+                <p className="font-display italic text-foreground text-lg leading-relaxed mb-6">
                   {item.quote}
                 </p>
-                <div className="flex items-center gap-3 relative will-change-transform">
-                  <div className="h-10 w-10 rounded-xl overflow-hidden shrink-0 border border-neon/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
                     <img
                       alt={item.author}
-                      className="h-full w-full object-cover"
+                      className="object-cover w-full h-full"
                       src={item.image}
                     />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-paper">{item.author}</p>
-                    <p className="text-[11px] text-paper-faint">{item.work}</p>
+                    <p className="text-sm font-semibold text-foreground">{item.author}</p>
+                    <p className="text-xs text-muted-foreground">{item.work}</p>
                   </div>
                 </div>
               </article>

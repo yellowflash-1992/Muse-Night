@@ -1,14 +1,14 @@
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Moon, Sun, Sparkles } from "lucide-react";
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("muse-theme") as "dark" | "light" | null;
-    const initialTheme = saved || "light";
+    const initialTheme = saved || "dark";
     setTheme(initialTheme);
     applyTheme(initialTheme);
   }, []);

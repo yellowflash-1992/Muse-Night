@@ -1,18 +1,18 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
-  Outlet,
+  HeadContent,
   Link,
+  Outlet,
+  Scripts,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
-import appCss from "../styles.css?url";
-import { reportAppError } from "../lib/error-reporting";
-import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
+import { Navbar } from "../components/layout/Navbar";
+import { reportAppError } from "../lib/error-reporting";
+import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -128,18 +128,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="light overflow-x-hidden">
+    <html lang="en" className="dark overflow-x-hidden">
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
                 const saved = localStorage.getItem('muse-theme');
-                if (saved === 'dark') {
+                if (saved === 'light') {
+                  document.documentElement.classList.add('light');
+                  document.documentElement.classList.remove('dark');
+                } else {
                   document.documentElement.classList.add('dark');
                   document.documentElement.classList.remove('light');
-                } else {
-                  // light is the default — nothing to do, html already has class="light"
                 }
               } catch (e) {}
             `,

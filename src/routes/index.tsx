@@ -13,10 +13,11 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CHAPBOOKS, MUSINGS, POEMS } from "@/data/literature";
 import { MobileLanding } from "@/components/mobile/MobileLanding";
+import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,6 +45,8 @@ function Index() {
   const [poemIndex, setPoemIndex] = useState(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const swipeHandlers = useSwipeSlider(heroRef);
 
   // 4 Alternating background panels + 1 cloned first panel for seamless looping
   const desktopPanels = [
@@ -162,10 +165,18 @@ function Index() {
       <div className="hidden md:block">
         {/* MASTHEAD / HERO WITH STEP-BY-STEP SEAMLESS SLIDER BACKGROUND */}
         <section
+          ref={heroRef}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
+          onTouchStart={(e) => {
+            swipeHandlers.onTouchStart(e);
+            setIsPaused(true);
+          }}
+          onTouchEnd={(e) => {
+            swipeHandlers.onTouchEnd(e);
+            setIsPaused(false);
+          }}
+          onTouchCancel={() => setIsPaused(false)}
           className={`hero-slider-container border-b border-neon/10 py-16 lg:py-24 relative overflow-hidden min-h-[500px] flex items-center isolate ${
             isPaused ? "is-paused" : ""
           }`}

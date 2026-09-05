@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { BookOpen, Feather, FileText, Layers, Sparkles, Users, X } from "lucide-react";
 import { useState } from "react";
-import { BookOpen, Feather, X, Sparkles, Layers, FileText, Users } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { POEMS } from "@/data/literature";
@@ -137,8 +137,6 @@ export function Navbar() {
 
           {/* Right Navigation Group */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <ThemeToggle />
-
             {/* CTA Button */}
             <Link
               to="/poems"

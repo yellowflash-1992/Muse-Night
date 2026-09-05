@@ -282,6 +282,30 @@ html.light ::-webkit-scrollbar-thumb:hover {
   background: var(--neon);
 }
 
+/* Glassmorphism card — high-intensity frosted blur tuned for both dark and light */
+.glass-card {
+  background: rgb(255 255 255 / 10%);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  box-shadow:
+    0 16px 38px 0 rgb(0 0 0 / 42%),
+    inset 0 1px 1px 0 rgb(255 255 255 / 35%),
+    inset 0 -1px 1px 0 rgb(255 255 255 / 8%);
+}
+
+html.light .glass-card {
+  background: rgb(255 255 255 / 30%);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-color: rgb(255 255 255 / 65%);
+  box-shadow:
+    0 16px 38px 0 rgb(120 53 15 / 30%),
+    inset 0 1px 2px 0 rgb(255 255 255 / 90%),
+    inset 0 -1px 1px 0 rgb(255 255 255 / 20%);
+}
+
 html.light * {
   scrollbar-color: #9a4406 var(--ink);
 }
