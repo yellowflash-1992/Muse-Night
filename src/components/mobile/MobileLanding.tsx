@@ -210,7 +210,7 @@ export function MobileLanding() {
         onTouchCancel={() => setIsPaused(false)}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-        className={`hero-slider-container relative min-h-[92vh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden isolate ${
+        className={`hero-slider-container relative min-h-[82vh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden isolate ${
           isPaused ? "is-paused" : ""
         }`}
       >
@@ -245,7 +245,7 @@ export function MobileLanding() {
         </div>
 
         {/* MAIN HERO CONTENT */}
-        <main className="w-full max-w-7xl mx-auto my-auto px-2 sm:px-4 py-8 relative z-10">
+        <main className="w-full max-w-7xl mx-auto px-2 sm:px-4 pt-6 relative z-10">
           {/* Animated Typewriter Tagline */}
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm px-3.5 py-1 text-xs font-medium text-[#fef08a] shadow-sm">
             <Sparkles className="h-3.5 w-3.5 text-[#fef08a] animate-pulse" />
@@ -259,8 +259,8 @@ export function MobileLanding() {
           </h1>
 
           <p className="mt-4 font-karla text-sm text-stone-200 leading-relaxed max-w-md text-pretty">
-            A small lamplit press for poetry, hand-bound chapbooks, and literature from Adaeze
-            Okafor &amp; Theo Lindqvist.
+            A small lamplit press for poetry, hand-bound chapbooks, and literature from Irshand
+            &amp; Raji Nurudeen Olawale.
           </p>
 
           {/* Quick Category Chips */}
@@ -285,6 +285,16 @@ export function MobileLanding() {
             >
               <BookOpen className="h-3.5 w-3.5 text-neon" />
               <span>Chapbooks</span>
+            </Link>
+          </div>
+
+          <div className="mt-4 w-full flex justify-center">
+            <Link
+              to="/mood"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/60 bg-amber-300/10 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200 shadow-[0_0_25px_rgba(254,240,138,0.25)] hover:shadow-[0_0_45px_rgba(254,240,138,0.55)] hover:bg-amber-300/20 active:scale-95 transition-all animate-golden-pulse"
+            >
+              <Sparkles className="h-4 w-4 text-amber-200" />
+              <span>A muse for your mood</span>
             </Link>
           </div>
         </main>
@@ -483,7 +493,7 @@ export function MobileLanding() {
             {testimonials.map((item, idx) => (
               <article
                 key={idx}
-                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[440px] max-w-[520px] p-8 shrink-0 ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
+                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
               >
                 <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
                   "

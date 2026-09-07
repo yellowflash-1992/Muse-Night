@@ -11,15 +11,19 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as DailyRouteImport } from './routes/daily'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as MoodRouteImport } from './routes/mood'
+import { Route as RequestRouteImport } from './routes/request'
+import { Route as StreakRouteImport } from './routes/streak'
 import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as VaultRouteImport } from './routes/vault'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
 import { Route as BooksIdRouteImport } from './routes/books/$id'
 import { Route as CollectionsIndexRouteImport } from './routes/collections/index'
 import { Route as CollectionsIdRouteImport } from './routes/collections/$id'
 import { Route as LibraryIndexRouteImport } from './routes/library/index'
 import { Route as LibraryIdRouteImport } from './routes/library/$id'
-import { Route as MusingsIndexRouteImport } from './routes/musings/index'
-import { Route as MusingsIdRouteImport } from './routes/musings/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,9 +35,39 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DailyRoute = DailyRouteImport.update({
+  id: '/daily',
+  path: '/daily',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoodRoute = MoodRouteImport.update({
+  id: '/mood',
+  path: '/mood',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestRoute = RequestRouteImport.update({
+  id: '/request',
+  path: '/request',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StreakRoute = StreakRouteImport.update({
+  id: '/streak',
+  path: '/streak',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
   path: '/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VaultRoute = VaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
@@ -66,111 +100,129 @@ const LibraryIdRoute = LibraryIdRouteImport.update({
   path: '/library/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MusingsIndexRoute = MusingsIndexRouteImport.update({
-  id: '/musings/',
-  path: '/musings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MusingsIdRoute = MusingsIdRouteImport.update({
-  id: '/musings/$id',
-  path: '/musings/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/daily': typeof DailyRoute
+  '/gallery': typeof GalleryRoute
+  '/mood': typeof MoodRoute
+  '/request': typeof RequestRoute
+  '/streak': typeof StreakRoute
   '/submit': typeof SubmitRoute
+  '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/library/$id': typeof LibraryIdRoute
-  '/musings/$id': typeof MusingsIdRoute
   '/books/': typeof BooksIndexRoute
   '/collections/': typeof CollectionsIndexRoute
   '/library/': typeof LibraryIndexRoute
-  '/musings/': typeof MusingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/daily': typeof DailyRoute
+  '/gallery': typeof GalleryRoute
+  '/mood': typeof MoodRoute
+  '/request': typeof RequestRoute
+  '/streak': typeof StreakRoute
   '/submit': typeof SubmitRoute
+  '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/library/$id': typeof LibraryIdRoute
-  '/musings/$id': typeof MusingsIdRoute
   '/books': typeof BooksIndexRoute
   '/collections': typeof CollectionsIndexRoute
   '/library': typeof LibraryIndexRoute
-  '/musings': typeof MusingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/daily': typeof DailyRoute
+  '/gallery': typeof GalleryRoute
+  '/mood': typeof MoodRoute
+  '/request': typeof RequestRoute
+  '/streak': typeof StreakRoute
   '/submit': typeof SubmitRoute
+  '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/library/$id': typeof LibraryIdRoute
-  '/musings/$id': typeof MusingsIdRoute
   '/books/': typeof BooksIndexRoute
   '/collections/': typeof CollectionsIndexRoute
   '/library/': typeof LibraryIndexRoute
-  '/musings/': typeof MusingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/daily'
+    | '/gallery'
+    | '/mood'
+    | '/request'
+    | '/streak'
     | '/submit'
+    | '/vault'
     | '/books/$id'
     | '/collections/$id'
     | '/library/$id'
-    | '/musings/$id'
     | '/books/'
     | '/collections/'
     | '/library/'
-    | '/musings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/daily'
+    | '/gallery'
+    | '/mood'
+    | '/request'
+    | '/streak'
     | '/submit'
+    | '/vault'
     | '/books/$id'
     | '/collections/$id'
     | '/library/$id'
-    | '/musings/$id'
     | '/books'
     | '/collections'
     | '/library'
-    | '/musings'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/daily'
+    | '/gallery'
+    | '/mood'
+    | '/request'
+    | '/streak'
     | '/submit'
+    | '/vault'
     | '/books/$id'
     | '/collections/$id'
     | '/library/$id'
-    | '/musings/$id'
     | '/books/'
     | '/collections/'
     | '/library/'
-    | '/musings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DailyRoute: typeof DailyRoute
+  GalleryRoute: typeof GalleryRoute
+  MoodRoute: typeof MoodRoute
+  RequestRoute: typeof RequestRoute
+  StreakRoute: typeof StreakRoute
   SubmitRoute: typeof SubmitRoute
+  VaultRoute: typeof VaultRoute
   BooksIdRoute: typeof BooksIdRoute
   CollectionsIdRoute: typeof CollectionsIdRoute
   LibraryIdRoute: typeof LibraryIdRoute
-  MusingsIdRoute: typeof MusingsIdRoute
   BooksIndexRoute: typeof BooksIndexRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
   LibraryIndexRoute: typeof LibraryIndexRoute
-  MusingsIndexRoute: typeof MusingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -189,11 +241,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daily': {
+      id: '/daily'
+      path: '/daily'
+      fullPath: '/daily'
+      preLoaderRoute: typeof DailyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mood': {
+      id: '/mood'
+      path: '/mood'
+      fullPath: '/mood'
+      preLoaderRoute: typeof MoodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request': {
+      id: '/request'
+      path: '/request'
+      fullPath: '/request'
+      preLoaderRoute: typeof RequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/streak': {
+      id: '/streak'
+      path: '/streak'
+      fullPath: '/streak'
+      preLoaderRoute: typeof StreakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit': {
       id: '/submit'
       path: '/submit'
       fullPath: '/submit'
       preLoaderRoute: typeof SubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vault': {
+      id: '/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof VaultRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/': {
@@ -238,35 +332,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/musings/': {
-      id: '/musings/'
-      path: '/musings'
-      fullPath: '/musings/'
-      preLoaderRoute: typeof MusingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/musings/$id': {
-      id: '/musings/$id'
-      path: '/musings/$id'
-      fullPath: '/musings/$id'
-      preLoaderRoute: typeof MusingsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DailyRoute: DailyRoute,
+  GalleryRoute: GalleryRoute,
+  MoodRoute: MoodRoute,
+  RequestRoute: RequestRoute,
+  StreakRoute: StreakRoute,
   SubmitRoute: SubmitRoute,
+  VaultRoute: VaultRoute,
   BooksIdRoute: BooksIdRoute,
   CollectionsIdRoute: CollectionsIdRoute,
   LibraryIdRoute: LibraryIdRoute,
-  MusingsIdRoute: MusingsIdRoute,
   BooksIndexRoute: BooksIndexRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,
   LibraryIndexRoute: LibraryIndexRoute,
-  MusingsIndexRoute: MusingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

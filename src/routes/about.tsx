@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Feather, Heart, MapPin, Sparkles, BookOpen, Layers, Compass } from "lucide-react";
+import { Compass, Feather, MapPin } from "lucide-react";
 
-import { POETS } from "@/data/literature";
+import { LIBRARY_POETS } from "@/data/literature";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -9,8 +9,8 @@ export const Route = createFileRoute("/about")({
       { title: "About the Press & Poets — Muse Books" },
       {
         name: "description",
-        content:
-          "Learn about Muse Books, our letterpress press in Edinburgh and Stockholm, and poets Adaeze Okafor and Theo Lindqvist.",
+          content:
+            "Meet the voices of Muse Books: Irshand, Child of the Wilderness, and Raji Nurudeen Olawale.",
       },
     ],
   }),
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <div className="py-12 sm:py-20">
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-10 space-y-20">
+      <div className="mx-auto max-w-310 px-6 sm:px-10 space-y-20">
         {/* Header / Origin */}
         <section className="border-b border-neon/10 pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end">
@@ -37,9 +37,8 @@ function AboutPage() {
               </p>
             </div>
             <div className="col-span-12 lg:col-span-4 text-sm text-paper-dim leading-relaxed lg:border-l lg:border-neon/15 lg:pl-8">
-              Muse Books was founded on a rainy winter night in Edinburgh in 2022. Frustrated by the
-              disposable speed of contemporary digital media, we set out to build a quiet sanctuary
-              for literature that takes its time.
+              Muse Books is a quiet sanctuary for literature that takes its time: a place where
+              signatures, inner voices, and unfinished questions can gather without being hurried.
             </div>
           </div>
         </section>
@@ -56,12 +55,17 @@ function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {Object.values(POETS).map((poet) => (
+            {[
+              LIBRARY_POETS["nurudeen-abdullah"],
+              LIBRARY_POETS["muhammad-abdulnasir"],
+            ]
+              .filter(Boolean)
+              .map((poet) => (
               <div
                 key={poet.id}
                 className="rounded-xl border border-neon/15 bg-ink-2 p-6 sm:p-8 space-y-6"
               >
-                <div className="overflow-hidden rounded-lg bg-ink-3 aspect-[4/3] shadow-lg">
+                <div className="overflow-hidden rounded-lg bg-ink-3 aspect-4/3 shadow-lg">
                   <img
                     src={poet.image}
                     alt={poet.name}
@@ -79,6 +83,11 @@ function AboutPage() {
                     </span>
                   </div>
                   <h3 className="font-display text-3xl font-medium text-paper mt-2">{poet.name}</h3>
+                  {poet.legalName && (
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-paper-faint">
+                      {poet.legalName}
+                    </p>
+                  )}
                 </div>
 
                 <p className="text-sm text-paper-dim leading-relaxed">{poet.longBio}</p>
@@ -105,6 +114,35 @@ function AboutPage() {
                     ))}
                   </div>
                 </div>
+
+                {poet.voices && (
+                  <div className="space-y-3 border-t border-neon/10 pt-5">
+                    <div>
+                      <span className="text-[11px] uppercase tracking-[0.18em] text-neon">
+                        The Wilderness
+                      </span>
+                      <p className="mt-1 text-xs italic text-paper-dim">
+                        All verses emerging from this hand belong to the Child of the Wilderness.
+                        The wilderness speaks in many voices — Serein-Serene, Aporia, Wandera, and Elyon —
+                        all gathered under{" "}
+                        <span className="text-paper">irshand</span>, my usual signature and the
+                        fulcrum that holds the whole wilderness together.
+                      </p>
+                    </div>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {poet.voices.map((voice) => (
+                        <div key={voice.name} className="rounded border border-neon/10 bg-ink p-3">
+                          <p className="text-xs font-semibold tracking-[0.12em] text-neon">
+                            {voice.name} <span className="text-paper-faint">· {voice.title}</span>
+                          </p>
+                          <p className="mt-1 text-xs leading-relaxed text-paper-dim">
+                            {voice.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

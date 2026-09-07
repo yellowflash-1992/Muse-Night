@@ -10,7 +10,7 @@ export default defineConfig({
   tanstackStart: {
     prerender: {
       crawlLinks: true,
-      routes: ["/", "/poems", "/collections", "/books", "/musings", "/about", "/submit"],
+      routes: ["/", "/library", "/collections", "/books", "/about", "/submit", "/request", "/mood", "/vault", "/streak", "/daily", "/gallery"],
     },
   },
   nitro: {

@@ -186,7 +186,7 @@ function ChapbookDetail() {
               </button>
 
               <Link
-                to="/poems"
+                to="/library"
                 className="inline-flex items-center justify-center gap-2 rounded border border-neon/30 px-5 py-3 text-xs uppercase tracking-[0.2em] font-medium text-paper hover:bg-neon/10 transition-all"
               >
                 <span>Read Digital Verses</span>

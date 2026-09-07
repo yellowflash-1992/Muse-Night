@@ -5,7 +5,6 @@ import {
   BookOpen,
   Check,
   Feather,
-  FileText,
   Layers,
   Quote,
   RefreshCw,
@@ -13,10 +12,10 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-import { CHAPBOOKS, MUSINGS, POEMS } from "@/data/literature";
 import { MobileLanding } from "@/components/mobile/MobileLanding";
+import { CHAPBOOKS, POEMS } from "@/data/literature";
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
 export const Route = createFileRoute("/")({
@@ -25,8 +24,8 @@ export const Route = createFileRoute("/")({
       { title: "Muse Books — A Small Press for Poetry & Literature" },
       {
         name: "description",
-        content:
-          "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Adaeze Okafor and Theo Lindqvist.",
+          content:
+            "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Irshand and Raji Nurudeen Olawale.",
       },
       { property: "og:title", content: "Muse Books — A Small Press for Poetry & Literature" },
       {
@@ -85,7 +84,6 @@ function Index() {
   const activePoem = (POEMS[poemIndex % POEMS.length] ?? POEMS[0])!;
   const featuredPoem = (POEMS.find((p) => p.featured) ?? POEMS[0])!;
   const featuredBook = CHAPBOOKS[0]!;
-  const recentMusing = MUSINGS[0]!;
 
   const handleShuffleVerse = () => {
     setPoemIndex((prev) => (prev + 1) % POEMS.length);
@@ -128,17 +126,8 @@ function Index() {
       badge: "Numbered printings",
     },
     {
-      title: "Musings & Essays",
-      desc: "Reflections on poetic craft, letterpress method, and the art of midnight writing.",
-      to: "/musings",
-      count: `${MUSINGS.length} Dispatches`,
-      icon: FileText,
-      action: "Read journal",
-      badge: "Craft notes",
-    },
-    {
       title: "The Press & Poets",
-      desc: "The story of Adaeze Okafor and Theo Lindqvist, our shared lamp, and letterpress studio.",
+      desc: "The story of Irshand and Raji Nurudeen Olawale, the voices behind our shared lamp and literary studio.",
       to: "/about",
       count: "Edinburgh & Stockholm",
       icon: Users,
@@ -245,14 +234,14 @@ function Index() {
                     to="/about"
                     className="text-paper hover:text-neon underline underline-offset-4"
                   >
-                    Adaeze Okafor
+                     Irshand
                   </Link>{" "}
                   and{" "}
                   <Link
                     to="/about"
                     className="text-paper hover:text-neon underline underline-offset-4"
                   >
-                    Theo Lindqvist
+                     Raji Nurudeen Olawale
                   </Link>
                   .
                 </p>
@@ -271,6 +260,16 @@ function Index() {
                   >
                     <Feather className="h-4 w-4" />
                     <span>Submit Work</span>
+                  </Link>
+                </div>
+
+                <div className="mt-4">
+                  <Link
+                    to="/mood"
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-amber-300/10 px-6 py-3 text-xs uppercase tracking-[0.22em] font-semibold text-amber-200 shadow-[0_0_25px_rgba(254,240,138,0.25)] hover:shadow-[0_0_45px_rgba(254,240,138,0.55)] hover:bg-amber-300/20 active:scale-95 transition-all animate-golden-pulse"
+                  >
+                    <Sparkles className="h-4 w-4 text-amber-200" />
+                    <span>A poem for your mood</span>
                   </Link>
                 </div>
               </div>
@@ -486,39 +485,6 @@ function Index() {
                   className="text-xs uppercase tracking-[0.2em] text-neon inkline font-medium inline-flex items-center gap-1.5"
                 >
                   <span>Book Details &amp; Order</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </article>
-
-            {/* Musing feature */}
-            <article className="rounded-xl border border-neon/15 bg-ink-2 p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between text-xs text-neon/80 uppercase tracking-[0.2em] mb-4">
-                  <span>From the Literary Journal</span>
-                  <span>{recentMusing.readTime}</span>
-                </div>
-                <h3 className="font-display text-3xl font-medium text-paper">
-                  {recentMusing.title}
-                </h3>
-                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-paper-faint">
-                  By {recentMusing.author} · {recentMusing.date}
-                </p>
-                <p className="mt-4 text-sm text-paper-dim leading-relaxed">
-                  {recentMusing.excerpt}
-                </p>
-                <p className="mt-4 p-3 rounded bg-ink text-xs italic text-paper-dim border-l-2 border-neon/40">
-                  “{recentMusing.content[0]}”
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
-                <span className="text-xs text-paper-faint">{recentMusing.category}</span>
-                <Link
-                  to="/musings/$id"
-                  params={{ id: recentMusing.id }}
-                  className="text-xs uppercase tracking-[0.2em] text-neon inkline font-medium inline-flex items-center gap-1.5"
-                >
-                  <span>Read Full Essay</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>

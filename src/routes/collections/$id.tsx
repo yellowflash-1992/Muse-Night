@@ -143,7 +143,7 @@ function CollectionDetail() {
                   </span>
                   <div>
                     <h3 className="font-display text-2xl text-paper group-hover:text-neon transition-colors">
-                      <Link to="/poems/$id" params={{ id: poem.id }}>
+                      <Link to="/library/$id" params={{ id: poem.id }}>
                         {poem.title}
                       </Link>
                     </h3>
@@ -154,7 +154,7 @@ function CollectionDetail() {
                 </div>
 
                 <Link
-                  to="/poems/$id"
+                  to="/library/$id"
                   params={{ id: poem.id }}
                   className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
                 >

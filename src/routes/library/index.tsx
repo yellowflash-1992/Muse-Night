@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Feather, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { POEMS, POETS } from "@/data/literature";
+import { LIBRARY_POEMS, LIBRARY_POETS } from "@/data/literature";
 
 export const Route = createFileRoute("/library/")({
   head: () => ({
@@ -10,7 +10,8 @@ export const Route = createFileRoute("/library/")({
       { title: "Library Archive — Muse Books" },
       {
         name: "description",
-        content: "Browse all poems, prose poetry, epistles, and literary works in the Muse Books archive.",
+        content:
+          "Browse all poems, prose poetry, epistles, and literary works in the Muse Books archive.",
       },
     ],
   }),
@@ -24,12 +25,12 @@ function PoemsIndex() {
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    POEMS.forEach((p) => p.tags.forEach((t) => tags.add(t)));
+    LIBRARY_POEMS.forEach((p) => p.tags.forEach((t) => tags.add(t)));
     return Array.from(tags);
   }, []);
 
   const filteredPoems = useMemo(() => {
-    return POEMS.filter((poem) => {
+    return LIBRARY_POEMS.filter((poem) => {
       const matchSearch =
         search === "" ||
         poem.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -46,14 +47,16 @@ function PoemsIndex() {
 
   return (
     <div className="py-12 sm:py-16">
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-10">
+      <div className="mx-auto max-w-310 px-6 sm:px-10">
         {/* Header */}
         <div className="border-b border-neon/10 pb-10">
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-3">
             <Feather className="h-3.5 w-3.5" />
             <span>Library Archive</span>
           </div>
-          <h1 className="font-display text-4xl sm:text-6xl font-medium text-paper">Library &amp; Archive</h1>
+          <h1 className="font-display text-4xl sm:text-6xl font-medium text-paper">
+            Library &amp; Archive
+          </h1>
           <p className="mt-4 text-base sm:text-lg text-paper-dim max-w-[56ch] text-pretty">
             An archive of poems, prose poetry, epistles, and literary works — from our two founding
             poets and invited contributors writing by lamplight.
@@ -86,9 +89,9 @@ function PoemsIndex() {
                     : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
                 }`}
               >
-                All Works ({POEMS.length})
+                All Works ({LIBRARY_POEMS.length})
               </button>
-              {Object.values(POETS).map((poet) => (
+              {Object.values(LIBRARY_POETS).map((poet) => (
                 <button
                   key={poet.id}
                   type="button"
@@ -167,13 +170,8 @@ function PoemsIndex() {
                   className="group rounded-lg border border-neon/15 bg-ink-2 p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1"
                 >
                   <div>
-                    <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-paper-faint mb-3">
-                      <span className="text-neon/80">{poem.author}</span>
-                      <span>{poem.readTime}</span>
-                    </div>
-
                     <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors">
-                      <Link to="/poems/$id" params={{ id: poem.id }}>
+                      <Link to="/library/$id" params={{ id: poem.id }}>
                         {poem.title}
                       </Link>
                     </h2>
@@ -194,6 +192,11 @@ function PoemsIndex() {
                       )}
                     </div>
 
+                    <div className="mt-4 flex items-center justify-between border-t border-neon/10 pt-3 text-[11px] uppercase tracking-[0.2em] text-paper-faint">
+                      <span className="text-neon/80">{poem.author}</span>
+                      <span>{poem.readTime}</span>
+                    </div>
+
                     {/* Tags */}
                     <div className="mt-5 flex flex-wrap gap-1.5">
                       {poem.tags.map((t) => (
@@ -210,7 +213,7 @@ function PoemsIndex() {
                   <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
                     <span className="text-xs text-paper-faint">{poem.linesCount} lines</span>
                     <Link
-                      to="/poems/$id"
+                      to="/library/$id"
                       params={{ id: poem.id }}
                       className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
                     >

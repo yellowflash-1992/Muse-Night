@@ -8,8 +8,8 @@ A modern, high-aesthetic web application for **Muse Books**, a lamplit literary 
 
 ## ✨ Features
 
-- **Poem Library (`/poems`)**: Full archive of standalone verses and epistles with real-time search, poet filters, and thematic tags (`#Solitude`, `#Night`, `#Winter`, `#Sea`).
-- **Immersive Reading Room (`/poems/:id`)**: Distraction-free reading environment with dynamic text size controls (Small, Default, Large), warm lamplight mode, one-tap copy/share, poet notes, and previous/next navigation.
+- **Poem Library (`/library`)**: Full archive of standalone verses and epistles with real-time search, poet filters, and thematic tags (`#Solitude`, `#Night`, `#Winter`, `#Sea`).
+- **Immersive Reading Room (`/library/:id`)**: Distraction-free reading environment with dynamic text size controls (Small, Default, Large), warm lamplight mode, one-tap copy/share, poet notes, and previous/next navigation.
 - **Poetry Collections (`/collections` & `/collections/:id`)**: Anthologies and suites with author forewords and linked tables of contents.
 - **Letterpress Chapbooks (`/books` & `/books/:id`)**: Hand-bound edition catalog with Albion press specifications, paper details, and an interactive reservation/order modal.
 - **Literary Journal (`/musings` & `/musings/:id`)**: Essays on night writing poetics, letterpress artistry, and craft reflections.
@@ -89,7 +89,7 @@ muse-books/
 │   ├── routes/
 │   │   ├── __root.tsx          # Root Layout & Head Meta
 │   │   ├── index.tsx           # Homepage
-│   │   ├── poems/
+│   │   ├── library/
 │   │   │   ├── index.tsx       # Poem Library
 │   │   │   └── $id.tsx         # Immersive Reading Room
 │   │   ├── collections/
@@ -102,7 +102,8 @@ muse-books/
 │   │   │   ├── index.tsx       # Essays & Journal Directory
 │   │   │   └── $id.tsx         # Essay Reader
 │   │   ├── about.tsx           # Press Story & Poet Profiles
-│   │   └── submit.tsx          # Submissions Guidelines & Form
+│   │   ├── submit.tsx          # Submissions Guidelines & Form
+│   │   ├── request.tsx         # Book Reservation / Order Requests
 │   ├── styles.css              # Tailwind CSS, Design Tokens, Keyframes
 │   └── router.tsx              # Router Configuration
 └── package.json

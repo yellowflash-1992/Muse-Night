@@ -437,6 +437,21 @@ html.light .gridbg {
   }
 }
 
+@keyframes goldenPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(254, 240, 138, 0.35);
+    border-color: rgba(254, 240, 138, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(254, 240, 138, 0.75);
+    border-color: rgba(254, 240, 138, 0.95);
+  }
+}
+
+.animate-golden-pulse {
+  animation: goldenPulse 2.5s ease-in-out infinite;
+}
+
 @keyframes cardIn {
   from {
     opacity: 0;
@@ -457,6 +472,14 @@ html.light .gridbg {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes muse-rise {

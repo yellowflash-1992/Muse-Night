@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { Check, Feather, Mail } from "lucide-react";
 import { useState } from "react";
-import { Mail, Check, Feather } from "lucide-react";
 
 export function Footer() {
   const [subscribed, setSubscribed] = useState(false);
@@ -30,7 +30,7 @@ export function Footer() {
             </div>
             <p className="text-sm leading-relaxed text-paper-dim max-w-[36ch] text-pretty">
               A lamplit press dedicated to poetry, chapbooks, and reflective literature. Founded by
-              Adaeze Okafor &amp; Theo Lindqvist to celebrate verse written in quiet hours.
+              Irshand and Raji Nurudeen Olawale to celebrate verse written in quiet hours.
             </p>
             <div className="pt-2 text-xs text-paper-faint italic font-serif">
               “We do not write to be found. We write to leave the light on.”
@@ -72,11 +72,6 @@ export function Footer() {
               About &amp; Writing
             </p>
             <ul className="space-y-2 text-sm text-paper-dim">
-              <li>
-                <Link to="/musings" className="hover:text-paper transition-colors inkline">
-                  Musings &amp; Essays
-                </Link>
-              </li>
               <li>
                 <Link to="/about" className="hover:text-paper transition-colors inkline">
                   The Press &amp; Poets

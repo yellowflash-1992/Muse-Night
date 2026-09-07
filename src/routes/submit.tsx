@@ -168,7 +168,7 @@ function SubmitPage() {
                     Submit Another Piece
                   </button>
                   <Link
-                    to="/poems"
+                    to="/library"
                     className="rounded border border-neon/30 px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-paper hover:bg-neon/10"
                   >
                     Browse Archive

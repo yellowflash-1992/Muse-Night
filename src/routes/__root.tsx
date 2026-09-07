@@ -6,6 +6,7 @@ import {
   Scripts,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -158,12 +159,14 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const currentPath = useRouterState({ select: (state) => state.location.pathname });
+  const isLandingPage = currentPath === "/";
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-ink text-paper font-body flex flex-col selection:bg-neon selection:text-ink">
         <Navbar />
-        <main className="flex-1">
+        <main className={isLandingPage ? "flex-1" : "flex-1 pt-20 lg:pt-0"}>
           <Outlet />
         </main>
         <Footer />

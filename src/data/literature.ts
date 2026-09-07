@@ -17,6 +17,7 @@ export interface Poem {
   stanzas: string[][];
   note?: string;
   featured?: boolean;
+  lineNotes?: Record<number, { count: number; excerpt: string }>;
 }
 
 export interface Collection {
@@ -62,62 +63,124 @@ export interface Poet {
   image: string;
   aesthetic: string;
   works: string[];
-}
-
-export interface Musing {
-  id: string;
-  title: string;
-  author: string;
-  authorId: string;
-  date: string;
-  readTime: string;
-  category: string;
-  excerpt: string;
-  content: string[];
+  legalName?: string;
+  penNames?: string[];
+  voices?: { name: string; title: string; description: string }[] | undefined;
 }
 
 export const POETS: Record<string, Poet> = {
-  "adaeze-okafor": {
-    id: "adaeze-okafor",
-    name: "Adaeze Okafor",
-    role: "Poet & Co-founder",
-    location: "Enugu & Edinburgh",
-    bio: "Writes toward the interior — weather, inheritance, and the quiet arithmetic of staying.",
+  "nurudeen-abdullah": {
+    id: "nurudeen-abdullah",
+    name: "Raji Nurudeen Olawale",
+    role: "Poet & Correspondent",
+    location: "A voice in correspondence",
+    bio: "Raji Nurudeen Olawale is the literary voice of InkbyNur, a writer, author, and poet.",
     longBio:
-      "Adaeze Okafor is a Nigerian-Scottish poet whose work explores memory, domestic sanctuaries, seasonal shifts, and silence. Her second chapbook, The Quiet Hour, was hand-printed by Muse Books in the winter of 2023. She co-founded Muse Books alongside Theo Lindqvist as a quiet refuge from industrial publishing.",
-    image: poetAdaeze,
-    aesthetic: "Quiet realism, domestic light, nocturnal ruminations",
-    works: [
-      "The Quiet Hour",
-      "Lamplight, Late November",
-      "The Winter Ledger",
-      "A Field Guide to Small Wonders",
-    ],
-  },
-  "theo-lindqvist": {
-    id: "theo-lindqvist",
-    name: "Theo Lindqvist",
-    role: "Poet & Pressmaster",
-    location: "Stockholm & Galway",
-    bio: "Writes toward the distance — letters, maritime borders, and things almost spoken.",
-    longBio:
-      "Theo Lindqvist is a poet, translator, and letterpress printer. His verses often reckon with distance, coastal geography, missed encounters, and the epistolary form. He typesets each Muse Books volume using traditional lead and zinc plates on handmade rag paper.",
+      "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
     image: poetTheo,
-    aesthetic: "Epistolary verse, oceanic motifs, melancholy clarity",
-    works: [
-      "Letters to an Unsent Friend",
-      "Salt for the Wounded Season",
-      "Cartography of Longing",
-      "Night Ferry to Lisbon",
+    aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
+    works: ["InkbyNur"],
+    legalName: "Raji Nurudeen Olawale",
+    penNames: ["InkbyNur"],
+  },
+
+  "muhammad-abdulnasir": {
+    id: "muhammad-abdulnasir",
+    name: "Irshand",
+    role: "Poet & Child of the Wilderness",
+    location: "The far wilderness",
+    bio: "A many-voiced wilderness writing through a host of signatures after the manner of Pessoa's heteronyms, gathered under the fulcrum of irshand.",
+    longBio:
+      "Muhammad AbdulNasir writes as Irshand, the Child of the Wilderness, under a constellation of signatures in the manner of Fernando Pessoa's heteronyms. Irshand is the birthplace of these voices — a far-off source carried through raw observation, spiritual inquiry, uncertainty, and the quiet discipline of paying attention — while irshand, its higher pen name and my usual signature, is the fulcrum that gathers the whole wilderness together.",
+    image: poetAdaeze,
+    aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
+    works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
+    legalName: "Muhammad AbdulNasir",
+    penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
+    voices: [
+      {
+        name: "SEREIN-SERENE",
+        title: "The Twilight",
+        description: "Rain from a cloudless sky; peaceful and melancholic.",
+      },
+      {
+        name: "APORIA",
+        title: "The Logic-Puzzle",
+        description: "Where the programmer meets the philosopher in deadlock.",
+      },
+      {
+        name: "WANDERA",
+        title: "The Nomad",
+        description: "The restless spirit searching the outskirts.",
+      },
+      {
+        name: "ELYON",
+        title: "The Ethereal",
+        description: "The voice looking down from the highest peaks.",
+      },
     ],
   },
 };
+
+export const LIBRARY_POETS: Record<string, Poet> = {
+  "muhammad-abdulnasir": {
+    id: "muhammad-abdulnasir",
+    name: "Irshand",
+    role: "Poet & Child of the Wilderness",
+    location: "The far wilderness",
+    bio: "Writes under several signatures from beyond the familiar, the whole gathered under the fulcrum signature of irshand.",
+    longBio:
+      "Muhammad AbdulNasir publishes poetry as Irshand, the Child of the Wilderness, through a host of pen names in the manner of Fernando Pessoa's heteronyms. Irshand is the voice where it all began — the raw eye and the writing hand out of which wandering, uncertainty, serenity, ascent, and guidance emerge. Over time, these voices were gathered under irshand, the higher pen name and my usual signature: the fulcrum between all the other parts of me.",
+    image: poetAdaeze,
+    aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
+    works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
+    legalName: "Muhammad AbdulNasir",
+    penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
+    voices: [
+      {
+        name: "SEREIN-SERENE",
+        title: "The Twilight",
+        description: "Rain from a cloudless sky; peaceful and melancholic.",
+      },
+      {
+        name: "APORIA",
+        title: "The Logic-Puzzle",
+        description: "Where the programmer meets the philosopher in deadlock.",
+      },
+      {
+        name: "WANDERA",
+        title: "The Nomad",
+        description: "The restless spirit searching the outskirts.",
+      },
+      {
+        name: "ELYON",
+        title: "The Ethereal",
+        description: "The voice looking down from the highest peaks.",
+      },
+    ],
+  },
+  "nurudeen-abdullah": {
+    id: "nurudeen-abdullah",
+    name: "Raji Nurudeen Olawale",
+    role: "Poet & Correspondent",
+    location: "A voice in correspondence",
+    bio: "Raji Nurudeen Olawale is the literary voice of InkbyNur, a writer, author, and poet.",
+    longBio:
+      "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
+    image: poetTheo,
+    aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
+    works: ["InkbyNur"],
+    legalName: "Raji Nurudeen Olawale",
+    penNames: ["InkbyNur"],
+  },
+};
+
 export const POEMS: Poem[] = [
   {
     id: "lamplight-late-november",
     title: "Lamplight, Late November",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     collection: "The Quiet Hour",
     collectionId: "the-quiet-hour",
     year: "2023",
@@ -148,12 +211,18 @@ export const POEMS: Poem[] = [
       ],
     ],
     note: "Written on a rainy Thursday at midnight during the first winter freeze in Edinburgh.",
+    lineNotes: {
+      2: {
+        count: 86,
+        excerpt: "This line made me pause. I read it three times and still felt the room fold.",
+      },
+    },
   },
   {
     id: "salt-for-the-wounded-season",
     title: "Salt for the Wounded Season",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     collection: "Letters to an Unsent Friend",
     collectionId: "letters-to-an-unsent-friend",
     year: "2024",
@@ -185,8 +254,8 @@ export const POEMS: Poem[] = [
   {
     id: "the-quiet-hour",
     title: "The Quiet Hour",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     collection: "The Quiet Hour",
     collectionId: "the-quiet-hour",
     year: "2023",
@@ -218,8 +287,8 @@ export const POEMS: Poem[] = [
   {
     id: "letters-to-an-unsent-friend",
     title: "Letters to an Unsent Friend",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     collection: "Letters to an Unsent Friend",
     collectionId: "letters-to-an-unsent-friend",
     year: "2024",
@@ -251,8 +320,8 @@ export const POEMS: Poem[] = [
   {
     id: "a-field-guide-to-small-wonders",
     title: "A Field Guide to Small Wonders",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     collection: "A Field Guide to Small Wonders",
     collectionId: "a-field-guide-to-small-wonders",
     year: "2024",
@@ -280,8 +349,8 @@ export const POEMS: Poem[] = [
   {
     id: "cartography-of-longing",
     title: "Cartography of Longing",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     collection: "Letters to an Unsent Friend",
     collectionId: "letters-to-an-unsent-friend",
     year: "2024",
@@ -306,8 +375,8 @@ export const POEMS: Poem[] = [
   {
     id: "the-winter-ledger",
     title: "The Winter Ledger",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     collection: "The Winter Ledger",
     collectionId: "the-winter-ledger",
     year: "2024",
@@ -337,8 +406,8 @@ export const POEMS: Poem[] = [
   {
     id: "night-ferry-to-lisbon",
     title: "Night Ferry to Lisbon",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     collection: "Letters to an Unsent Friend",
     collectionId: "letters-to-an-unsent-friend",
     year: "2024",
@@ -360,18 +429,187 @@ export const POEMS: Poem[] = [
     ],
   },
 ];
+
+export const LIBRARY_POEMS: Poem[] = [
+  ...POEMS,
+  {
+    id: "under-the-first-green",
+    title: "Under the First Green",
+    author: "irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Nature", "Belonging", "Dawn"],
+    stanzas: [
+      [
+        "I learned my first alphabet from leaves,",
+        "each vein a road returning to the root.",
+        "The forest did not ask me to arrive,",
+        "only to listen until I knew my name.",
+      ],
+      ["Now every morning opens like a hand,", "and I walk softly into what is green."],
+    ],
+    note: "Placeholder work for the irshand signature.",
+  },
+  {
+    id: "wandera-field-notes",
+    title: "Wandera: Field Notes",
+    author: "wander",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 13,
+    readTime: "1 min",
+    tags: ["Wandering", "Roads", "Wonder"],
+    stanzas: [
+      [
+        "I carry no compass, only the patience",
+        "of a road that keeps changing its mind.",
+        "At dusk, the far hill becomes a question",
+        "I am willing to spend my life answering.",
+      ],
+      ["Call me by the name the wind invents.", "I will turn, eventually."],
+    ],
+    note: "Placeholder work for the wander signature.",
+  },
+  {
+    id: "aporia-at-the-threshold",
+    title: "Aporia at the Threshold",
+    author: "aporia",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 14,
+    readTime: "1.5 min",
+    tags: ["Uncertainty", "Faith", "Thresholds"],
+    stanzas: [
+      [
+        "The door is open, but the room is not,",
+        "and every answer leaves a sharper shape.",
+        "I stand between the almost and the never,",
+        "keeping company with the honest doubt.",
+      ],
+      ["Some paths become clear by walking them.", "Some truths require the dark to speak."],
+    ],
+    note: "Placeholder work for the aporia signature.",
+  },
+  {
+    id: "serein-after-rain",
+    title: "Serein After Rain",
+    author: "serein",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Calm", "Rain", "Silence"],
+    stanzas: [
+      [
+        "After the rain, the garden says less.",
+        "Water gathers every scattered color,",
+        "and the earth, released from its confession,",
+        "rests beneath a softer kind of sky.",
+      ],
+      ["I call this peace by its older name:", "the moment nothing needs to be proved."],
+    ],
+    note: "Placeholder work for the serein signature.",
+  },
+  {
+    id: "elyon-the-high-place",
+    title: "Elyon, the High Place",
+    author: "elyon",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Ascent", "Light", "Prayer"],
+    stanzas: [
+      [
+        "Above the tree line, the silence widens.",
+        "No crown waits there, no witness, no applause,",
+        "only the long blue patience of the mountain",
+        "and a light that does not need a name.",
+      ],
+      ["I climb until the heart grows spacious", "enough to hold the world without possession."],
+    ],
+    note: "Placeholder work for the elyon signature.",
+  },
+  {
+    id: "the-wondering-kite",
+    title: "The Wondering Kite",
+    author: "irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Wonder", "Playfulness", "Homecoming"],
+    stanzas: [
+      [
+        "The wondering kite flew 🪁",
+        "Playfully under the day;",
+        "Never a something new",
+        "From summer till May.",
+      ],
+      [
+        "The late-night slept",
+        "Silently through the rain,",
+        "Till there's nothing left",
+        "For the gutters to drain.",
+      ],
+      [
+        "Maybe it's the sound",
+        "From a lovely heart,",
+        "But fortune has found",
+        "Its way home to rahmat.",
+      ],
+    ],
+  },
+  {
+    id: "inkbynur-between-letters",
+    title: "Between Letters",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters Kept Open",
+    collectionId: "letters-kept-open",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Friendship", "Letters", "Memory"],
+    stanzas: [
+      [
+        "There are words we send and words we save,",
+        "small birds folded into the desk drawer.",
+        "Between them lives the truest conversation:",
+        "the pause that knows what speech would bruise.",
+      ],
+      ["Write when the heart is ready.", "Read when the room is kind."],
+    ],
+    note: "Placeholder work for the InkbyNur archive.",
+  },
+];
+
 export const COLLECTIONS: Collection[] = [
   {
     id: "the-quiet-hour",
     title: "The Quiet Hour",
     subtitle: "Poems of Interior Life and Winter Solitude",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     year: "2023",
     poemsCount: 18,
     coverImage: bookQuietHour,
     description:
-      "A luminous suite of eighteen poems written across two northern winters. Okafor charts the secret geographies of tea rooms, solitary desks, and the slow accumulation of domestic quiet.",
+      "A luminous suite of eighteen poems written across two northern winters. Irshand charts the secret geographies of tea rooms, solitary desks, and the slow accumulation of domestic quiet.",
     foreword:
       "These poems were born in silence. When everything outside was loud and fast, I chose to sit with the lamp until the noise softened into rhythm. This book is for the sleepless and the observant.",
     featuredQuote:
@@ -382,13 +620,13 @@ export const COLLECTIONS: Collection[] = [
     id: "letters-to-an-unsent-friend",
     title: "Letters to an Unsent Friend",
     subtitle: "Epistles from Harbors, Night Ferries, and Cold Trains",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     year: "2024",
     poemsCount: 22,
     coverImage: bookUnsentFriend,
     description:
-      "A poetic cycle addressed to an unnamed recipient across oceans, borders, and years. Lindqvist explores the tension between utterance and silence, travel and longing.",
+      "A poetic cycle addressed to an unnamed recipient across oceans, borders, and years. InkbyNur explores the tension between utterance and silence, travel and longing.",
     foreword:
       "Every letter here was written with ink that could not be mailed. To publish them is not to send them, but to release them into the open weather where anyone may pick them up.",
     featuredQuote:
@@ -404,12 +642,12 @@ export const COLLECTIONS: Collection[] = [
     id: "a-field-guide-to-small-wonders",
     title: "A Field Guide to Small Wonders",
     subtitle: "Collaborative Epigrams and Observational Verse",
-    author: "Adaeze Okafor & Theo Lindqvist",
-    authorId: "adaeze-okafor",
+    author: "Irshand & InkbyNur",
+    authorId: "muhammad-abdulnasir",
     year: "2024",
     poemsCount: 24,
     description:
-      "A shared conversational notebook written between Edinburgh and Stockholm. Okafor and Lindqvist trade stanzas on the overlooked minutiae of everyday life.",
+      "A shared conversational notebook written between the far wilderness and open correspondence. Irshand and InkbyNur trade stanzas on the overlooked minutiae of everyday life.",
     foreword:
       "We kept this journal on a shared wooden table whenever our travels crossed. One wrote a line in the morning; the other answered by candlelight before sleep.",
     featuredQuote:
@@ -420,8 +658,8 @@ export const COLLECTIONS: Collection[] = [
     id: "the-winter-ledger",
     title: "The Winter Ledger",
     subtitle: "Verses on Frugality, Cold Light, and Time",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     year: "2024",
     poemsCount: 14,
     description:
@@ -431,14 +669,27 @@ export const COLLECTIONS: Collection[] = [
       "The frost is an honest accountant. It strikes through all superfluity, leaving only the branch, the stone, the root.",
     poemIds: ["the-winter-ledger", "lamplight-late-november"],
   },
+  {
+    id: "irshand-verses",
+    title: "Irshand Verses",
+    subtitle: "Poems from the Wilderness",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    year: "2025",
+    poemsCount: 1,
+    description: "A single poem that reminds us the heart finds its way home.",
+    foreword: "This verse came quietly, like a kite crossing the sky between seasons.",
+    featuredQuote: "Fortune has found its way home to rahmat.",
+    poemIds: ["the-wondering-kite"],
+  },
 ];
 
 export const CHAPBOOKS: Chapbook[] = [
   {
     id: "the-quiet-hour-chapbook",
     title: "The Quiet Hour",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
     price: "£18.00",
     pages: 44,
     edition: "First Edition — 150 Hand-Numbered Copies",
@@ -463,8 +714,8 @@ export const CHAPBOOKS: Chapbook[] = [
   {
     id: "letters-to-an-unsent-friend-chapbook",
     title: "Letters to an Unsent Friend",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
     price: "£18.00",
     pages: 48,
     edition: "First Edition — 150 Hand-Numbered Copies",
@@ -488,57 +739,33 @@ export const CHAPBOOKS: Chapbook[] = [
   },
 ];
 
-export const MUSINGS: Musing[] = [
-  {
-    id: "on-writing-in-the-dark",
-    title: "On Writing in the Dark: The Poetics of Night",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
-    date: "November 14, 2024",
-    readTime: "4 min read",
-    category: "Craft & Philosophy",
-    excerpt:
-      "Why the poem demands a single cone of lamplight and the surrender of the world's daytime demands.",
-    content: [
-      "Daylight is demanding. It asks for productivity, speed, transactions, and performance. But when midnight arrives, the room settles into its true architecture.",
-      "A poem is not composed in a hurry. It requires the slow cooling of hot thoughts until only the mineral essence remains. The lamp does not merely illuminate the page; it carves a sanctuary out of the dark.",
-      "When Theo and I began Muse Books, we agreed on one principle: we would only print what was written in the hours when no one was watching. That honesty is the only kind of literature that survives.",
-    ],
-  },
-  {
-    id: "the-lost-art-of-the-chapbook",
-    title: "The Lost Art of the Hand-Bound Chapbook",
-    author: "Theo Lindqvist",
-    authorId: "theo-lindqvist",
-    date: "October 28, 2024",
-    readTime: "5 min read",
-    category: "Press & Letterpress",
-    excerpt:
-      "Why setting metal type letter by letter transforms the relationship between the poet and the reader.",
-    content: [
-      "To hold a lead sort between thumb and forefinger is to feel the physical weight of a syllable. The letter 'M' is broad and weighty; the comma is a tiny crescent that hooks the eye.",
-      "Modern digital books are weightless, infinite, and ephemeral. But a hand-stitched chapbook on deckle-edge paper has a pulse. You feel the impression of the type pressed into the cotton fibers.",
-      "We print short runs because poetry is meant to be held by two hands, not consumed by an algorithm. Each volume is a vessel of time.",
-    ],
-  },
-  {
-    id: "the-weight-of-the-first-line",
-    title: "The Weight of the First Line: Crafting Intimacy",
-    author: "Adaeze Okafor",
-    authorId: "adaeze-okafor",
-    date: "September 12, 2024",
-    readTime: "3 min read",
-    category: "Poetics",
-    excerpt: "How an opening line acts as an open doorway into an unfamiliar house.",
-    content: [
-      "The first line of a poem is not an introduction; it is a key turning in a lock. It sets the temperature of the room before the reader has even crossed the threshold.",
-      "When Theo wrote 'The shoreline forgets its borders by December,' I felt the frost in my coat immediately. Great poetry does not explain itself; it invites you into a state of feeling.",
-    ],
-  },
-];
+const publicAuthorMap: Record<string, { name: string; id: string }> = {
+  "muhammad-abdulnasir": { name: "Irshand", id: "muhammad-abdulnasir" },
+  "nurudeen-abdullah": { name: "Raji Nurudeen Olawale", id: "nurudeen-abdullah" },
+};
+
+for (const work of POEMS) {
+  const author = publicAuthorMap[work.authorId];
+  if (author) {
+    work.author = author.name;
+    work.authorId = author.id;
+  }
+}
+
+for (const work of [...COLLECTIONS, ...CHAPBOOKS]) {
+  const author = publicAuthorMap[work.authorId];
+  if (author) {
+    work.author = author.name;
+    work.authorId = author.id;
+  }
+}
 
 export function getPoemById(id: string): Poem | undefined {
   return POEMS.find((p) => p.id === id);
+}
+
+export function getLibraryPoemById(id: string): Poem | undefined {
+  return [...POEMS, ...LIBRARY_POEMS].find((p) => p.id === id);
 }
 
 export function getCollectionById(id: string): Collection | undefined {
@@ -547,10 +774,6 @@ export function getCollectionById(id: string): Collection | undefined {
 
 export function getChapbookById(id: string): Chapbook | undefined {
   return CHAPBOOKS.find((b) => b.id === id);
-}
-
-export function getMusingById(id: string): Musing | undefined {
-  return MUSINGS.find((m) => m.id === id);
 }
 
 export function getPoetById(id: string): Poet | undefined {
