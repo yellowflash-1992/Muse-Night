@@ -497,7 +497,7 @@ export function MobileLanding() {
           {/* CHANGE 1: Changed `px-5` to `pl-2 pr-5` and added `snap-x snap-mandatory scroll-pl-2` */}
           <div
             ref={sliderRef}
-            className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-20"
+            className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-50"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {testimonials.map((item, idx) => (
