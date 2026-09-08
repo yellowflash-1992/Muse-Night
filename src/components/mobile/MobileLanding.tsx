@@ -191,7 +191,8 @@ export function MobileLanding() {
     if (firstCard) {
       const gap = 20; // Matches `gap-5` (1.25rem = 20px)
       const cardWidth = firstCard.offsetWidth + gap;
-      el.scrollLeft = cardWidth;
+      const scrollPadding = parseFloat(getComputedStyle(el).scrollPaddingLeft) || 0;
+      el.scrollLeft = cardWidth - scrollPadding;
     }
 
     updateSliderButtons();
@@ -497,7 +498,7 @@ export function MobileLanding() {
           {/* CHANGE 1: Changed `px-5` to `pl-2 pr-5` and added `snap-x snap-mandatory scroll-pl-2` */}
           <div
             ref={sliderRef}
-            className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-50"
+            className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-[50px]"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {testimonials.map((item, idx) => (
