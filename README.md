@@ -4,6 +4,8 @@
 
 A modern, high-aesthetic web application for **Muse Books**, a lamplit literary press founded by **Adaeze Okafor** and **Theo Lindqvist**. Features an immersive reading room for poems, curated poetry collections, hand-bound letterpress chapbook catalogs, literary craft essays, and an interactive submission portal.
 
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yellowflash-1992/Muse-Night)
+
 ---
 
 ## ✨ Features
@@ -33,7 +35,7 @@ A modern, high-aesthetic web application for **Muse Books**, a lamplit literary 
 
 ```bash
 # 1. Clone repository
-git clone <your-github-repo-url>
+git clone https://github.com/yellowflash-1992/Muse-Night.git
 cd muse-books
 
 # 2. Install dependencies
@@ -63,6 +65,7 @@ Open [http://localhost:3000](http://localhost:3000) or [http://localhost:8080](h
 
 The site is deployed on Vercel and auto-deploys on every push to `main`.
 
+- **Live URL**: https://muse-books.vercel.app
 - **Framework Preset**: Vite
 - **Build Command**: `npm run build`
 - **Output Directory**: `.output/public`

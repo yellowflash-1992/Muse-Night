@@ -494,8 +494,8 @@ function PoemReader() {
                     <div className="flex-1">
                       <p className="text-xs text-paper-dim mb-1">Anonymous</p>
                       <p className="text-sm sm:text-base text-paper leading-relaxed">
-                        I lost my dad in March. This is the first thing that&apos;s made the loss feel
-                        less lonely instead of heavier.
+                        I lost my dad in March. This is the first thing that&apos;s made the loss
+                        feel less lonely instead of heavier.
                       </p>
                       <button className="flex items-center gap-1.5 text-xs text-paper-faint mt-2">
                         <Heart className="h-3.5 w-3.5" />
@@ -555,9 +555,7 @@ function PoemReader() {
                   className="mt-5 flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon hover:underline"
                 >
                   {showAllComments ? "Show fewer comments" : "Read all comments"}
-                  {!showAllComments && (
-                    <span className="text-[10px] text-paper-faint">(3)</span>
-                  )}
+                  {!showAllComments && <span className="text-[10px] text-paper-faint">(3)</span>}
                 </button>
               </div>
             </div>

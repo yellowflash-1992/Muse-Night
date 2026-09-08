@@ -573,7 +573,7 @@ export function Navbar() {
 
               {/* Mobile Patron Auth Card with Avatar Shape */}
               {isAuthenticated && user ? (
-                <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 flex items-center justify-between shadow-inner">
+                <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 -mt-2 flex items-center justify-between shadow-inner">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-sm shadow-md">
                       {user.name.charAt(0).toUpperCase()}
@@ -601,7 +601,7 @@ export function Navbar() {
                     setAuthModalMode("signin");
                     setAuthModalOpen(true);
                   }}
-                  className="w-full rounded-xl border border-neon/30 bg-neon/10 hover:bg-neon/15 p-3 flex items-center justify-between transition-all group cursor-pointer text-left shadow-sm"
+                  className="w-full rounded-xl border border-neon/30 bg-blue-600/10 hover:bg-neon/15 p-3 -mt-2 flex items-center justify-between transition-all group cursor-pointer text-left shadow-sm"
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon/25 border border-neon/50 text-neon group-hover:bg-neon group-hover:text-ink transition-colors shadow-inner">
@@ -802,7 +802,7 @@ export function Navbar() {
                           key={link.to}
                           to={link.to}
                           onClick={() => setMobileOpen(false)}
-                          className={`flex items-center justify-between p-3 rounded-xl transition-colors ${
+                          className={`flex items-center justify-between p-3 mb-1 rounded-xl transition-colors ${
                             active
                               ? "bg-neon/20 text-neon font-semibold border border-neon/30"
                               : "bg-ink/50 hover:bg-neon/5 text-paper font-medium"
@@ -822,7 +822,7 @@ export function Navbar() {
             </div>
 
             {/* Drawer Footer Actions */}
-            <div className="pt-5 border-t border-neon/10 space-y-3">
+            <div className="pt-4 border-t border-neon/10 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-paper-dim uppercase tracking-widest font-karla">
                   Theme Light/Dark

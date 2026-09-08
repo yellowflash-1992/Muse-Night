@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Compass, Feather, MapPin } from "lucide-react";
 
-import { LIBRARY_POETS } from "@/data/literature";
+import { LIBRARY_POETS, type Poet } from "@/data/literature";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -59,7 +59,7 @@ function AboutPage() {
               LIBRARY_POETS["nurudeen-abdullah"],
               LIBRARY_POETS["muhammad-abdulnasir"],
             ]
-              .filter(Boolean)
+              .filter((p): p is Poet => Boolean(p))
               .map((poet) => (
               <div
                 key={poet.id}

@@ -185,9 +185,19 @@ export function MobileLanding() {
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
+
+    // On mount, scroll to Card 2 so Card 1 is partially sunk off the left screen
+    const firstCard = el.children[0] as HTMLElement;
+    if (firstCard) {
+      const gap = 20; // Matches `gap-5` (1.25rem = 20px)
+      const cardWidth = firstCard.offsetWidth + gap;
+      el.scrollLeft = cardWidth;
+    }
+
+    updateSliderButtons();
+
     el.addEventListener("scroll", updateSliderButtons);
     window.addEventListener("resize", updateSliderButtons);
-    updateSliderButtons();
     return () => {
       el.removeEventListener("scroll", updateSliderButtons);
       window.removeEventListener("resize", updateSliderButtons);
@@ -413,7 +423,6 @@ export function MobileLanding() {
           })}
         </div>
       </section>
-
       {/* TESTIMONIALS / VOICES FROM THE PAGE */}
       <section className="relative overflow-hidden border-y border-white/10 bg-[linear-gradient(145deg,var(--ink),var(--ink-2)_52%,var(--ink))]">
         <div className="pointer-events-none absolute -left-24 top-16 h-56 w-56 rounded-full bg-neon/10 blur-3xl" />
@@ -485,15 +494,17 @@ export function MobileLanding() {
           <div className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 h-36 w-36 rounded-full bg-neon/20 blur-3xl" />
           <div className="pointer-events-none absolute top-1/2 right-1/4 -translate-y-1/2 h-40 w-40 rounded-full bg-rose/20 blur-3xl" />
 
+          {/* CHANGE 1: Changed `px-5` to `pl-2 pr-5` and added `snap-x snap-mandatory scroll-pl-2` */}
           <div
             ref={sliderRef}
-            className="flex gap-5 overflow-x-auto px-5 pt-8 pb-12 -my-4"
+            className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-20"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {testimonials.map((item, idx) => (
+              /* CHANGE 2: Added `snap-start snap-always`. Card width/height untouched! */
               <article
                 key={idx}
-                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
+                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 snap-start snap-always ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
               >
                 <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
                   "
