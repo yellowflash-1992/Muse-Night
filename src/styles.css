@@ -235,6 +235,7 @@ html.light {
   --rose: #fca5a5;
   --mist: #fed7aa;
   --sun-ray: rgba(254, 240, 138, 0.4);
+  --sun-glow: rgba(180, 83, 9, 0.25);
 
   --background: var(--ink);
   --foreground: var(--paper);
@@ -304,6 +305,18 @@ html.light .glass-card {
     0 16px 38px 0 rgb(120 53 15 / 30%),
     inset 0 1px 2px 0 rgb(255 255 255 / 90%),
     inset 0 -1px 1px 0 rgb(255 255 255 / 20%);
+}
+
+html.light .theme-toggle-btn {
+  background: rgba(254, 243, 199, 0.35);
+  border-color: rgba(180, 83, 9, 0.55);
+  box-shadow: 0 0 18px rgba(180, 83, 9, 0.35);
+  color: #b45309;
+}
+html.light .theme-toggle-btn:hover {
+  background: rgba(254, 243, 199, 0.55);
+  border-color: rgba(180, 83, 9, 0.85);
+  box-shadow: 0 0 28px rgba(180, 83, 9, 0.55);
 }
 
 html.light * {

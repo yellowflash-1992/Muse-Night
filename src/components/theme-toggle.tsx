@@ -52,13 +52,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           ? "Switch to Sunlit Florentine (Light Mode)"
           : "Switch to Midnight Lamplight (Dark Mode)"
       }
-      className={`group inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neon/30 bg-ink-2 transition-all hover:border-neon hover:shadow-md active:scale-95 ${className}`}
+      className={`theme-toggle-btn group inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neon/30 bg-ink-2 transition-all hover:border-neon hover:shadow-md active:scale-95 ${className}`}
     >
       <div className="relative flex h-4 w-4 items-center justify-center">
         {theme === "dark" ? (
           <Moon className="h-4 w-4 text-neon transition-transform duration-300 group-hover:-rotate-12" />
         ) : (
-          <Sun className="h-4 w-4 text-amber-500 transition-transform duration-300 group-hover:rotate-45" />
+          <Sun className="h-5 w-5 text-[#b45309] drop-shadow-[0_0_6px_rgba(180,83,9,0.45)] transition-transform duration-300 group-hover:rotate-45" />
         )}
       </div>
     </button>
