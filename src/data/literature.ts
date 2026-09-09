@@ -1,7 +1,5 @@
 import bookQuietHour from "@/assets/book-quiet-hour.jpg";
 import bookUnsentFriend from "@/assets/book-unsent-friend.jpg";
-import poetAdaeze from "@/assets/poet-adaeze.jpg";
-import poetTheo from "@/assets/poet-theo.jpg";
 
 export interface Poem {
   id: string;
@@ -33,6 +31,7 @@ export interface Collection {
   foreword: string;
   featuredQuote: string;
   poemIds: string[];
+  tags: string[];
 }
 
 export interface Chapbook {
@@ -51,6 +50,10 @@ export interface Chapbook {
   quote: string;
   tableOfContents: string[];
   inStock: boolean;
+  year: string;
+  tags: string[];
+  printRun: string;
+  proofNotes: string;
 }
 
 export interface Poet {
@@ -60,13 +63,15 @@ export interface Poet {
   location: string;
   bio: string;
   longBio: string;
-  image: string;
   aesthetic: string;
   works: string[];
   legalName?: string;
   penNames?: string[];
+  image?: string;
   voices?: { name: string; title: string; description: string }[] | undefined;
 }
+
+import poetTheo from "@/assets/poet-theo.jpg";
 
 export const POETS: Record<string, Poet> = {
   "nurudeen-abdullah": {
@@ -74,29 +79,29 @@ export const POETS: Record<string, Poet> = {
     name: "Raji Nurudeen Olawale",
     role: "Poet & Correspondent",
     location: "A voice in correspondence",
-    bio: "Raji Nurudeen Olawale is the literary voice of InkbyNur, a writer, author, and poet.",
+    bio: "Raji Nurudeen Olawale is a poet whose writing gathers the ache of return, longing, and attentive memory into letters, prose-poems, and spiritual correspondence.",
     longBio:
-      "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
-    image: poetTheo,
+      "Raji Nurudeen Olawale is a poet, correspondent, and observer of feeling. His writing gathers memory, distance, friendship, and faith into a humane lyric of return and attention. Through letters, brief meditations, and restrained lines, he turns ordinary weather into a record of the inner life: the ache of absence, the dignity of hope, and the beauty of human connection. His poems move with warmth, integrity, and an abiding sense of listening.",
     aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
     works: ["InkbyNur"],
     legalName: "Raji Nurudeen Olawale",
     penNames: ["InkbyNur"],
+    image: poetTheo,
   },
 
   "muhammad-abdulnasir": {
     id: "muhammad-abdulnasir",
-    name: "Irshand",
+    name: "Muhammad AbdulNasir",
     role: "Poet & Child of the Wilderness",
     location: "The far wilderness",
-    bio: "A many-voiced wilderness writing through a host of signatures after the manner of Pessoa's heteronyms, gathered under the fulcrum of irshand.",
+    bio: "Muhammad AbdulNasir writes as Irshand, the Child of the Wilderness, gathering a constellation of signatures through spiritual inquiry, solitude, and ecological attention.",
     longBio:
-      "Muhammad AbdulNasir writes as Irshand, the Child of the Wilderness, under a constellation of signatures in the manner of Fernando Pessoa's heteronyms. Irshand is the birthplace of these voices — a far-off source carried through raw observation, spiritual inquiry, uncertainty, and the quiet discipline of paying attention — while irshand, its higher pen name and my usual signature, is the fulcrum that gathers the whole wilderness together.",
-    image: poetAdaeze,
+      "Muhammad AbdulNasir is a poet whose work moves through the wilderness as a lived grammar of attention. Writing under the signature Irshand and through the voices gathered in the Child of the Wilderness archive, he explores silence, threshold states, spiritual questioning, and the luminous discipline of attentive seeing. His poems are rooted in the natural world, yet they keep company with uncertainty, faith, memory, and the open forms that allow a reader to enter the wilderness without being lost.",
     aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
     works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
     legalName: "Muhammad AbdulNasir",
     penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
+    image: poetTheo,
     voices: [
       {
         name: "SEREIN-SERENE",
@@ -119,59 +124,6 @@ export const POETS: Record<string, Poet> = {
         description: "The voice looking down from the highest peaks.",
       },
     ],
-  },
-};
-
-export const LIBRARY_POETS: Record<string, Poet> = {
-  "muhammad-abdulnasir": {
-    id: "muhammad-abdulnasir",
-    name: "Irshand",
-    role: "Poet & Child of the Wilderness",
-    location: "The far wilderness",
-    bio: "Writes under several signatures from beyond the familiar, the whole gathered under the fulcrum signature of irshand.",
-    longBio:
-      "Muhammad AbdulNasir publishes poetry as Irshand, the Child of the Wilderness, through a host of pen names in the manner of Fernando Pessoa's heteronyms. Irshand is the voice where it all began — the raw eye and the writing hand out of which wandering, uncertainty, serenity, ascent, and guidance emerge. Over time, these voices were gathered under irshand, the higher pen name and my usual signature: the fulcrum between all the other parts of me.",
-    image: poetAdaeze,
-    aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
-    works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
-    legalName: "Muhammad AbdulNasir",
-    penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
-    voices: [
-      {
-        name: "SEREIN-SERENE",
-        title: "The Twilight",
-        description: "Rain from a cloudless sky; peaceful and melancholic.",
-      },
-      {
-        name: "APORIA",
-        title: "The Logic-Puzzle",
-        description: "Where the programmer meets the philosopher in deadlock.",
-      },
-      {
-        name: "WANDERA",
-        title: "The Nomad",
-        description: "The restless spirit searching the outskirts.",
-      },
-      {
-        name: "ELYON",
-        title: "The Ethereal",
-        description: "The voice looking down from the highest peaks.",
-      },
-    ],
-  },
-  "nurudeen-abdullah": {
-    id: "nurudeen-abdullah",
-    name: "Raji Nurudeen Olawale",
-    role: "Poet & Correspondent",
-    location: "A voice in correspondence",
-    bio: "Raji Nurudeen Olawale is the literary voice of InkbyNur, a writer, author, and poet.",
-    longBio:
-      "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
-    image: poetTheo,
-    aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
-    works: ["InkbyNur"],
-    legalName: "Raji Nurudeen Olawale",
-    penNames: ["InkbyNur"],
   },
 };
 
@@ -615,6 +567,7 @@ export const COLLECTIONS: Collection[] = [
     featuredQuote:
       "There is a clock in every room that only the lonely can hear, and it ticks in the direction of morning.",
     poemIds: ["lamplight-late-november", "the-quiet-hour", "the-winter-ledger"],
+    tags: ["Winter", "Solitude", "Household", "Memory"],
   },
   {
     id: "letters-to-an-unsent-friend",
@@ -637,6 +590,7 @@ export const COLLECTIONS: Collection[] = [
       "cartography-of-longing",
       "night-ferry-to-lisbon",
     ],
+    tags: ["Letters", "Friendship", "Travel", "Distance"],
   },
   {
     id: "a-field-guide-to-small-wonders",
@@ -653,6 +607,7 @@ export const COLLECTIONS: Collection[] = [
     featuredQuote:
       "You do not need a telescope to see heaven. You only need to look at what you have stepped over.",
     poemIds: ["a-field-guide-to-small-wonders", "the-winter-ledger"],
+    tags: ["Nature", "Wonder", "Field Guide", "Conversation"],
   },
   {
     id: "the-winter-ledger",
@@ -668,6 +623,7 @@ export const COLLECTIONS: Collection[] = [
     featuredQuote:
       "The frost is an honest accountant. It strikes through all superfluity, leaving only the branch, the stone, the root.",
     poemIds: ["the-winter-ledger", "lamplight-late-november"],
+    tags: ["Winter", "Ledger", "Cold", "Reflection"],
   },
   {
     id: "irshand-verses",
@@ -681,6 +637,7 @@ export const COLLECTIONS: Collection[] = [
     foreword: "This verse came quietly, like a kite crossing the sky between seasons.",
     featuredQuote: "Fortune has found its way home to rahmat.",
     poemIds: ["the-wondering-kite"],
+    tags: ["Wilderness", "Kite", "Homecoming", "Poem"],
   },
 ];
 
@@ -710,6 +667,11 @@ export const CHAPBOOKS: Chapbook[] = [
       "VI. The Winter Ledger",
     ],
     inStock: true,
+    year: "2023",
+    tags: ["Winter", "Household", "Solitude", "Desk"],
+    printRun: "First Edition — 150 Hand-Numbered Copies",
+    proofNotes:
+      "Printed in a small winter run, the chapbook gathers poems of the interior hour and the domestic lamp.",
   },
   {
     id: "letters-to-an-unsent-friend-chapbook",
@@ -736,29 +698,13 @@ export const CHAPBOOKS: Chapbook[] = [
       "VI. Night Ferry to Lisbon",
     ],
     inStock: true,
+    year: "2024",
+    tags: ["Letters", "Friendship", "Distance", "Travel"],
+    printRun: "First Edition — 150 Hand-Numbered Copies",
+    proofNotes:
+      "Fold-out correspondence fragments, ocean light, and letterpress marks gather around an absent friend.",
   },
 ];
-
-const publicAuthorMap: Record<string, { name: string; id: string }> = {
-  "muhammad-abdulnasir": { name: "Irshand", id: "muhammad-abdulnasir" },
-  "nurudeen-abdullah": { name: "Raji Nurudeen Olawale", id: "nurudeen-abdullah" },
-};
-
-for (const work of POEMS) {
-  const author = publicAuthorMap[work.authorId];
-  if (author) {
-    work.author = author.name;
-    work.authorId = author.id;
-  }
-}
-
-for (const work of [...COLLECTIONS, ...CHAPBOOKS]) {
-  const author = publicAuthorMap[work.authorId];
-  if (author) {
-    work.author = author.name;
-    work.authorId = author.id;
-  }
-}
 
 export function getPoemById(id: string): Poem | undefined {
   return POEMS.find((p) => p.id === id);
