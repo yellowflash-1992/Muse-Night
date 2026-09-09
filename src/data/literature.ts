@@ -79,9 +79,9 @@ export const POETS: Record<string, Poet> = {
     name: "Raji Nurudeen Olawale",
     role: "Poet & Correspondent",
     location: "A voice in correspondence",
-    bio: "Raji Nurudeen Olawale is a poet whose writing gathers the ache of return, longing, and attentive memory into letters, prose-poems, and spiritual correspondence.",
+    bio: "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
     longBio:
-      "Raji Nurudeen Olawale is a poet, correspondent, and observer of feeling. His writing gathers memory, distance, friendship, and faith into a humane lyric of return and attention. Through letters, brief meditations, and restrained lines, he turns ordinary weather into a record of the inner life: the ache of absence, the dignity of hope, and the beauty of human connection. His poems move with warmth, integrity, and an abiding sense of listening.",
+      "Raji Nurudeen Olawale is a poet, correspondent, and observer of feeling. Writing as InkbyNur, he transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. Through letters, brief meditations, and restrained lines, he gives voice to feelings often left unspoken and leaves lasting impressions on every reader. InkbyNur is where words breathe, emotions speak, and stories live.",
     aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
     works: ["InkbyNur"],
     legalName: "Raji Nurudeen Olawale",
@@ -94,9 +94,9 @@ export const POETS: Record<string, Poet> = {
     name: "Muhammad AbdulNasir",
     role: "Poet & Child of the Wilderness",
     location: "The far wilderness",
-    bio: "Muhammad AbdulNasir writes as Irshand, the Child of the Wilderness, gathering a constellation of signatures through spiritual inquiry, solitude, and ecological attention.",
+    bio: "Irshand is the literary voice of Muhammad AbdulNasir, a poet and observer of the natural world. He transforms the silence of wilderness into words that linger in the soul. His work explores spiritual inquiry, ecological attention, and the luminous discipline of attentive seeing. With every line, he gives voice to the threshold moments where uncertainty meets faith. He writes to inspire contemplation, stir minds, and leave lasting impressions. Irshand is where words breathe, the wilderness speaks, and stories live.",
     longBio:
-      "Muhammad AbdulNasir is a poet whose work moves through the wilderness as a lived grammar of attention. Writing under the signature Irshand and through the voices gathered in the Child of the Wilderness archive, he explores silence, threshold states, spiritual questioning, and the luminous discipline of attentive seeing. His poems are rooted in the natural world, yet they keep company with uncertainty, faith, memory, and the open forms that allow a reader to enter the wilderness without being lost.",
+      "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. His work explores spiritual inquiry, ecological attention, and the luminous discipline of attentive seeing. Through open forms and threshold meditations, he gives voice to the moments where uncertainty meets faith and leaves lasting impressions on every reader. Irshand is where words breathe, the wilderness speaks, and stories live.",
     aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
     works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
     legalName: "Muhammad AbdulNasir",
