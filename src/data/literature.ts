@@ -91,7 +91,7 @@ export const POETS: Record<string, Poet> = {
 
   "muhammad-abdulnasir": {
     id: "muhammad-abdulnasir",
-    name: "Muhammad AbdulNasir",
+    name: "Irshand",
     role: "Poet & Child of the Wilderness",
     location: "The far wilderness",
     bio: "Irshand is the literary voice of Muhammad AbdulNasir, a poet and observer of the natural world. He transforms the silence of wilderness into words that linger in the soul. His work explores spiritual inquiry, ecological attention, and the luminous discipline of attentive seeing. With every line, he gives voice to the threshold moments where uncertainty meets faith. He writes to inspire contemplation, stir minds, and leave lasting impressions. Irshand is where words breathe, the wilderness speaks, and stories live.",
