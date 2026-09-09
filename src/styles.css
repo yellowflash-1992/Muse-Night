@@ -225,17 +225,17 @@ html.dark {
 
 /* Vibrant Amber Sunlight Mode */
 html.light {
-  --ink: #b45309;
-  --ink-2: #9a4406;
-  --ink-3: #78350f;
-  --paper: #ffffff;
-  --paper-dim: #fef3c7;
-  --paper-faint: #fde68a;
-  --neon: #fef08a;
+  --ink: #8c2f0c;
+  --ink-2: #6b2710;
+  --ink-3: #4a1d0e;
+  --paper: #fff7ed;
+  --paper-dim: #fde68a;
+  --paper-faint: #fcd34d;
+  --neon: #fdba74;
   --rose: #fca5a5;
   --mist: #fed7aa;
-  --sun-ray: rgba(254, 240, 138, 0.4);
-  --sun-glow: rgba(180, 83, 9, 0.25);
+  --sun-ray: rgba(254, 240, 138, 0.35);
+  --sun-glow: rgba(140, 47, 12, 0.35);
 
   --background: var(--ink);
   --foreground: var(--paper);
@@ -244,15 +244,15 @@ html.light {
   --popover: var(--ink-2);
   --popover-foreground: var(--paper);
   --primary: var(--neon);
-  --primary-foreground: #78350f;
+  --primary-foreground: #4a1d0e;
   --secondary: var(--ink-3);
   --secondary-foreground: var(--paper);
   --muted: var(--ink-3);
   --muted-foreground: var(--paper-dim);
   --accent: var(--ink-3);
   --accent-foreground: var(--paper);
-  --border: rgb(254 240 138 / 25%);
-  --input: rgb(254 240 138 / 30%);
+  --border: rgb(253 186 116 / 28%);
+  --input: rgb(253 186 116 / 32%);
   --ring: var(--neon);
 }
 
@@ -271,11 +271,11 @@ html.light .gridbg {
 
 html.light ::-webkit-scrollbar-track {
   background: var(--ink);
-  border-left: 1px solid rgb(254 240 138 / 15%);
+  border-left: 1px solid rgb(253 186 116 / 18%);
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #9a4406;
+  background: #6b2710;
   border: 2px solid var(--ink);
 }
 
@@ -308,15 +308,15 @@ html.light .glass-card {
 }
 
 html.light .theme-toggle-btn {
-  background: rgba(254, 243, 199, 0.35);
-  border-color: rgba(180, 83, 9, 0.55);
-  box-shadow: 0 0 18px rgba(180, 83, 9, 0.35);
-  color: #b45309;
+  background: rgba(255, 247, 237, 0.4);
+  border-color: rgba(140, 47, 12, 0.7);
+  box-shadow: 0 0 22px rgba(140, 47, 12, 0.45);
+  color: #8c2f0c;
 }
 html.light .theme-toggle-btn:hover {
-  background: rgba(254, 243, 199, 0.55);
-  border-color: rgba(180, 83, 9, 0.85);
-  box-shadow: 0 0 28px rgba(180, 83, 9, 0.55);
+  background: rgba(255, 247, 237, 0.65);
+  border-color: rgba(140, 47, 12, 0.95);
+  box-shadow: 0 0 32px rgba(140, 47, 12, 0.7);
 }
 
 html.light * {
