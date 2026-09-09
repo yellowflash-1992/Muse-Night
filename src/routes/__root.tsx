@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark overflow-x-hidden">
+    <html lang="en" className="dark overflow-x-hidden" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
