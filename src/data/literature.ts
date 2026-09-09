@@ -76,7 +76,7 @@ import poetTheo from "@/assets/poet-theo.jpg";
 export const POETS: Record<string, Poet> = {
   "nurudeen-abdullah": {
     id: "nurudeen-abdullah",
-    name: "Raji Nurudeen Olawale",
+    name: "InkbyNur",
     role: "Poet & Correspondent",
     location: "A voice in correspondence",
     bio: "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
