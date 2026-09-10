@@ -155,6 +155,7 @@
     scrollbar-gutter: stable;
     overflow-x: hidden;
     overflow-y: scroll; /* Force vertical scrollbar on desktop */
+    scroll-behavior: smooth;
   }
 
   body {
@@ -225,9 +226,9 @@ html.dark {
 
 /* Vibrant Amber Sunlight Mode */
 html.light {
-  --ink: #D85A30;
-  --ink-2: #B84422;
-  --ink-3: #7C2D12;
+  --ink: #E8763B;
+  --ink-2: #C65E2E;
+  --ink-3: #8B401A;
   --paper: #FFF7ED;
   --paper-dim: #FDE68A;
   --paper-faint: #FCD34D;
@@ -309,9 +310,9 @@ html.light .glass-card {
 
 html.light .theme-toggle-btn {
   background: rgba(255, 247, 237, 0.4);
-  border-color: rgba(216, 90, 48, 0.7);
-  box-shadow: 0 0 22px rgba(216, 90, 48, 0.45);
-  color: #D85A30;
+  border-color: rgba(232, 118, 59, 0.7);
+  box-shadow: 0 0 22px rgba(232, 118, 59, 0.45);
+  color: #E8763B;
 }
 html.light .theme-toggle-btn:hover {
   background: rgba(255, 247, 237, 0.65);

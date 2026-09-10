@@ -825,7 +825,7 @@ export function Navbar() {
             <div className="pt-4 border-t border-neon/10 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-paper-dim uppercase tracking-widest font-karla">
-                  Theme Light/Dark
+                  Theme: Winter/Summer
                 </span>
                 <ThemeToggle />
               </div>

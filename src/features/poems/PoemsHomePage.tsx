@@ -104,7 +104,7 @@ export function Index() {
     },
     {
       title: "The Press & Poets",
-      desc: "The story of Irshand and Raji Nurudeen Olawale, the voices behind our shared lamp and literary studio.",
+      desc: "The story of Irshand and InkbyNur, the voices behind our shared lamp and literary studio.",
       to: "/about",
       count: "Edinburgh & Stockholm",
       icon: Users,

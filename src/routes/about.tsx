@@ -8,8 +8,7 @@ export const Route = createFileRoute("/about")({
       { title: "About the Press & Poets — Muse Books" },
       {
         name: "description",
-        content:
-          "Meet the voices of Muse Books: Irshand, Child of the Wilderness, and Raji Nurudeen Olawale.",
+        content: "Meet the voices of Muse Books: Irshand, Child of the Wilderness, and InkbyNur.",
       },
     ],
   }),

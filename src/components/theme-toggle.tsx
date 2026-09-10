@@ -58,7 +58,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         {theme === "dark" ? (
           <Moon className="h-4 w-4 text-neon transition-transform duration-300 group-hover:-rotate-12" />
         ) : (
-          <Sun className="h-5 w-5 text-[#D85A30] drop-shadow-[0_0_8px_rgba(216,90,48,0.5)] transition-transform duration-300 group-hover:rotate-45" />
+          <Sun className="h-5 w-5 text-[#E8763B] drop-shadow-[0_0_8px_rgba(232,118,59,0.5)] transition-transform duration-300 group-hover:rotate-45" />
         )}
       </div>
     </button>

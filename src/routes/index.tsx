@@ -24,8 +24,8 @@ export const Route = createFileRoute("/")({
       { title: "Muse Books — A Small Press for Poetry & Literature" },
       {
         name: "description",
-          content:
-            "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Irshand and Raji Nurudeen Olawale.",
+        content:
+          "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Irshand and InkbyNur.",
       },
       { property: "og:title", content: "Muse Books — A Small Press for Poetry & Literature" },
       {
@@ -127,7 +127,7 @@ function Index() {
     },
     {
       title: "The Press & Poets",
-      desc: "The story of Irshand and Raji Nurudeen Olawale, the voices behind our shared lamp and literary studio.",
+      desc: "The story of Irshand and InkbyNur, the voices behind our shared lamp and literary studio.",
       to: "/about",
       count: "Edinburgh & Stockholm",
       icon: Users,
@@ -142,6 +142,15 @@ function Index() {
       icon: Feather,
       action: "Submit manuscript",
       badge: "No reading fees",
+    },
+    {
+      title: "JAMB & WAEC Literature",
+      desc: "Syllabus-aligned poetry analysis, literary devices, and exam companion guides.",
+      to: "/library",
+      count: "Study Hub",
+      icon: BookMarked,
+      action: "Explore guides",
+      badge: "Exam Companion",
     },
   ];
 
@@ -232,16 +241,16 @@ function Index() {
                   from{" "}
                   <Link
                     to="/about"
-                    className="text-paper hover:text-neon underline underline-offset-4"
+                    className="font-medium text-neon hover:text-amber-300 underline underline-offset-4"
                   >
-                     Irshand
+                    Irshand
                   </Link>{" "}
                   and{" "}
                   <Link
                     to="/about"
-                    className="text-paper hover:text-neon underline underline-offset-4"
+                    className="font-medium text-neon hover:text-amber-300 underline underline-offset-4"
                   >
-                     Raji Nurudeen Olawale
+                    InkbyNur
                   </Link>
                   .
                 </p>

@@ -29,8 +29,10 @@ export function Footer() {
               </span>
             </div>
             <p className="text-sm leading-relaxed text-paper-dim max-w-[36ch] text-pretty">
-              A lamplit press dedicated to poetry, chapbooks, and reflective literature. Founded by
-              Irshand and Raji Nurudeen Olawale to celebrate verse written in quiet hours.
+              A lamplit press dedicated to poetry, chapbooks, and reflective literature. Founded by{" "}
+              <span className="font-medium text-neon">Irshand</span> and{" "}
+              <span className="font-medium text-neon">InkbyNur</span> to celebrate verse written in
+              quiet hours.
             </p>
             <div className="pt-2 text-xs text-paper-faint italic font-serif">
               “We do not write to be found. We write to leave the light on.”

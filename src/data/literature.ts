@@ -58,14 +58,13 @@ export interface Chapbook {
 
 export interface Poet {
   id: string;
-  name: string;
+  penName: string;
+  legalName: string;
   role: string;
-  location: string;
   bio: string;
   longBio: string;
   aesthetic: string;
   works: string[];
-  legalName?: string;
   penNames?: string[];
   image?: string;
   voices?: { name: string; title: string; description: string }[] | undefined;
@@ -76,30 +75,28 @@ import poetTheo from "@/assets/poet-theo.jpg";
 export const POETS: Record<string, Poet> = {
   "nurudeen-abdullah": {
     id: "nurudeen-abdullah",
-    name: "InkbyNur",
+    penName: "InkbyNur",
+    legalName: "Raji Nurudeen Olawale",
     role: "Poet & Correspondent",
-    location: "A voice in correspondence",
     bio: "InkbyNur is the literary voice of Raji Nurudeen Olawale, a writer, author, and poet. He transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. With every line, he gives voice to feelings often left unspoken. He writes to inspire hearts, stir minds, and leave lasting impressions. InkbyNur is where words breathe, emotions speak, and stories live.",
     longBio:
       "Raji Nurudeen Olawale is a poet, correspondent, and observer of feeling. Writing as InkbyNur, he transforms thoughts, emotions, and life experiences into words that linger. His work explores love, faith, life, growth, and the beauty of being human. Through letters, brief meditations, and restrained lines, he gives voice to feelings often left unspoken and leaves lasting impressions on every reader. InkbyNur is where words breathe, emotions speak, and stories live.",
     aesthetic: "Intimate correspondence, reflective prose, friendship, and night writing",
     works: ["InkbyNur"],
-    legalName: "Raji Nurudeen Olawale",
     penNames: ["InkbyNur"],
     image: poetTheo,
   },
 
   "muhammad-abdulnasir": {
     id: "muhammad-abdulnasir",
-    name: "Irshand",
+    penName: "Irshand",
+    legalName: "Muhammad AbdulNasir",
     role: "Poet & Child of the Wilderness",
-    location: "The far wilderness",
-    bio: "Irshand is the literary voice of Muhammad AbdulNasir, a poet and observer of the natural world. He transforms the silence of wilderness into words that linger in the soul. His work explores spiritual inquiry, ecological attention, and the luminous discipline of attentive seeing. With every line, he gives voice to the threshold moments where uncertainty meets faith. He writes to inspire contemplation, stir minds, and leave lasting impressions. Irshand is where words breathe, the wilderness speaks, and stories live.",
+    bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art.\nAttuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within.\nHis work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants.\nHe writes to spark introspection, break inertia, and craft impressions that outlast time.\nIrshand is a living sanctuary—not merely a name.\nThere, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
     longBio:
-      "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. His work explores spiritual inquiry, ecological attention, and the luminous discipline of attentive seeing. Through open forms and threshold meditations, he gives voice to the moments where uncertainty meets faith and leaves lasting impressions on every reader. Irshand is where words breathe, the wilderness speaks, and stories live.",
+      "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad—an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
     aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
     works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
-    legalName: "Muhammad AbdulNasir",
     penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
     image: poetTheo,
     voices: [

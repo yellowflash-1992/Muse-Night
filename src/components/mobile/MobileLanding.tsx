@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Feather, Layers, Quote, Send, Sparkles } from "lucide-react";
+import { ArrowRight, Feather, Quote, Send, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { CHAPBOOKS, COLLECTIONS, POEMS, POETS } from "@/data/literature";
@@ -270,48 +270,60 @@ export function MobileLanding() {
           </h1>
 
           <p className="mt-4 font-karla text-sm text-stone-200 leading-relaxed max-w-md text-pretty">
-            A small lamplit press for poetry, hand-bound chapbooks, and literature from Irshand
-            &amp; Raji Nurudeen Olawale.
+            A small lamplit press for poetry, hand-bound chapbooks, and literature from{" "}
+            <span className="font-medium text-neon">Irshand</span> &amp;{" "}
+            <span className="font-medium text-neon">InkbyNur</span>.
           </p>
 
-          {/* Quick Category Chips */}
-          <div className="mt-6 flex flex-wrap gap-2.5">
-            <Link
-              to="/library"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-neon px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-ink shadow-lg shadow-neon/20 active:scale-95 transition-all"
-            >
-              <Feather className="h-3.5 w-3.5" />
-              <span>Read Library</span>
-            </Link>
-            <Link
-              to="/collections"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-2.5 text-xs font-medium uppercase tracking-[0.12em] text-white hover:bg-white/20 active:scale-95 transition-all"
-            >
-              <Layers className="h-3.5 w-3.5 text-neon" />
-              <span>Collections</span>
-            </Link>
-            <Link
-              to="/books"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-2.5 text-xs font-medium uppercase tracking-[0.12em] text-white hover:bg-white/20 active:scale-95 transition-all"
-            >
-              <BookOpen className="h-3.5 w-3.5 text-neon" />
-              <span>Chapbooks</span>
-            </Link>
-          </div>
+          {/* Quick Category Chips / CTA Buttons */}
+          <div className="flex flex-col gap-3 max-w-md mt-6">
+            {/* Row 1 */}
+            <div className="flex gap-3">
+              <a
+                href="#library"
+                className="flex-1 bg-[#F5A673] text-[#1a1511] rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
+              >
+                READ LIBRARY
+              </a>
+              <a
+                href="#collections"
+                className="flex-1 border border-white/20 bg-white/10 backdrop-blur-md text-white rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
+              >
+                COLLECTIONS
+              </a>
+            </div>
 
-          <div className="mt-4 w-full flex justify-center">
-            <Link
-              to="/mood"
-              className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/60 bg-amber-300/10 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200 shadow-[0_0_25px_rgba(254,240,138,0.25)] hover:shadow-[0_0_45px_rgba(254,240,138,0.55)] hover:bg-amber-300/20 active:scale-95 transition-all animate-golden-pulse"
+            {/* Row 2 - Balanced Grid */}
+            <div className="flex gap-3">
+              <a
+                href="#chapbooks"
+                className="flex-1 border border-white/20 bg-white/10 backdrop-blur-md text-white rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
+              >
+                CHAPBOOKS
+              </a>
+              {/* NEW STUDY BUTTON - Unique Student Academic Emerald Glow */}
+              <a
+                href="#jamb-waec"
+                className="flex-1 border border-emerald-400/60 bg-gradient-to-r from-emerald-500/20 via-emerald-400/15 to-teal-500/20 backdrop-blur-md text-emerald-200 hover:text-white hover:bg-emerald-500/30 hover:border-emerald-300 transition-all rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] active:scale-95"
+              >
+                <span>🎓</span>
+                <span>JAMB / WAEC</span>
+              </a>
+            </div>
+
+            {/* Row 3 - Golden Glow Retained with Golden Pulse */}
+            <a
+              href="#mood"
+              className="w-full border border-amber-300/60 bg-amber-300/10 text-amber-200 rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-widest uppercase shadow-[0_0_25px_rgba(254,240,138,0.25)] hover:shadow-[0_0_45px_rgba(254,240,138,0.55)] hover:bg-amber-300/20 active:scale-95 transition-all animate-golden-pulse mt-4"
             >
               <Sparkles className="h-4 w-4 text-amber-200" />
-              <span>A muse for your mood</span>
-            </Link>
+              <span>A MUSE FOR YOUR MOOD</span>
+            </a>
           </div>
         </main>
 
         {/* FOOTER BADGE */}
-        <div className="w-full max-w-7xl mx-auto flex items-center justify-between pb-1 text-xs z-10">
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between text-xs z-10 ">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-neon animate-ping" />
             <span className="text-[10px] uppercase tracking-[0.18em] text-stone-300 font-karla">
@@ -352,7 +364,7 @@ export function MobileLanding() {
       </section>
 
       {/* CURATED POETRY COVERS (PieceCard Style) */}
-      <section className="px-5 py-12 space-y-6">
+      <section id="library" className="px-5 py-12 space-y-6 scroll-mt-20">
         <div className="flex items-baseline justify-between border-b border-neon/10 pb-3">
           <div>
             <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-neon">
@@ -532,6 +544,117 @@ export function MobileLanding() {
         </div>
       </section>
 
+      {/* JAMB & WAEC LITERATURE PROVISION SECTION */}
+      <section
+        id="jamb-waec"
+        className="relative overflow-hidden border-t border-emerald-500/25 bg-gradient-to-b from-ink via-emerald-950/20 to-ink px-5 py-12 space-y-7 scroll-mt-20"
+      >
+        {/* Atmospheric Backlight */}
+        <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-20 bottom-10 h-64 w-64 rounded-full bg-neon/10 blur-3xl" />
+
+        <div className="relative z-10 space-y-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+            <span>🎓</span>
+            <span>Academic &amp; Exam Companion</span>
+          </div>
+
+          <h2 className="font-display text-[clamp(2rem,7vw,3.2rem)] font-semibold text-paper leading-[1.1]">
+            JAMB &amp; WAEC
+            <br />
+            <span className="italic font-light text-emerald-300">Literature Provision</span>
+          </h2>
+
+          <p className="font-karla text-xs sm:text-sm text-paper-dim leading-relaxed max-w-lg">
+            Dedicated lamplit study guides, stanza-by-stanza annotations, and thematic analyses
+            crafted for secondary school scholars and UTME candidates mastering the prescribed
+            Literature-in-English curriculum.
+          </p>
+        </div>
+
+        {/* Feature Grid */}
+        <div className="relative z-10 grid grid-cols-1 gap-3.5">
+          {/* Card 1: Prescribed Poetry */}
+          <div className="rounded-xl border border-amber-400/25 bg-ink-2/90 p-4.5 space-y-2.5 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">
+                Syllabus Poetry
+              </span>
+              <span className="rounded-full bg-amber-400/15 border border-amber-400/30 px-2 py-0.5 text-[9px] font-mono text-amber-200 uppercase tracking-wider">
+                African &amp; Non-African
+              </span>
+            </div>
+            <h3 className="font-display text-lg text-paper font-medium">
+              Stanza-by-Stanza Poetic Analysis
+            </h3>
+            <p className="text-xs text-paper-dim leading-relaxed">
+              Line-by-line commentaries dissecting diction, figurative language, tone, mood, and
+              central themes for WAEC &amp; JAMB selected poems.
+            </p>
+          </div>
+
+          {/* Card 2: Drama & Prose Texts */}
+          <div className="rounded-xl border border-white/10 bg-ink-2/80 p-4.5 space-y-2.5 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon">
+                Dramatic &amp; Prose Works
+              </span>
+              <span className="rounded-full bg-white/10 border border-white/15 px-2 py-0.5 text-[9px] font-mono text-paper-dim uppercase tracking-wider">
+                Full Guides
+              </span>
+            </div>
+            <h3 className="font-display text-lg text-paper font-medium">
+              Character Motivations &amp; Plot Architecture
+            </h3>
+            <p className="text-xs text-paper-dim leading-relaxed">
+              Scene breakdowns, tragic flaws, dramatic irony, and historical contexts for prescribed
+              African and Non-African drama and prose.
+            </p>
+          </div>
+
+          {/* Card 3: Literary Devices & Past Questions */}
+          <div className="rounded-xl border border-white/10 bg-ink-2/80 p-4.5 space-y-2.5 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F5A673]">
+                Exam Mastery
+              </span>
+              <span className="rounded-full bg-[#F5A673]/15 border border-[#F5A673]/30 px-2 py-0.5 text-[9px] font-mono text-[#F5A673] uppercase tracking-wider">
+                Model Solutions
+              </span>
+            </div>
+            <h3 className="font-display text-lg text-paper font-medium">
+              Literary Terms &amp; Exam Strategy
+            </h3>
+            <p className="text-xs text-paper-dim leading-relaxed">
+              Clear breakdowns of alliterative verse, synecdoche, paradox, apostrophe, and
+              enjambment, paired with high-scoring essay structures.
+            </p>
+          </div>
+        </div>
+
+        {/* Action Callout */}
+        <div className="relative z-10 rounded-xl border border-amber-400/30 bg-gradient-to-r from-amber-950/40 via-ink-2 to-ink p-4 text-center space-y-3">
+          <p className="font-display italic text-sm text-amber-100">
+            “Under our lamplight, every verse becomes transparent and every examination achievable.”
+          </p>
+          <div className="flex flex-wrap gap-2.5 justify-center pt-1">
+            <Link
+              to="/library"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 text-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] shadow-md hover:bg-amber-300 active:scale-95 transition-all"
+            >
+              <span>Explore Library Works</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <Link
+              to="/request"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] hover:bg-amber-400/20 active:scale-95 transition-all"
+            >
+              <span>Request Text Guide</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* TWO VOICES / AUTHORS SPOTLIGHT (From project/About.tsx) */}
       <section className="border-t border-neon/15 bg-gradient-to-b from-ink-2 to-ink px-5 py-12 space-y-6">
         <div className="text-center space-y-1">
@@ -556,9 +679,9 @@ export function MobileLanding() {
                   <Feather className="h-4 w-4 text-neon" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl text-paper font-medium">{poet.name}</h3>
+                  <h3 className="font-display text-xl text-paper font-medium">{poet.penName}</h3>
                   <p className="text-[11px] uppercase tracking-[0.15em] text-neon/80 font-medium">
-                    {poet.role} · {poet.location.split("&")[0]}
+                    {poet.role} · {poet.legalName}
                   </p>
                 </div>
               </div>

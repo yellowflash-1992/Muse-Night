@@ -31,7 +31,7 @@ export function AboutPage() {
               <div className="overflow-hidden rounded-lg bg-ink-3 border border-neon/20 h-80 sm:h-96 lg:h-[420px]">
                 <img
                   src={poet.image}
-                  alt={poet.name}
+                  alt={poet.penName}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
@@ -40,9 +40,11 @@ export function AboutPage() {
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>{poet.role}</span>
                 </div>
-                <h2 className="font-display mt-3 text-3xl text-paper sm:text-4xl">{poet.name}</h2>
+                <h2 className="font-display mt-3 text-3xl text-paper sm:text-4xl">
+                  {poet.penName}
+                </h2>
                 <p className="text-xs uppercase tracking-[0.2em] text-paper-faint mt-2">
-                  {poet.location}
+                  {poet.legalName}
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-paper-dim">{poet.longBio}</p>
                 <div className="mt-6">

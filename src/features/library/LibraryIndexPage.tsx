@@ -88,7 +88,7 @@ export function LibraryIndexPage() {
                       : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
                   }`}
                 >
-                  {poet.name}
+                  {poet.penName}
                 </button>
               ))}
             </div>
