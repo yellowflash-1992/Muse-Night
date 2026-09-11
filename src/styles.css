@@ -591,24 +591,27 @@ html.light a[href="#library"]:hover {
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
-/* Light mode Secondary Links: Professional frosted glass pills with clear contrast */
+/* Light mode Secondary Links: Clean underline with dark readable text (no glassmorphism) */
 html.light a[href="#collections"],
 html.light a[href="#chapbooks"],
 html.light a[href="/mood"] {
-  background: rgba(255, 255, 255, 0.32) !important;
-  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  background: transparent !important;
+  border: none !important;
   color: #241407 !important;
   font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
   text-shadow: none !important;
-  box-shadow: 0 2px 8px rgba(124, 45, 18, 0.14), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 html.light a[href="#collections"]:hover,
 html.light a[href="#chapbooks"]:hover,
 html.light a[href="/mood"]:hover {
-  background: rgba(255, 255, 255, 0.55) !important;
-  border-color: #FFFFFF !important;
+  background: transparent !important;
   color: #000000 !important;
 }
 

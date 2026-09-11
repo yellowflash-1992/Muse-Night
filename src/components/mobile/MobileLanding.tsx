@@ -298,28 +298,28 @@ export function MobileLanding() {
                   <span>CLASSROOM</span>
                 </a>
                 <span className="absolute -top-2.5 -right-1.5 pointer-events-none inline-flex items-center rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#241407] shadow-md border border-white/70 animate-pulse">
-                  JAMB
+                  JAMB/WAEC
                 </span>
               </div>
             </div>
 
-            {/* Secondary Links Row: Professional Frosted Glass Pills */}
-            <div className="flex items-center gap-2.5 flex-wrap text-xs">
+            {/* Secondary Links Row */}
+            <div className="flex items-center gap-4 flex-wrap text-xs">
               <a
                 href="#collections"
-                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
                 Collections
               </a>
               <a
                 href="#chapbooks"
-                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
                 Chapbooks
               </a>
               <Link
                 to="/mood"
-                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
                 Muse
               </Link>
