@@ -276,49 +276,57 @@ export function MobileLanding() {
           </p>
 
           {/* Quick Category Chips / CTA Buttons */}
-          <div className="flex flex-col gap-3 max-w-md mt-6">
-            {/* Row 1 */}
-            <div className="flex gap-3">
-              <a
-                href="#library"
-                className="flex-1 bg-[#F5A673] text-[#1a1511] rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
-              >
-                READ LIBRARY
-              </a>
+          <div className="flex flex-col items-start mt-6 space-y-4">
+            {/* Primary CTA Button */}
+            <a
+              href="#library"
+              className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5.5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all"
+            >
+              <span>📖</span>
+              <span>READ LIBRARY</span>
+            </a>
+
+            {/* Secondary Links Row */}
+            <div className="flex items-center gap-4 flex-wrap text-xs">
               <a
                 href="#collections"
-                className="flex-1 border border-white/20 bg-white/10 backdrop-blur-md text-white rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
-                COLLECTIONS
+                Collections
               </a>
-            </div>
-
-            {/* Row 2 - Balanced Grid */}
-            <div className="flex gap-3">
               <a
                 href="#chapbooks"
-                className="flex-1 border border-white/20 bg-white/10 backdrop-blur-md text-white rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
-                CHAPBOOKS
+                Chapbooks
               </a>
-              {/* NEW STUDY BUTTON - Unique Student Academic Emerald Glow */}
-              <a
-                href="#jamb-waec"
-                className="flex-1 border border-emerald-400/60 bg-gradient-to-r from-emerald-500/20 via-emerald-400/15 to-teal-500/20 backdrop-blur-md text-emerald-200 hover:text-white hover:bg-emerald-500/30 hover:border-emerald-300 transition-all rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] active:scale-95"
+              <Link
+                to="/mood"
+                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
-                <span>🎓</span>
-                <span>JAMB / WAEC</span>
-              </a>
+                Muse
+              </Link>
             </div>
 
-            {/* Row 3 - Golden Glow Retained with Golden Pulse */}
+            {/* Muse for your Mood CTA Button */}
             <a
               href="#mood"
-              className="w-full border border-amber-300/60 bg-amber-300/10 text-amber-200 rounded-full py-3 px-4 flex items-center justify-center gap-2 font-semibold text-xs tracking-widest uppercase shadow-[0_0_25px_rgba(254,240,138,0.25)] hover:shadow-[0_0_45px_rgba(254,240,138,0.55)] hover:bg-amber-300/20 active:scale-95 transition-all animate-golden-pulse mt-4"
+              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4.5 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse"
             >
-              <Sparkles className="h-4 w-4 text-amber-200" />
+              <span>✨</span>
               <span>A MUSE FOR YOUR MOOD</span>
             </a>
+
+            {/* Study Badge / Study Hall (JAMB / WAEC) */}
+            <div>
+              <a
+                href="#jamb-waec"
+                className="inline-flex items-center gap-1.5 rounded-[16px] border border-[#F0C34E] text-[#F0C34E] px-3.5 py-2 text-[11px] font-bold tracking-[0.3px] hover:bg-[#F0C34E]/15 active:scale-95 transition-all"
+              >
+                <span>🎓</span>
+                <span>STUDY HALL · JAMB / WAEC</span>
+              </a>
+            </div>
           </div>
         </main>
 
