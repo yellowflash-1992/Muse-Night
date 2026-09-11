@@ -288,33 +288,38 @@ export function MobileLanding() {
                 <span>READ LIBRARY</span>
               </a>
 
-              {/* Classroom Button: filled similar to read library with another complementary color */}
-              <a
-                href="#jamb-waec"
-                className="inline-flex items-center gap-2 rounded-[22px] bg-[#10B981] text-[#062419] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all"
-              >
-                <span>🎓</span>
-                <span>CLASSROOM</span>
-              </a>
+              {/* Classroom Button with fancy JAMB badge for mobile */}
+              <div className="relative inline-flex">
+                <a
+                  href="#jamb-waec"
+                  className="inline-flex items-center gap-2 rounded-[22px] bg-[#10B981] text-[#062419] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all"
+                >
+                  <span>🎓</span>
+                  <span>CLASSROOM</span>
+                </a>
+                <span className="absolute -top-2.5 -right-1.5 pointer-events-none inline-flex items-center rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#241407] shadow-md border border-white/70 animate-pulse">
+                  JAMB
+                </span>
+              </div>
             </div>
 
-            {/* Secondary Links Row */}
-            <div className="flex items-center gap-4 flex-wrap text-xs">
+            {/* Secondary Links Row: Professional Frosted Glass Pills */}
+            <div className="flex items-center gap-2.5 flex-wrap text-xs">
               <a
                 href="#collections"
-                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
+                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
               >
                 Collections
               </a>
               <a
                 href="#chapbooks"
-                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
+                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
               >
                 Chapbooks
               </a>
               <Link
                 to="/mood"
-                className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
+                className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 text-stone-200 text-xs font-semibold hover:text-white hover:bg-white/20 transition-all backdrop-blur-md shadow-sm"
               >
                 Muse
               </Link>
@@ -323,7 +328,7 @@ export function MobileLanding() {
             {/* Muse for your Mood CTA Button */}
             <a
               href="#mood"
-              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse ml-15"
+              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse mt-6 ml-15"
             >
               <span>✨</span>
               <span>A MUSE FOR YOUR MOOD</span>

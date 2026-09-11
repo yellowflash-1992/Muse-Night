@@ -578,10 +578,11 @@ html.light .hero-slider-container {
   background: radial-gradient(circle at 50% 18%, rgba(254, 240, 138, 0.16), transparent 70%);
 }
 
-/* Light mode CTA buttons: Sunlit Letterpress & Italian Florentine finish */
+/* Light mode CTA buttons: High-contrast, crystal clear & professional */
 html.light a[href="#library"] {
   background: #FFF7ED !important;
   color: #7C2D12 !important;
+  font-weight: 800 !important;
   border: 1px solid rgba(255, 255, 255, 0.95) !important;
   box-shadow: 0 4px 18px rgba(124, 45, 18, 0.22), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
@@ -590,44 +591,61 @@ html.light a[href="#library"]:hover {
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
+/* Light mode Secondary Links: Professional frosted glass pills with clear contrast */
 html.light a[href="#collections"],
-html.light a[href="#chapbooks"] {
-  background: rgba(255, 255, 255, 0.22) !important;
-  border-color: rgba(255, 255, 255, 0.6) !important;
-  color: #FFF7ED !important;
-  text-shadow: 0 1px 2px rgba(124, 45, 18, 0.35);
-  box-shadow: 0 4px 16px rgba(124, 45, 18, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.65) !important;
+html.light a[href="#chapbooks"],
+html.light a[href="/mood"] {
+  background: rgba(255, 255, 255, 0.32) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  color: #241407 !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(124, 45, 18, 0.14), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 html.light a[href="#collections"]:hover,
-html.light a[href="#chapbooks"]:hover {
-  background: rgba(255, 255, 255, 0.36) !important;
-  border-color: rgba(255, 255, 255, 0.85) !important;
+html.light a[href="#chapbooks"]:hover,
+html.light a[href="/mood"]:hover {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-color: #FFFFFF !important;
+  color: #000000 !important;
 }
 
-/* Light Mode: Academic Emerald Scholar Button */
+/* Light Mode: Academic Emerald Classroom Button with solid deep emerald fill & pure white text */
 html.light a[href="#jamb-waec"] {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(20, 184, 166, 0.4)) !important;
-  border-color: rgba(110, 231, 183, 0.9) !important;
+  background: #047857 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
   color: #FFFFFF !important;
-  text-shadow: 0 1px 3px rgba(6, 78, 59, 0.45);
-  box-shadow: 0 0 24px rgba(16, 185, 129, 0.45), 0 4px 14px rgba(124, 45, 18, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.65) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(6, 78, 59, 0.6) !important;
+  box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
 }
 html.light a[href="#jamb-waec"]:hover {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(20, 184, 166, 0.55)) !important;
-  box-shadow: 0 0 34px rgba(16, 185, 129, 0.7), 0 6px 18px rgba(124, 45, 18, 0.28) !important;
+  background: #059669 !important;
+  box-shadow: 0 6px 22px rgba(4, 120, 87, 0.55) !important;
 }
 
-/* Light Mode: A Muse For Your Mood Button with radiant sunlit glow */
+/* Light mode JAMB Floating Badge on Classroom Button */
+html.light .relative span[class*="bg-gradient-to-r"] {
+  background: #FEF08A !important;
+  color: #713F12 !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Light Mode: A Muse For Your Mood Button: Radiant Sunlit Cream with rich readable bronze text */
 html.light a[href="#mood"] {
-  background: linear-gradient(135deg, rgba(254, 240, 138, 0.32), rgba(253, 186, 116, 0.28)) !important;
-  border-color: rgba(254, 240, 138, 0.95) !important;
-  color: #FFF7ED !important;
-  text-shadow: 0 1px 3px rgba(124, 45, 18, 0.45);
-  box-shadow: 0 0 28px rgba(254, 240, 138, 0.5), 0 4px 18px rgba(124, 45, 18, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.75) !important;
+  background: rgba(255, 247, 237, 0.94) !important;
+  border: 1.5px solid #F59E0B !important;
+  color: #78350F !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+  box-shadow: 0 0 22px rgba(245, 158, 11, 0.4), 0 4px 14px rgba(124, 45, 18, 0.16) !important;
 }
 html.light a[href="#mood"]:hover {
-  background: linear-gradient(135deg, rgba(254, 240, 138, 0.48), rgba(253, 186, 116, 0.42)) !important;
-  box-shadow: 0 0 44px rgba(254, 240, 138, 0.75), 0 6px 22px rgba(124, 45, 18, 0.32) !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 32px rgba(245, 158, 11, 0.6), 0 6px 18px rgba(124, 45, 18, 0.24) !important;
 }
 
 /* Light mode JAMB & WAEC Section refinement */
@@ -677,4 +695,30 @@ html.light .animate-golden-pulse {
     box-shadow: 0 0 40px rgba(254, 240, 138, 0.9), 0 6px 22px rgba(124, 45, 18, 0.25);
     border-color: rgba(255, 255, 255, 1);
   }
+}
+
+/* Light mode Buttons Readability Enhancement */
+html.light a[href="/submit"],
+html.light a[href="#library"],
+html.light #jamb-waec a[href*="library"] {
+  background: #FFF7ED !important;
+  color: #7C2D12 !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 18px rgba(124, 45, 18, 0.22) !important;
+}
+
+html.light #jamb-waec a[href*="request"] {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(6, 78, 59, 0.5) !important;
+  box-shadow: 0 4px 14px rgba(124, 45, 18, 0.18) !important;
+}
+
+html.light button[aria-label*="quote"] {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #241407 !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
 }
