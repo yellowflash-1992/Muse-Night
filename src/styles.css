@@ -628,8 +628,9 @@ html.light a[href="/mood"].animate-golden-pulse {
   font-weight: 800 !important;
 }
 
-/* Light mode: READ LIBRARY button keeps golden border but drops swollen shadow */
+/* Light mode: READ LIBRARY button keeps golden border, removes swollen shadow */
 html.light a[href="/library"][class*="rounded-[22px]"] {
+  border: 1px solid #F0DE38 !important;
   box-shadow: none !important;
 }
 
