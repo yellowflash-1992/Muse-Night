@@ -592,10 +592,9 @@ html.light a[href="#library"]:hover {
 }
 
 /* Light mode Secondary Links: Clean underline with pitch black readable text (no glassmorphism) */
-html.light a[href*="collections"],
-html.light a[href*="books"],
-html.light a[href*="chapbooks"],
-html.light a[href*="mood"] {
+html.light a[href="/collections"],
+html.light a[href="/books"],
+html.light a[href="/mood"] {
   background: transparent !important;
   border: none !important;
   color: #000000 !important;
@@ -609,10 +608,9 @@ html.light a[href*="mood"] {
   padding: 0 !important;
   border-radius: 0 !important;
 }
-html.light a[href*="collections"]:hover,
-html.light a[href*="books"]:hover,
-html.light a[href*="chapbooks"]:hover,
-html.light a[href*="mood"]:hover {
+html.light a[href="/collections"]:hover,
+html.light a[href="/books"]:hover,
+html.light a[href="/mood"]:hover {
   background: transparent !important;
   color: #000000 !important;
   opacity: 0.8 !important;
@@ -638,24 +636,6 @@ html.light .relative span[class*="bg-gradient-to-r"] {
   color: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.9) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
-}
-
-/* Light Mode: A Muse For Your Mood Button: Returned original glowing pill shape and golden pulse effect */
-html.light a[href="#mood"] {
-  background: rgba(240, 222, 56, 0.15) !important;
-  border: 1.5px solid #EAB308 !important;
-  border-radius: 20px !important;
-  color: #000000 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 0 16px rgba(234, 179, 8, 0.65), inset 0 0 10px rgba(254, 240, 138, 0.25) !important;
-  animation: goldenPulse 2.5s ease-in-out infinite !important;
-}
-html.light a[href="#mood"] * {
-  color: #000000 !important;
-}
-html.light a[href="#mood"]:hover {
-  background: rgba(240, 222, 56, 0.28) !important;
-  box-shadow: 0 0 24px rgba(234, 179, 8, 0.85) !important;
 }
 
 /* Light mode JAMB & WAEC Section refinement */
@@ -702,21 +682,7 @@ html.light .bg-black\/40 {
   box-shadow: 0 4px 16px rgba(124, 45, 18, 0.25);
 }
 
-/* Golden Pulse in light mode */
-html.light .animate-golden-pulse {
-  animation: lightGoldenPulse 2.5s ease-in-out infinite;
-}
 
-@keyframes lightGoldenPulse {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(254, 240, 138, 0.5), 0 4px 16px rgba(124, 45, 18, 0.2);
-    border-color: rgba(254, 240, 138, 0.85);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(254, 240, 138, 0.9), 0 6px 22px rgba(124, 45, 18, 0.25);
-    border-color: rgba(255, 255, 255, 1);
-  }
-}
 
 /* Light mode Buttons Readability Enhancement */
 html.light a[href="/submit"],
