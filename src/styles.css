@@ -227,13 +227,13 @@ html.dark {
 
 /* Vibrant Amber Sunlight Mode */
 html.light {
-  --ink: #E8763B;
-  --ink-2: #C65E2E;
-  --ink-3: #8B401A;
-  --paper: #FFF7ED;
-  --paper-dim: #FDE68A;
-  --paper-faint: #FCD34D;
-  --neon: #FDBA74;
+  --ink: #e8763b;
+  --ink-2: #c65e2e;
+  --ink-3: #8b401a;
+  --paper: #fff7ed;
+  --paper-dim: #fde68a;
+  --paper-faint: #fcd34d;
+  --neon: #fdba74;
   --rose: #fca5a5;
   --mist: #fed7aa;
   --sun-ray: rgba(253, 186, 116, 0.4);
@@ -246,7 +246,7 @@ html.light {
   --popover: var(--ink-2);
   --popover-foreground: var(--paper);
   --primary: var(--neon);
-  --primary-foreground: #7C2D12;
+  --primary-foreground: #7c2d12;
   --secondary: var(--ink-3);
   --secondary-foreground: var(--paper);
   --muted: var(--ink-3);
@@ -277,7 +277,7 @@ html.light ::-webkit-scrollbar-track {
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #B84422;
+  background: #b84422;
   border: 2px solid var(--ink);
 }
 
@@ -313,7 +313,7 @@ html.light .theme-toggle-btn {
   background: rgba(255, 247, 237, 0.4);
   border-color: rgba(232, 118, 59, 0.7);
   box-shadow: 0 0 22px rgba(232, 118, 59, 0.45);
-  color: #E8763B;
+  color: #e8763b;
 }
 html.light .theme-toggle-btn:hover {
   background: rgba(255, 247, 237, 0.65);
@@ -440,7 +440,8 @@ html.light * {
 }
 
 @keyframes goldenPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 15px rgba(254, 240, 138, 0.35);
     border-color: rgba(254, 240, 138, 0.6);
   }
@@ -580,14 +581,16 @@ html.light .hero-slider-container {
 
 /* Light mode CTA buttons: High-contrast, crystal clear & professional */
 html.light a[href="#library"] {
-  background: #FFF7ED !important;
-  color: #7C2D12 !important;
+  background: #fff7ed !important;
+  color: #7c2d12 !important;
   font-weight: 800 !important;
   border: 1px solid rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 4px 18px rgba(124, 45, 18, 0.22), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  box-shadow:
+    0 4px 18px rgba(124, 45, 18, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 html.light a[href="#library"]:hover {
-  background: #FFFFFF !important;
+  background: #ffffff !important;
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
@@ -618,7 +621,7 @@ html.light a[href="/mood"]:hover {
 
 /* Light mode: Muse CTA button keeps its dark-mode border/glow, but text is black */
 html.light a[href="/mood"].animate-golden-pulse {
-  border: 1px solid #F0DE38 !important;
+  border: 1px solid #f0de38 !important;
   box-shadow: 0 0 14px rgba(240, 222, 56, 0.5) !important;
   color: #000000 !important;
   background: transparent !important;
@@ -630,8 +633,9 @@ html.light a[href="/mood"].animate-golden-pulse {
 
 /* Light mode: READ LIBRARY button keeps golden border, removes swollen shadow */
 html.light a[href="/library"][class*="rounded-[22px]"] {
-  border: 1px solid #F0DE38 !important;
+  border: 1px solid #f0de38 !important;
   box-shadow: none !important;
+  padding-inline: calc(var(--spacing) * 4) !important;
 }
 
 /* Light mode: keep hero CTA buttons on one row on mobile */
@@ -643,10 +647,12 @@ html.light main .flex-wrap {
 html.light a[href="#jamb-waec"] {
   background: #047857 !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
   text-shadow: 0 1px 2px rgba(6, 78, 59, 0.6) !important;
-  box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+  box-shadow:
+    0 4px 16px rgba(4, 120, 87, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
 }
 html.light a[href="#jamb-waec"]:hover {
   background: #059669 !important;
@@ -655,7 +661,7 @@ html.light a[href="#jamb-waec"]:hover {
 
 /* Light mode JAMB Floating Badge on Classroom Button */
 html.light .relative span[class*="bg-gradient-to-r"] {
-  background: #FEF08A !important;
+  background: #fef08a !important;
   color: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.9) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
@@ -663,12 +669,12 @@ html.light .relative span[class*="bg-gradient-to-r"] {
 
 /* Light mode JAMB & WAEC Section refinement */
 html.light #jamb-waec {
-  background: linear-gradient(180deg, var(--ink) 0%, #B84E20 50%, var(--ink) 100%) !important;
+  background: linear-gradient(180deg, var(--ink) 0%, #b84e20 50%, var(--ink) 100%) !important;
   border-color: rgba(110, 231, 183, 0.35) !important;
 }
 html.light #jamb-waec a[href*="library"] {
   background: #047857 !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
   box-shadow: 0 4px 14px rgba(4, 120, 87, 0.4) !important;
@@ -685,7 +691,9 @@ html.light #jamb-waec a[href*="request"] {
 html.light section.border-y {
   border-color: rgba(253, 186, 116, 0.35) !important;
   background: rgba(198, 94, 46, 0.96) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Light mode Author Spotlight cards */
@@ -694,24 +702,23 @@ html.light .from-teal-950\/40 {
   --tw-gradient-from: rgba(139, 64, 26, 0.75) var(--tw-gradient-from-position);
   --tw-gradient-to: rgba(198, 94, 46, 0.95) var(--tw-gradient-to-position);
   border-color: rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 10px 28px rgba(124, 45, 18, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+  box-shadow:
+    0 10px 28px rgba(124, 45, 18, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
 }
 
 /* Typewriter badge in light mode */
 html.light .bg-black\/40 {
   background-color: rgba(139, 64, 26, 0.65) !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
-  color: #FFF7ED !important;
+  color: #fff7ed !important;
   box-shadow: 0 4px 16px rgba(124, 45, 18, 0.25);
 }
 
-
-
 /* Light mode Buttons Readability Enhancement */
-html.light a[href="/submit"],
 html.light a[href="#library"] {
-  background: #FFF7ED !important;
-  color: #7C2D12 !important;
+  background: #fff7ed !important;
+  color: #7c2d12 !important;
   font-weight: 800 !important;
   border: 1px solid rgba(255, 255, 255, 0.95) !important;
   box-shadow: 0 4px 18px rgba(124, 45, 18, 0.22) !important;
@@ -719,7 +726,7 @@ html.light a[href="#library"] {
 
 html.light #jamb-waec a[href*="library"] {
   background: #047857 !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
   box-shadow: 0 4px 14px rgba(4, 120, 87, 0.4) !important;
