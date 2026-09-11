@@ -256,7 +256,7 @@ export function MobileLanding() {
         </div>
 
         {/* MAIN HERO CONTENT */}
-        <main className="w-full max-w-7xl mx-auto px-2 sm:px-4 pt-6 relative z-10">
+        <main className="w-full max-w-7xl mx-auto px-2 sm:px-4 pt-4 relative z-10">
           {/* Animated Typewriter Tagline */}
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm px-3.5 py-1 text-xs font-medium text-[#fef08a] shadow-sm">
             <Sparkles className="h-3.5 w-3.5 text-[#fef08a] animate-pulse" />
@@ -269,22 +269,34 @@ export function MobileLanding() {
             <span className="text-[#fef08a] italic font-normal drop-shadow-sm">worlds</span>
           </h1>
 
-          <p className="mt-4 font-karla text-sm text-stone-200 leading-relaxed max-w-md text-pretty">
+          <p className="mt-3 font-karla text-sm text-stone-200 leading-relaxed max-w-md text-pretty">
             A small lamplit press for poetry, hand-bound chapbooks, and literature from{" "}
             <span className="font-medium text-neon">Irshand</span> &amp;{" "}
             <span className="font-medium text-neon">InkbyNur</span>.
           </p>
 
           {/* Quick Category Chips / CTA Buttons */}
-          <div className="flex flex-col items-start mt-6 space-y-4">
-            {/* Primary CTA Button */}
-            <a
-              href="#library"
-              className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5.5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all"
-            >
-              <span>📖</span>
-              <span>READ LIBRARY</span>
-            </a>
+          <div className="flex flex-col items-start mt-4 space-y-4">
+            {/* Primary Action Buttons Row */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Primary CTA Button: READ LIBRARY */}
+              <a
+                href="#library"
+                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all"
+              >
+                <span>📖</span>
+                <span>READ LIBRARY</span>
+              </a>
+
+              {/* Classroom Button: filled similar to read library with another complementary color */}
+              <a
+                href="#jamb-waec"
+                className="inline-flex items-center gap-2 rounded-[22px] bg-[#10B981] text-[#062419] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all"
+              >
+                <span>🎓</span>
+                <span>CLASSROOM</span>
+              </a>
+            </div>
 
             {/* Secondary Links Row */}
             <div className="flex items-center gap-4 flex-wrap text-xs">
@@ -311,22 +323,11 @@ export function MobileLanding() {
             {/* Muse for your Mood CTA Button */}
             <a
               href="#mood"
-              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4.5 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse"
+              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse ml-15"
             >
               <span>✨</span>
               <span>A MUSE FOR YOUR MOOD</span>
             </a>
-
-            {/* Study Badge / Study Hall (JAMB / WAEC) */}
-            <div>
-              <a
-                href="#jamb-waec"
-                className="inline-flex items-center gap-1.5 rounded-[16px] border border-[#F0C34E] text-[#F0C34E] px-3.5 py-2 text-[11px] font-bold tracking-[0.3px] hover:bg-[#F0C34E]/15 active:scale-95 transition-all"
-              >
-                <span>🎓</span>
-                <span>STUDY HALL · JAMB / WAEC</span>
-              </a>
-            </div>
           </div>
         </main>
 
