@@ -591,13 +591,14 @@ html.light a[href="#library"]:hover {
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
-/* Light mode Secondary Links: Clean underline with dark readable text (no glassmorphism) */
-html.light a[href="#collections"],
-html.light a[href="#chapbooks"],
-html.light a[href="/mood"] {
+/* Light mode Secondary Links: Clean underline with pitch black readable text (no glassmorphism) */
+html.light a[href*="collections"],
+html.light a[href*="books"],
+html.light a[href*="chapbooks"],
+html.light a[href*="mood"] {
   background: transparent !important;
   border: none !important;
-  color: #241407 !important;
+  color: #000000 !important;
   font-weight: 700 !important;
   text-decoration: underline !important;
   text-underline-offset: 3px !important;
@@ -608,11 +609,13 @@ html.light a[href="/mood"] {
   padding: 0 !important;
   border-radius: 0 !important;
 }
-html.light a[href="#collections"]:hover,
-html.light a[href="#chapbooks"]:hover,
-html.light a[href="/mood"]:hover {
+html.light a[href*="collections"]:hover,
+html.light a[href*="books"]:hover,
+html.light a[href*="chapbooks"]:hover,
+html.light a[href*="mood"]:hover {
   background: transparent !important;
   color: #000000 !important;
+  opacity: 0.8 !important;
 }
 
 /* Light Mode: Academic Emerald Classroom Button with solid deep emerald fill & pure white text */
@@ -632,22 +635,26 @@ html.light a[href="#jamb-waec"]:hover {
 /* Light mode JAMB Floating Badge on Classroom Button */
 html.light .relative span[class*="bg-gradient-to-r"] {
   background: #FEF08A !important;
-  color: #713F12 !important;
+  color: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.9) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* Light Mode: A Muse For Your Mood Button: Radiant Sunlit Cream with rich readable bronze text */
+/* Light Mode: A Muse For Your Mood Button: Pure black text on solid sunlit card with maximum contrast */
 html.light a[href="#mood"] {
-  background: rgba(255, 247, 237, 0.94) !important;
-  border: 1.5px solid #F59E0B !important;
-  color: #78350F !important;
+  background: rgba(255, 247, 237, 0.96) !important;
+  border: 2px solid #F59E0B !important;
+  color: #000000 !important;
   font-weight: 800 !important;
   text-shadow: none !important;
   box-shadow: 0 0 22px rgba(245, 158, 11, 0.4), 0 4px 14px rgba(124, 45, 18, 0.16) !important;
 }
+html.light a[href="#mood"] * {
+  color: #000000 !important;
+}
 html.light a[href="#mood"]:hover {
   background: #FFFFFF !important;
+  color: #000000 !important;
   box-shadow: 0 0 32px rgba(245, 158, 11, 0.6), 0 6px 18px rgba(124, 45, 18, 0.24) !important;
 }
 

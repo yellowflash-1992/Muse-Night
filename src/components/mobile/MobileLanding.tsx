@@ -305,18 +305,18 @@ export function MobileLanding() {
 
             {/* Secondary Links Row */}
             <div className="flex items-center gap-4 flex-wrap text-xs">
-              <a
-                href="#collections"
+              <Link
+                to="/collections"
                 className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
                 Collections
-              </a>
-              <a
-                href="#chapbooks"
+              </Link>
+              <Link
+                to="/books"
                 className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
               >
                 Chapbooks
-              </a>
+              </Link>
               <Link
                 to="/mood"
                 className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
