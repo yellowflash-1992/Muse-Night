@@ -280,13 +280,13 @@ export function MobileLanding() {
             {/* Primary Action Buttons Row */}
             <div className="flex items-center gap-3 flex-wrap">
               {/* Primary CTA Button: READ LIBRARY */}
-              <a
-                href="#library"
-                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all"
+              <Link
+                to="/library"
+                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all light:border light:border-[#F0DE38]"
               >
                 <span>📖</span>
                 <span>READ LIBRARY</span>
-              </a>
+              </Link>
 
               {/* Classroom Button with fancy JAMB badge for mobile */}
               <div className="relative inline-flex">
@@ -326,13 +326,13 @@ export function MobileLanding() {
             </div>
 
             {/* Muse for your Mood CTA Button */}
-            <a
-              href="#mood"
-              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse mt-6 ml-15"
+            <Link
+              to="/mood"
+              className="inline-flex items-center gap-2 rounded-[20px] text-[#F0DE38] light:border light:border-[#F0DE38] light:text-black light:shadow-[0_0_14px_rgba(240,222,56,0.5)] px-4 py-2.5 text-xs font-bold hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse mt-6 ml-15"
             >
               <span>✨</span>
               <span>A MUSE FOR YOUR MOOD</span>
-            </a>
+            </Link>
           </div>
         </main>
 
