@@ -282,7 +282,7 @@ export function MobileLanding() {
               {/* Primary CTA Button: READ LIBRARY */}
               <Link
                 to="/library"
-                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all light:border light:border-[#F0DE38] light:shadow-none"
+                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all light:border light:border-[#F0DE38]"
               >
                 <span>📖</span>
                 <span>READ LIBRARY</span>

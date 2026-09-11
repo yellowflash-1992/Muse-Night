@@ -628,6 +628,11 @@ html.light a[href="/mood"].animate-golden-pulse {
   font-weight: 800 !important;
 }
 
+/* Light mode: READ LIBRARY button keeps golden border but drops swollen shadow */
+html.light a[href="/library"][class*="rounded-[22px]"] {
+  box-shadow: none !important;
+}
+
 /* Light mode: keep hero CTA buttons on one row on mobile */
 html.light main .flex-wrap {
   flex-wrap: nowrap !important;
