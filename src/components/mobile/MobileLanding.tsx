@@ -558,112 +558,46 @@ export function MobileLanding() {
         </div>
       </section>
 
-      {/* JAMB & WAEC LITERATURE PROVISION SECTION */}
+      {/* JAMB & WAEC STUDY HALL SECTION (Compact & Professional) */}
       <section
         id="jamb-waec"
-        className="relative overflow-hidden border-t border-emerald-500/25 bg-gradient-to-b from-ink via-emerald-950/20 to-ink px-5 py-12 space-y-7 scroll-mt-20"
+        className="relative overflow-hidden border-t border-emerald-500/20 bg-gradient-to-b from-ink via-emerald-950/20 to-ink px-5 py-8 space-y-4 scroll-mt-20"
       >
-        {/* Atmospheric Backlight */}
-        <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -left-20 bottom-10 h-64 w-64 rounded-full bg-neon/10 blur-3xl" />
+        {/* Subtle decorative glow */}
+        <div className="pointer-events-none absolute -right-16 top-0 h-44 w-44 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-16 bottom-0 h-44 w-44 rounded-full bg-amber-500/10 blur-3xl" />
 
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+        <div className="relative z-10 flex flex-col items-center text-center space-y-2.5 max-w-sm mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300 shadow-sm">
             <span>🎓</span>
-            <span>Academic &amp; Exam Companion</span>
+            <span>JAMB &amp; WAEC Study Hall</span>
           </div>
 
-          <h2 className="font-display text-[clamp(2rem,7vw,3.2rem)] font-semibold text-paper leading-[1.1]">
-            JAMB &amp; WAEC
-            <br />
-            <span className="italic font-light text-emerald-300">Literature Provision</span>
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-paper leading-tight">
+            Literature-in-English{" "}
+            <span className="italic font-light text-emerald-300">Companion</span>
           </h2>
 
-          <p className="font-karla text-xs sm:text-sm text-paper-dim leading-relaxed max-w-lg">
-            Dedicated lamplit study guides, stanza-by-stanza annotations, and thematic analyses
-            crafted for secondary school scholars and UTME candidates mastering the prescribed
-            Literature-in-English curriculum.
+          <p className="font-karla text-xs text-paper-dim leading-relaxed">
+            Curated syllabus poetry breakdowns, drama summaries, and exam-tested literary device
+            guides.
           </p>
-        </div>
 
-        {/* Feature Grid */}
-        <div className="relative z-10 grid grid-cols-1 gap-3.5">
-          {/* Card 1: Prescribed Poetry */}
-          <div className="rounded-xl border border-amber-400/25 bg-ink-2/90 p-4.5 space-y-2.5 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">
-                Syllabus Poetry
-              </span>
-              <span className="rounded-full bg-amber-400/15 border border-amber-400/30 px-2 py-0.5 text-[9px] font-mono text-amber-200 uppercase tracking-wider">
-                African &amp; Non-African
-              </span>
-            </div>
-            <h3 className="font-display text-lg text-paper font-medium">
-              Stanza-by-Stanza Poetic Analysis
-            </h3>
-            <p className="text-xs text-paper-dim leading-relaxed">
-              Line-by-line commentaries dissecting diction, figurative language, tone, mood, and
-              central themes for WAEC &amp; JAMB selected poems.
-            </p>
-          </div>
-
-          {/* Card 2: Drama & Prose Texts */}
-          <div className="rounded-xl border border-white/10 bg-ink-2/80 p-4.5 space-y-2.5 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon">
-                Dramatic &amp; Prose Works
-              </span>
-              <span className="rounded-full bg-white/10 border border-white/15 px-2 py-0.5 text-[9px] font-mono text-paper-dim uppercase tracking-wider">
-                Full Guides
-              </span>
-            </div>
-            <h3 className="font-display text-lg text-paper font-medium">
-              Character Motivations &amp; Plot Architecture
-            </h3>
-            <p className="text-xs text-paper-dim leading-relaxed">
-              Scene breakdowns, tragic flaws, dramatic irony, and historical contexts for prescribed
-              African and Non-African drama and prose.
-            </p>
-          </div>
-
-          {/* Card 3: Literary Devices & Past Questions */}
-          <div className="rounded-xl border border-white/10 bg-ink-2/80 p-4.5 space-y-2.5 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F5A673]">
-                Exam Mastery
-              </span>
-              <span className="rounded-full bg-[#F5A673]/15 border border-[#F5A673]/30 px-2 py-0.5 text-[9px] font-mono text-[#F5A673] uppercase tracking-wider">
-                Model Solutions
-              </span>
-            </div>
-            <h3 className="font-display text-lg text-paper font-medium">
-              Literary Terms &amp; Exam Strategy
-            </h3>
-            <p className="text-xs text-paper-dim leading-relaxed">
-              Clear breakdowns of alliterative verse, synecdoche, paradox, apostrophe, and
-              enjambment, paired with high-scoring essay structures.
-            </p>
-          </div>
-        </div>
-
-        {/* Action Callout */}
-        <div className="relative z-10 rounded-xl border border-amber-400/30 bg-gradient-to-r from-amber-950/40 via-ink-2 to-ink p-4 text-center space-y-3">
-          <p className="font-display italic text-sm text-amber-100">
-            “Under our lamplight, every verse becomes transparent and every examination achievable.”
-          </p>
-          <div className="flex flex-wrap gap-2.5 justify-center pt-1">
+          {/* Direct Study Buttons */}
+          <div className="flex items-center gap-3 pt-2">
             <Link
               to="/library"
-              className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 text-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] shadow-md hover:bg-amber-300 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[#10B981] text-[#062419] px-4.5 py-2.5 text-xs font-bold tracking-wider shadow-md hover:bg-emerald-400 active:scale-95 transition-all"
             >
-              <span>Explore Library Works</span>
+              <span>📖</span>
+              <span>Study Archive</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               to="/request"
-              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] hover:bg-amber-400/20 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 bg-emerald-500/10 text-emerald-200 px-4 py-2.5 text-xs font-semibold tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all"
             >
-              <span>Request Text Guide</span>
+              <span>Request Guide</span>
             </Link>
           </div>
         </div>
