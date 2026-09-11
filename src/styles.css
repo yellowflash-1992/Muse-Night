@@ -594,31 +594,6 @@ html.light a[href="#library"]:hover {
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
-/* Light mode Secondary Links: Clean underline with pitch black readable text (no glassmorphism) */
-html.light a[href="/collections"],
-html.light a[href="/books"],
-html.light a[href="/mood"] {
-  background: transparent !important;
-  border: none !important;
-  color: #000000 !important;
-  font-weight: 700 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-}
-html.light a[href="/collections"]:hover,
-html.light a[href="/books"]:hover,
-html.light a[href="/mood"]:hover {
-  background: transparent !important;
-  color: #000000 !important;
-  opacity: 0.8 !important;
-}
-
 /* Light mode: Muse CTA button keeps its dark-mode border/glow, but text is black */
 html.light a[href="/mood"].animate-golden-pulse {
   border: 1px solid #f0de38 !important;
