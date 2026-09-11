@@ -628,6 +628,11 @@ html.light a[href="/mood"].animate-golden-pulse {
   font-weight: 800 !important;
 }
 
+/* Light mode: keep hero CTA buttons on one row on mobile */
+html.light main .flex-wrap {
+  flex-wrap: nowrap !important;
+}
+
 /* Light Mode: Academic Emerald Classroom Button with solid deep emerald fill & pure white text */
 html.light a[href="#jamb-waec"] {
   background: #047857 !important;
