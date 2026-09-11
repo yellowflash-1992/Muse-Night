@@ -3,6 +3,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 /*
  * Design system definition.
@@ -348,19 +349,6 @@ html.light * {
     16px 16px;
 }
 
-html.light .gridbg {
-  background-image:
-    linear-gradient(to right, rgb(15 118 110 / 8%) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(15 118 110 / 8%) 1px, transparent 1px),
-    linear-gradient(to right, rgb(15 118 110 / 4%) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(15 118 110 / 4%) 1px, transparent 1px);
-  background-size:
-    64px 64px,
-    64px 64px,
-    16px 16px,
-    16px 16px;
-}
-
 @utility inkline {
   position: relative;
   &::after {
@@ -574,4 +562,119 @@ html.light .gridbg {
   descent-override: 24%;
   line-gap-override: 0%;
   font-display: swap;
+}
+
+/* ========================================================
+   LIGHT MODE (Sunlit Florentine Amber Press) UI ENHANCEMENTS
+   ======================================================== */
+
+/* Subtle ambient warmth for text in light mode */
+html.light {
+  text-shadow: 0 1px 1px rgba(124, 45, 18, 0.12);
+}
+
+/* Sunlit Hero ambient aura */
+html.light .hero-slider-container {
+  background: radial-gradient(circle at 50% 18%, rgba(254, 240, 138, 0.16), transparent 70%);
+}
+
+/* Light mode CTA buttons: Sunlit Letterpress & Italian Florentine finish */
+html.light a[href="#library"] {
+  background: #FFF7ED !important;
+  color: #7C2D12 !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 18px rgba(124, 45, 18, 0.22), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+html.light a[href="#library"]:hover {
+  background: #FFFFFF !important;
+  box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
+}
+
+html.light a[href="#collections"],
+html.light a[href="#chapbooks"] {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: #FFF7ED !important;
+  text-shadow: 0 1px 2px rgba(124, 45, 18, 0.35);
+  box-shadow: 0 4px 16px rgba(124, 45, 18, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.65) !important;
+}
+html.light a[href="#collections"]:hover,
+html.light a[href="#chapbooks"]:hover {
+  background: rgba(255, 255, 255, 0.36) !important;
+  border-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Light Mode: Academic Emerald Scholar Button */
+html.light a[href="#jamb-waec"] {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(20, 184, 166, 0.4)) !important;
+  border-color: rgba(110, 231, 183, 0.9) !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 3px rgba(6, 78, 59, 0.45);
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.45), 0 4px 14px rgba(124, 45, 18, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.65) !important;
+}
+html.light a[href="#jamb-waec"]:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(20, 184, 166, 0.55)) !important;
+  box-shadow: 0 0 34px rgba(16, 185, 129, 0.7), 0 6px 18px rgba(124, 45, 18, 0.28) !important;
+}
+
+/* Light Mode: A Muse For Your Mood Button with radiant sunlit glow */
+html.light a[href="#mood"] {
+  background: linear-gradient(135deg, rgba(254, 240, 138, 0.32), rgba(253, 186, 116, 0.28)) !important;
+  border-color: rgba(254, 240, 138, 0.95) !important;
+  color: #FFF7ED !important;
+  text-shadow: 0 1px 3px rgba(124, 45, 18, 0.45);
+  box-shadow: 0 0 28px rgba(254, 240, 138, 0.5), 0 4px 18px rgba(124, 45, 18, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.75) !important;
+}
+html.light a[href="#mood"]:hover {
+  background: linear-gradient(135deg, rgba(254, 240, 138, 0.48), rgba(253, 186, 116, 0.42)) !important;
+  box-shadow: 0 0 44px rgba(254, 240, 138, 0.75), 0 6px 22px rgba(124, 45, 18, 0.32) !important;
+}
+
+/* Light mode JAMB & WAEC Section refinement */
+html.light #jamb-waec {
+  background: linear-gradient(180deg, var(--ink) 0%, #B84E20 50%, var(--ink) 100%) !important;
+  border-color: rgba(110, 231, 183, 0.4) !important;
+}
+html.light #jamb-waec .rounded-xl {
+  box-shadow: 0 10px 25px rgba(124, 45, 18, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Light mode Stats Bar */
+html.light section.border-y {
+  border-color: rgba(253, 186, 116, 0.35) !important;
+  background: rgba(198, 94, 46, 0.96) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode Author Spotlight cards */
+html.light .from-amber-950\/40,
+html.light .from-teal-950\/40 {
+  --tw-gradient-from: rgba(139, 64, 26, 0.75) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgba(198, 94, 46, 0.95) var(--tw-gradient-to-position);
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 10px 28px rgba(124, 45, 18, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Typewriter badge in light mode */
+html.light .bg-black\/40 {
+  background-color: rgba(139, 64, 26, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #FFF7ED !important;
+  box-shadow: 0 4px 16px rgba(124, 45, 18, 0.25);
+}
+
+/* Golden Pulse in light mode */
+html.light .animate-golden-pulse {
+  animation: lightGoldenPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes lightGoldenPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(254, 240, 138, 0.5), 0 4px 16px rgba(124, 45, 18, 0.2);
+    border-color: rgba(254, 240, 138, 0.85);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(254, 240, 138, 0.9), 0 6px 22px rgba(124, 45, 18, 0.25);
+    border-color: rgba(255, 255, 255, 1);
+  }
 }
