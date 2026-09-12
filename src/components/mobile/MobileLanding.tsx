@@ -304,7 +304,7 @@ export function MobileLanding() {
             </div>
 
             {/* Secondary Links Row - Specific to hero */}
-            <div className="hero-secondary-links flex items-center gap-4 flex-wrap text-xs">
+            <div className="hero-secondary-links flex items-center gap-4 flex-wrap text-xs ml-2">
               <Link
                 to="/collections"
                 className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"

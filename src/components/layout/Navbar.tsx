@@ -31,6 +31,7 @@ export function Navbar() {
   const [authModalMode, setAuthModalMode] = useState<"signin" | "signup">("signin");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileUserMenuOpen, setMobileUserMenuOpen] = useState(false);
+  const [drawerUserMenuOpen, setDrawerUserMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -38,6 +39,7 @@ export function Navbar() {
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileUserMenuRef = useRef<HTMLDivElement>(null);
+  const drawerUserMenuRef = useRef<HTMLDivElement>(null);
 
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
@@ -148,6 +150,9 @@ export function Navbar() {
       if (mobileUserMenuRef.current && !mobileUserMenuRef.current.contains(target)) {
         setMobileUserMenuOpen(false);
       }
+      if (drawerUserMenuRef.current && !drawerUserMenuRef.current.contains(target)) {
+        setDrawerUserMenuOpen(false);
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -155,6 +160,7 @@ export function Navbar() {
         setHubDropdownOpen(false);
         setUserMenuOpen(false);
         setMobileUserMenuOpen(false);
+        setDrawerUserMenuOpen(false);
         setAuthModalOpen(false);
       }
     };
@@ -172,6 +178,7 @@ export function Navbar() {
     setHubDropdownOpen(false);
     setUserMenuOpen(false);
     setMobileUserMenuOpen(false);
+    setDrawerUserMenuOpen(false);
     setMobileHubOpen(false);
     setMobileOpen(false);
   }, [currentPath]);
@@ -653,25 +660,74 @@ export function Navbar() {
 
               {/* Mobile Patron Auth Card with Avatar Shape */}
               {isAuthenticated && user ? (
-                <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 -mt-2 flex items-center justify-between shadow-inner">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-sm shadow-md">
-                      {user.name.charAt(0).toUpperCase()}
+                <div className="relative -mt-2" ref={drawerUserMenuRef}>
+                  <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 flex items-center justify-between shadow-inner">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-sm shadow-md">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-karla text-xs font-bold text-paper truncate">
+                          {user.name}
+                        </p>
+                        <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="font-karla text-xs font-bold text-paper truncate">
-                        {user.name}
-                      </p>
-                      <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
-                    </div>
+
+                    {/* Dropdown Menu Trigger Button */}
+                    <button
+                      type="button"
+                      onClick={() => setDrawerUserMenuOpen((prev) => !prev)}
+                      aria-expanded={drawerUserMenuOpen}
+                      aria-haspopup="menu"
+                      aria-label="Account options"
+                      className="shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-neon hover:text-paper bg-neon/10 hover:bg-neon/20 rounded-lg transition-all border border-neon/30 active:scale-95 cursor-pointer"
+                    >
+                      <span>Menu</span>
+                      <ChevronDown
+                        className={`h-3 w-3 transition-transform duration-200 ${
+                          drawerUserMenuOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => logout()}
-                    className="shrink-0 px-2.5 py-1 text-[10px] uppercase tracking-wider text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors border border-rose-400/20 cursor-pointer"
-                  >
-                    Sign Out
-                  </button>
+
+                  {/* Dropdown Menu with Settings & Sign Out */}
+                  {drawerUserMenuOpen && (
+                    <div
+                      className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-neon/30 bg-ink-2/98 backdrop-blur-2xl p-1.5 shadow-2xl z-50 animate-[fadeIn_0.15s_ease-out]"
+                      role="menu"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDrawerUserMenuOpen(false);
+                          setSearchOpen(false);
+                        }}
+                        className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
+                      >
+                        <span className="flex items-center gap-2 font-medium">
+                          <Settings className="h-3.5 w-3.5 text-neon" />
+                          Settings
+                        </span>
+                        <span className="text-[9px] text-paper-faint">Preferences</span>
+                      </button>
+
+                      <div className="my-1 border-t border-neon/10" />
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setDrawerUserMenuOpen(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-medium text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                      >
+                        <LogOut className="h-3.5 w-3.5" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <button
