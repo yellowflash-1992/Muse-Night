@@ -10,6 +10,7 @@ import {
   Layers,
   LogOut,
   Search,
+  Settings,
   Sparkles,
   User,
   Users,
@@ -29,12 +30,14 @@ export function Navbar() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<"signin" | "signup">("signin");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileUserMenuOpen, setMobileUserMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { user, isAuthenticated, logout } = useAuth();
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const mobileUserMenuRef = useRef<HTMLDivElement>(null);
 
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
@@ -142,12 +145,16 @@ export function Navbar() {
       if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setUserMenuOpen(false);
       }
+      if (mobileUserMenuRef.current && !mobileUserMenuRef.current.contains(target)) {
+        setMobileUserMenuOpen(false);
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setHubDropdownOpen(false);
         setUserMenuOpen(false);
+        setMobileUserMenuOpen(false);
         setAuthModalOpen(false);
       }
     };
@@ -164,6 +171,7 @@ export function Navbar() {
   useEffect(() => {
     setHubDropdownOpen(false);
     setUserMenuOpen(false);
+    setMobileUserMenuOpen(false);
     setMobileHubOpen(false);
     setMobileOpen(false);
   }, [currentPath]);
@@ -440,12 +448,19 @@ export function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="font-josefin text-base sm:text-lg font-bold tracking-tight text-paper flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap"
+            className="group flex items-center gap-2 shrink-0 whitespace-nowrap transition-transform active:scale-95"
           >
-            <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-lg bg-neon/15 border border-neon/40 text-neon">
+            <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-xl bg-neon/15 border border-neon/40 text-neon shadow-sm group-hover:bg-neon/25 transition-all">
               <Feather className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
-            <span>muse night</span>
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-[17px] sm:text-[19px] font-medium tracking-normal text-paper group-hover:text-neon transition-colors">
+                muse <span className="italic font-light text-[#fef08a]">night</span>
+              </span>
+              <span className="text-[8px] uppercase tracking-[0.26em] text-paper-dim/75 font-karla mt-0.5">
+                verse &amp; press
+              </span>
+            </div>
           </Link>
 
           {/* Right Navigation Group */}
@@ -458,26 +473,84 @@ export function Navbar() {
               Daily streak
             </Link>
 
-            {/* Mobile Avatar Button */}
-            <button
-              type="button"
-              onClick={() => {
-                if (isAuthenticated) {
-                  setMobileOpen(true);
-                } else {
-                  setAuthModalMode("signin");
-                  setAuthModalOpen(true);
+            {/* Mobile Avatar Button with Dropdown Menu */}
+            <div ref={mobileUserMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  if (isAuthenticated) {
+                    setMobileUserMenuOpen((prev) => !prev);
+                  } else {
+                    setAuthModalMode("signin");
+                    setAuthModalOpen(true);
+                  }
+                }}
+                aria-label={
+                  isAuthenticated && user ? `Account: ${user.name}` : "Sign In or Sign Up"
                 }
-              }}
-              aria-label={isAuthenticated && user ? `Account: ${user.name}` : "Sign In or Sign Up"}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
-            >
-              {isAuthenticated && user ? (
-                <span className="font-bold text-xs">{user.name.charAt(0).toUpperCase()}</span>
-              ) : (
-                <User className="h-4 w-4" />
+                aria-expanded={mobileUserMenuOpen}
+                aria-haspopup="menu"
+                className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
+              >
+                {isAuthenticated && user ? (
+                  <span className="font-bold text-xs">{user.name.charAt(0).toUpperCase()}</span>
+                ) : (
+                  <User className="h-4 w-4" />
+                )}
+              </button>
+
+              {/* Mobile User Dropdown Menu */}
+              {isAuthenticated && user && mobileUserMenuOpen && (
+                <div
+                  className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-neon/30 bg-ink-2/98 backdrop-blur-2xl p-2.5 shadow-2xl z-50 animate-[fadeIn_0.15s_ease-out]"
+                  role="menu"
+                >
+                  {/* User Profile Header */}
+                  <div className="border-b border-neon/10 pb-2.5 mb-2 px-2">
+                    <p className="font-karla text-xs font-semibold text-paper truncate">
+                      {user.name}
+                    </p>
+                    <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
+                    <span className="inline-block mt-1 text-[8.5px] uppercase tracking-wider text-neon bg-neon/10 px-2 py-0.5 rounded-full border border-neon/20">
+                      {user.role || "Patron of Muse Books"}
+                    </span>
+                  </div>
+
+                  {/* Settings Item */}
+                  <div className="space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileUserMenuOpen(false);
+                        setMobileOpen(true);
+                      }}
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Settings className="h-3.5 w-3.5 text-neon" />
+                        Settings
+                      </span>
+                      <span className="text-[10px] text-paper-faint">Preferences</span>
+                    </button>
+                  </div>
+
+                  {/* Log Out Item */}
+                  <div className="mt-1.5 pt-1.5 border-t border-neon/10">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        setMobileUserMenuOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-2.5 py-2 rounded-xl text-xs text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-3.5 w-3.5" />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                </div>
               )}
-            </button>
+            </div>
 
             {/* Hamburger Icon Button */}
             <button
@@ -521,7 +594,14 @@ export function Navbar() {
                   <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-neon/20 text-neon">
                     <Feather className="h-4 w-4" />
                   </div>
-                  <span className="font-josefin text-xl font-bold text-paper">muse night</span>
+                  <div className="flex flex-col leading-none">
+                    <span className="font-display text-xl font-medium text-paper">
+                      muse <span className="italic font-light text-[#fef08a]">night</span>
+                    </span>
+                    <span className="text-[8px] uppercase tracking-[0.26em] text-paper-dim/75 font-karla mt-0.5">
+                      verse &amp; press
+                    </span>
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-1">
