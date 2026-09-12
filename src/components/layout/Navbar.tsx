@@ -72,20 +72,20 @@ export function Navbar() {
       count: "4 Volumes",
     },
     {
-      to: "/gallery",
-      label: "Gallery",
-      description: "Editions, covers & studio plates",
-      icon: ImageIcon,
-      color: "text-cyan-400",
-      count: "Plates & Art",
-    },
-    {
       to: "/books",
       label: "Chapbooks",
       description: "Hand-bound letterpress editions",
       icon: BookMarked,
       color: "text-rose-400",
       count: "Albion Press",
+    },
+    {
+      to: "/gallery",
+      label: "Gallery",
+      description: "Editions, covers & studio plates",
+      icon: ImageIcon,
+      color: "text-cyan-400",
+      count: "Plates & Art",
     },
     {
       to: "/study",
@@ -265,36 +265,46 @@ export function Navbar() {
                       {hubItems.map((item) => {
                         const Icon = item.icon;
                         const active = isActive(item.to);
+                        const isStudy = item.to === "/study";
                         return (
-                          <Link
-                            key={item.to}
-                            to={item.to}
-                            onClick={() => setHubDropdownOpen(false)}
-                            className={`group flex items-center justify-between p-2.5 rounded-xl transition-all ${
-                              active
-                                ? "bg-neon/15 border border-neon/30 text-neon"
-                                : "hover:bg-neon/10 hover:border-neon/20 border border-transparent text-paper"
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div
-                                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neon/10 border border-neon/20 ${item.color} group-hover:bg-neon/20 transition-all`}
-                              >
-                                <Icon className="h-4 w-4" />
+                          <div key={item.to}>
+                            {isStudy && (
+                              <div className="my-1.5 border-t border-neon/15 px-3 pt-1.5 pb-0.5 flex items-center justify-between text-[8.5px] uppercase tracking-[0.22em] text-emerald-400/80 font-semibold">
+                                <span>Academic Hub</span>
+                                <span className="font-mono text-paper-faint">JAMB / WAEC</span>
                               </div>
-                              <div>
-                                <span className="font-karla text-xs font-semibold text-paper group-hover:text-neon block leading-tight">
-                                  {item.label}
-                                </span>
-                                <span className="text-[10px] text-paper-dim group-hover:text-paper-faint block mt-0.5 leading-tight">
-                                  {item.description}
-                                </span>
+                            )}
+                            <Link
+                              to={item.to}
+                              onClick={() => setHubDropdownOpen(false)}
+                              className={`group flex items-center justify-between p-2.5 rounded-xl transition-all ${
+                                active
+                                  ? "bg-neon/15 border border-neon/30 text-neon"
+                                  : isStudy
+                                    ? "hover:bg-emerald-500/15 hover:border-emerald-500/30 border border-emerald-500/20 bg-emerald-500/5 text-paper"
+                                    : "hover:bg-neon/10 hover:border-neon/20 border border-transparent text-paper"
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neon/10 border border-neon/20 ${item.color} group-hover:bg-neon/20 transition-all`}
+                                >
+                                  <Icon className="h-4 w-4" />
+                                </div>
+                                <div>
+                                  <span className="font-karla text-xs font-semibold text-paper group-hover:text-neon block leading-tight">
+                                    {item.label}
+                                  </span>
+                                  <span className="text-[10px] text-paper-dim group-hover:text-paper-faint block mt-0.5 leading-tight">
+                                    {item.description}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                            <span className="text-[9px] uppercase tracking-wider text-paper-faint shrink-0 ml-2">
-                              {item.count}
-                            </span>
-                          </Link>
+                              <span className="text-[9px] uppercase tracking-wider text-paper-faint shrink-0 ml-2">
+                                {item.count}
+                              </span>
+                            </Link>
+                          </div>
                         );
                       })}
                     </div>
@@ -915,23 +925,43 @@ export function Navbar() {
                           {hubItems.map((item) => {
                             const Icon = item.icon;
                             const active = isActive(item.to);
+                            const isStudy = item.to === "/study";
                             return (
-                              <Link
-                                key={item.to}
-                                to={item.to}
-                                onClick={() => setMobileOpen(false)}
-                                className={`flex items-center justify-between p-2.5 rounded-lg transition-colors pl-4 ${
-                                  active
-                                    ? "bg-neon/20 text-neon font-semibold border border-neon/30"
-                                    : "text-paper-dim hover:text-paper hover:bg-neon/10"
-                                }`}
-                              >
-                                <span className="flex items-center gap-2.5">
-                                  <Icon className={`h-4 w-4 ${item.color}`} />
-                                  <span className="font-medium">{item.label}</span>
-                                </span>
-                                <span className="text-[10px] text-paper-faint">{item.count}</span>
-                              </Link>
+                              <div key={item.to}>
+                                {isStudy && (
+                                  <div className="my-1.5 border-t border-neon/15 px-2 pt-1.5 pb-0.5 flex items-center justify-between">
+                                    <span className="text-[9px] uppercase tracking-[0.2em] text-emerald-400/90 font-semibold font-karla">
+                                      Academic Hub
+                                    </span>
+                                    <span className="text-[8.5px] font-mono text-paper-faint">
+                                      Exam Prep
+                                    </span>
+                                  </div>
+                                )}
+                                <Link
+                                  to={item.to}
+                                  onClick={() => setMobileOpen(false)}
+                                  className={`flex items-center justify-between p-2.5 rounded-lg transition-colors pl-4 ${
+                                    active
+                                      ? "bg-neon/20 text-neon font-semibold border border-neon/30"
+                                      : isStudy
+                                        ? "text-emerald-200 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20"
+                                        : "text-paper-dim hover:text-paper hover:bg-neon/10"
+                                  }`}
+                                >
+                                  <span className="flex items-center gap-2.5">
+                                    <Icon className={`h-4 w-4 ${item.color}`} />
+                                    <span className="font-medium">{item.label}</span>
+                                  </span>
+                                  <span
+                                    className={`text-[10px] ${
+                                      isStudy ? "text-emerald-300 font-mono" : "text-paper-faint"
+                                    }`}
+                                  >
+                                    {item.count}
+                                  </span>
+                                </Link>
+                              </div>
                             );
                           })}
                         </div>
