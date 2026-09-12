@@ -8,8 +8,7 @@ export const Route = createFileRoute("/books/$id")({
       { title: "Chapbook — Muse Books" },
       {
         name: "description",
-        content:
-          "Hand-bound chapbook by Muse Books.",
+        content: "Hand-bound chapbook by Muse Books.",
       },
     ],
   }),

@@ -501,7 +501,7 @@ export function Navbar() {
           </Link>
 
           {/* Right Navigation Group */}
-          <div className="ml-8 flex items-center gap-1.5 sm:gap-5 shrink-0">
+          <div className="ml-6 flex items-center gap-1.5 sm:gap-5 shrink-0">
             {/* CTA Button */}
             <Link
               to="/streak"
@@ -596,7 +596,7 @@ export function Navbar() {
                 setUserMenuOpen(false);
                 setMobileOpen(true);
               }}
-              className="p-2 text-paper hover:bg-neon/10 rounded-xl transition-all active:scale-95 focus:outline-none shrink-0 cursor-pointer mr-3 sm:mr-4"
+              className="p-2 text-paper hover:bg-neon/10 rounded-xl transition-all active:scale-95 focus:outline-none shrink-0 cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

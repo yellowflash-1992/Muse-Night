@@ -201,7 +201,7 @@ export function Index() {
                 <div className="reveal d3 flex flex-col items-end gap-3">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-neon/30 bg-ink-2 px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-paper hover:border-neon hover:bg-neon/10 transition-all"
+                    className="inline-flex items-center gap-2 rounded-full border border-neon/dont do any changes, just tell me what is the function of src/routes/index.tsx30 bg-ink-2 px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-paper hover:border-neon hover:bg-neon/10 transition-all"
                     onClick={handleShuffleVerse}
                   >
                     <RefreshCw className="h-4 w-4" />
