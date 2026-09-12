@@ -586,11 +586,11 @@ export function MobileLanding() {
           {/* Direct Study Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <Link
-              to="/library"
+              to="/study"
               className="inline-flex items-center gap-1.5 rounded-full bg-[#10B981] text-[#062419] px-4.5 py-2.5 text-xs font-bold tracking-wider shadow-md hover:bg-emerald-400 active:scale-95 transition-all"
             >
-              <span>📖</span>
-              <span>Study Archive</span>
+              <span>🎓</span>
+              <span>Open Study Room</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link

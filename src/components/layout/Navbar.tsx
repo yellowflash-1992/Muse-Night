@@ -6,6 +6,7 @@ import {
   ChevronDown,
   Feather,
   Flame,
+  GraduationCap,
   Image as ImageIcon,
   Layers,
   LogOut,
@@ -85,6 +86,14 @@ export function Navbar() {
       icon: BookMarked,
       color: "text-rose-400",
       count: "Albion Press",
+    },
+    {
+      to: "/study",
+      label: "Study Room",
+      description: "JAMB & WAEC Literature Companion",
+      icon: GraduationCap,
+      color: "text-emerald-400",
+      count: "JAMB/WAEC",
     },
   ];
 
@@ -249,7 +258,7 @@ export function Navbar() {
                   >
                     <div className="flex items-center justify-between px-3 py-1.5 border-b border-neon/10 text-[9px] uppercase tracking-[0.22em] text-paper-faint">
                       <span>Hub Directory</span>
-                      <span className="text-neon/70">5 Archives</span>
+                      <span className="text-neon/70">6 Archives</span>
                     </div>
 
                     <div className="mt-1 space-y-1">
@@ -891,7 +900,7 @@ export function Navbar() {
                         </span>
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] uppercase tracking-wider text-neon/70">
-                            5 Archives
+                            6 Archives
                           </span>
                           <ChevronDown
                             className={`h-4 w-4 text-neon/70 transition-transform duration-200 ${

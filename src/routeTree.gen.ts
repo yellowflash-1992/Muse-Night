@@ -16,6 +16,7 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as MoodRouteImport } from './routes/mood'
 import { Route as RequestRouteImport } from './routes/request'
 import { Route as StreakRouteImport } from './routes/streak'
+import { Route as StudyRouteImport } from './routes/study'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as VaultRouteImport } from './routes/vault'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
@@ -58,6 +59,11 @@ const RequestRoute = RequestRouteImport.update({
 const StreakRoute = StreakRouteImport.update({
   id: '/streak',
   path: '/streak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudyRoute = StudyRouteImport.update({
+  id: '/study',
+  path: '/study',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitRoute = SubmitRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
   '/streak': typeof StreakRoute
+  '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
   '/streak': typeof StreakRoute
+  '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
   '/streak': typeof StreakRoute
+  '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
   '/books/$id': typeof BooksIdRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/mood'
     | '/request'
     | '/streak'
+    | '/study'
     | '/submit'
     | '/vault'
     | '/books/$id'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/mood'
     | '/request'
     | '/streak'
+    | '/study'
     | '/submit'
     | '/vault'
     | '/books/$id'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/mood'
     | '/request'
     | '/streak'
+    | '/study'
     | '/submit'
     | '/vault'
     | '/books/$id'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   MoodRoute: typeof MoodRoute
   RequestRoute: typeof RequestRoute
   StreakRoute: typeof StreakRoute
+  StudyRoute: typeof StudyRoute
   SubmitRoute: typeof SubmitRoute
   VaultRoute: typeof VaultRoute
   BooksIdRoute: typeof BooksIdRoute
@@ -274,6 +287,13 @@ declare module '@tanstack/react-router' {
       path: '/streak'
       fullPath: '/streak'
       preLoaderRoute: typeof StreakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study': {
+      id: '/study'
+      path: '/study'
+      fullPath: '/study'
+      preLoaderRoute: typeof StudyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/submit': {
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoodRoute: MoodRoute,
   RequestRoute: RequestRoute,
   StreakRoute: StreakRoute,
+  StudyRoute: StudyRoute,
   SubmitRoute: SubmitRoute,
   VaultRoute: VaultRoute,
   BooksIdRoute: BooksIdRoute,
