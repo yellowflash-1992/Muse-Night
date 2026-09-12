@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 export interface User {
   id: string;
   name: string;
+  penName?: string | undefined;
   email: string;
-  avatar?: string;
-  role?: string;
-  memberSince?: string;
+  bio?: string | undefined;
+  avatar?: string | undefined;
+  role?: string | undefined;
+  memberSince?: string | undefined;
 }
 
 const STORAGE_KEY = "muse_user";
@@ -74,11 +76,25 @@ export function useAuth() {
     }
   };
 
+  const updateProfile = (updates: Partial<User>) => {
+    if (!user) return null;
+    const updatedUser: User = { ...user, ...updates };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      window.dispatchEvent(new Event(AUTH_EVENT));
+    } catch (e) {
+      console.error(e);
+    }
+    return updatedUser;
+  };
+
   return {
     user,
     isAuthenticated: !!user,
     loading,
     login,
     logout,
+    updateProfile,
   };
 }

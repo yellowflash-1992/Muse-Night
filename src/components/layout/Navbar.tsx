@@ -56,20 +56,20 @@ export function Navbar() {
       count: `${POEMS.length} works`,
     },
     {
-      to: "/mood",
-      label: "Muse",
-      description: "A poem for your mood & feelings",
-      icon: Sparkles,
-      color: "text-neon",
-      count: "Inspiration",
-    },
-    {
       to: "/collections",
       label: "Collections",
       description: "Curated suites & volumes",
       icon: Layers,
       color: "text-emerald-400",
       count: "4 Volumes",
+    },
+    {
+      to: "/mood",
+      label: "Muse",
+      description: "A poem for your mood & feelings",
+      icon: Sparkles,
+      color: "text-neon",
+      count: "Inspiration",
     },
     {
       to: "/books",
@@ -377,6 +377,17 @@ export function Navbar() {
 
                       <div className="space-y-1">
                         <Link
+                          to="/settings"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors"
+                        >
+                          <span className="flex items-center gap-2">
+                            <Settings className="h-3.5 w-3.5 text-neon" />
+                            Profile &amp; Pen Name
+                          </span>
+                          <span className="text-[10px] text-paper-faint">Settings</span>
+                        </Link>
+                        <Link
                           to="/vault"
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors"
@@ -544,20 +555,17 @@ export function Navbar() {
 
                   {/* Settings Item */}
                   <div className="space-y-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMobileUserMenuOpen(false);
-                        setMobileOpen(true);
-                      }}
+                    <Link
+                      to="/settings"
+                      onClick={() => setMobileUserMenuOpen(false)}
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
                         <Settings className="h-3.5 w-3.5 text-neon" />
-                        Settings
+                        Profile &amp; Pen Name
                       </span>
-                      <span className="text-[10px] text-paper-faint">Preferences</span>
-                    </button>
+                      <span className="text-[10px] text-paper-faint">Settings</span>
+                    </Link>
                   </div>
 
                   {/* Log Out Item */}
@@ -717,20 +725,20 @@ export function Navbar() {
                       className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-neon/30 bg-ink-2/98 backdrop-blur-2xl p-1.5 shadow-2xl z-50 animate-[fadeIn_0.15s_ease-out]"
                       role="menu"
                     >
-                      <button
-                        type="button"
+                      <Link
+                        to="/settings"
                         onClick={() => {
                           setDrawerUserMenuOpen(false);
-                          setSearchOpen(false);
+                          setMobileOpen(false);
                         }}
                         className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
                       >
                         <span className="flex items-center gap-2 font-medium">
                           <Settings className="h-3.5 w-3.5 text-neon" />
-                          Settings
+                          Profile &amp; Pen Name
                         </span>
-                        <span className="text-[9px] text-paper-faint">Preferences</span>
-                      </button>
+                        <span className="text-[9px] text-paper-faint">Settings</span>
+                      </Link>
 
                       <div className="my-1 border-t border-neon/10" />
 

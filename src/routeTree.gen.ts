@@ -15,6 +15,7 @@ import { Route as DailyRouteImport } from './routes/daily'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as MoodRouteImport } from './routes/mood'
 import { Route as RequestRouteImport } from './routes/request'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StreakRouteImport } from './routes/streak'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as SubmitRouteImport } from './routes/submit'
@@ -54,6 +55,11 @@ const MoodRoute = MoodRouteImport.update({
 const RequestRoute = RequestRouteImport.update({
   id: '/request',
   path: '/request',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StreakRoute = StreakRouteImport.update({
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
+  '/settings': typeof SettingsRoute
   '/streak': typeof StreakRoute
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
+  '/settings': typeof SettingsRoute
   '/streak': typeof StreakRoute
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/mood': typeof MoodRoute
   '/request': typeof RequestRoute
+  '/settings': typeof SettingsRoute
   '/streak': typeof StreakRoute
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/mood'
     | '/request'
+    | '/settings'
     | '/streak'
     | '/study'
     | '/submit'
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/mood'
     | '/request'
+    | '/settings'
     | '/streak'
     | '/study'
     | '/submit'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/mood'
     | '/request'
+    | '/settings'
     | '/streak'
     | '/study'
     | '/submit'
@@ -226,6 +238,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   MoodRoute: typeof MoodRoute
   RequestRoute: typeof RequestRoute
+  SettingsRoute: typeof SettingsRoute
   StreakRoute: typeof StreakRoute
   StudyRoute: typeof StudyRoute
   SubmitRoute: typeof SubmitRoute
@@ -280,6 +293,13 @@ declare module '@tanstack/react-router' {
       path: '/request'
       fullPath: '/request'
       preLoaderRoute: typeof RequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/streak': {
@@ -362,6 +382,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   MoodRoute: MoodRoute,
   RequestRoute: RequestRoute,
+  SettingsRoute: SettingsRoute,
   StreakRoute: StreakRoute,
   StudyRoute: StudyRoute,
   SubmitRoute: SubmitRoute,
