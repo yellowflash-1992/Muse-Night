@@ -282,7 +282,7 @@ export function MobileLanding() {
               {/* Primary CTA Button: READ LIBRARY */}
               <Link
                 to="/library"
-                className="flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-3 sm:px-5 py-3 text-[11.5px] sm:text-[13px] font-bold tracking-[0.2px] sm:tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all whitespace-nowrap light:border light:border-[#F0DE38] light:shadow-none"
+                className="flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-2 sm:px-4 py-3 text-[11.5px] sm:text-[13px] font-bold tracking-[0.2px] sm:tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all whitespace-nowrap light:border light:border-[#F0DE38] light:shadow-none"
               >
                 <span className="shrink-0">📖</span>
                 <span className="truncate">READ LIBRARY</span>
@@ -303,8 +303,8 @@ export function MobileLanding() {
               </div>
             </div>
 
-            {/* Secondary Links Row */}
-            <div className="flex items-center gap-4 flex-wrap text-xs">
+            {/* Secondary Links Row - Specific to hero */}
+            <div className="hero-secondary-links flex items-center gap-4 flex-wrap text-xs">
               <Link
                 to="/collections"
                 className="text-[#c9bcae] hover:text-white underline underline-offset-[3px] transition-colors"
@@ -328,7 +328,7 @@ export function MobileLanding() {
             {/* Muse for your Mood CTA Button */}
             <Link
               to="/mood"
-              className="inline-flex items-center gap-2 rounded-[20px] text-[#F0DE38] light:border light:border-[#F0DE38] light:text-black light:shadow-[0_0_14px_rgba(240,222,56,0.5)] px-4 py-2.5 text-xs font-bold hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse mt-6 ml-15"
+              className="inline-flex items-center gap-2 rounded-[20px] border border-[#F0DE38] text-[#F0DE38] px-4 py-2.5 text-xs font-bold shadow-[0_0_14px_rgba(240,222,56,0.5)] hover:bg-[#F0DE38]/10 active:scale-95 transition-all animate-golden-pulse mt-6 ml-15"
             >
               <span>✨</span>
               <span>A MUSE FOR YOUR MOOD</span>

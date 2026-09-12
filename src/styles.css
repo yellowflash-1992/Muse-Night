@@ -594,23 +594,43 @@ html.light a[href="#library"]:hover {
   box-shadow: 0 6px 24px rgba(124, 45, 18, 0.32) !important;
 }
 
-/* Light mode: Muse CTA button keeps its dark-mode border/glow, but text is black */
-html.light a[href="/mood"].animate-golden-pulse {
-  border: 1px solid #f0de38 !important;
-  box-shadow: 0 0 14px rgba(240, 222, 56, 0.5) !important;
+/* Light mode Hero Secondary Links: Underlined text in pure black only inside the hero CTA area */
+html.light .hero-secondary-links a {
   color: #000000 !important;
-  background: transparent !important;
-  text-decoration: none !important;
-  padding: 0.625rem 1rem !important;
-  border-radius: 20px !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+html.light .hero-secondary-links a:hover {
+  color: #000000 !important;
+  opacity: 0.8 !important;
+}
+
+/* Light mode: A MUSE FOR YOUR MOOD button - filled with a luminous sunlit amber/gold color */
+html.light a[href="/mood"][class*="rounded-[20px]"] {
+  background: #fde68a !important; /* Soft sunlit gold fill */
+  border: 1.5px solid #d97706 !important; /* Rich amber border */
+  color: #1a0f05 !important; /* Crisp dark readable text */
+  box-shadow:
+    0 0 16px rgba(245, 158, 11, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.08) !important;
   font-weight: 800 !important;
+}
+html.light a[href="/mood"][class*="rounded-[20px]"] * {
+  color: #1a0f05 !important;
+}
+html.light a[href="/mood"][class*="rounded-[20px]"]:hover {
+  background: #fef08a !important;
+  box-shadow:
+    0 0 24px rgba(245, 158, 11, 0.65),
+    0 4px 10px rgba(0, 0, 0, 0.12) !important;
 }
 
 /* Light mode: READ LIBRARY button keeps golden border, removes swollen shadow */
 html.light a[href="/library"][class*="rounded-[22px]"] {
   border: 1px solid #f0de38 !important;
   box-shadow: none !important;
-  padding-inline: calc(var(--spacing) * 4) !important;
+  padding-inline: calc(var(--spacing) * 2) !important;
 }
 
 /* Light mode: keep hero CTA buttons on one row on mobile */
