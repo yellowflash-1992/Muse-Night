@@ -277,27 +277,27 @@ export function MobileLanding() {
 
           {/* Quick Category Chips / CTA Buttons */}
           <div className="flex flex-col items-start mt-4 space-y-4">
-            {/* Primary Action Buttons Row */}
-            <div className="flex items-center gap-3 flex-wrap">
+            {/* Primary Action Buttons Row - side-by-side responsively on all mobile screens */}
+            <div className="flex items-center gap-2.5 sm:gap-3 w-full max-w-sm">
               {/* Primary CTA Button: READ LIBRARY */}
               <Link
                 to="/library"
-                className="inline-flex items-center gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all light:border light:border-[#F0DE38] light:shadow-none"
+                className="flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] bg-[#E8763B] text-[#2a1408] px-3 sm:px-5 py-3 text-[11.5px] sm:text-[13px] font-bold tracking-[0.2px] sm:tracking-[0.4px] shadow-[0_4px_16px_rgba(232,118,59,0.35)] hover:brightness-105 active:scale-95 transition-all whitespace-nowrap light:border light:border-[#F0DE38] light:shadow-none"
               >
-                <span>📖</span>
-                <span>READ LIBRARY</span>
+                <span className="shrink-0">📖</span>
+                <span className="truncate">READ LIBRARY</span>
               </Link>
 
               {/* Classroom Button with fancy JAMB badge for mobile */}
-              <div className="relative inline-flex">
+              <div className="relative flex-1 min-w-0 inline-flex">
                 <a
                   href="#jamb-waec"
-                  className="inline-flex items-center gap-2 rounded-[22px] bg-[#10B981] text-[#062419] px-5 py-3 text-[13px] font-bold tracking-[0.4px] shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] bg-[#10B981] text-[#062419] px-3 sm:px-5 py-3 text-[11.5px] sm:text-[13px] font-bold tracking-[0.2px] sm:tracking-[0.4px] shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all whitespace-nowrap"
                 >
-                  <span>🎓</span>
-                  <span>CLASSROOM</span>
+                  <span className="shrink-0">🎓</span>
+                  <span className="truncate">CLASSROOM</span>
                 </a>
-                <span className="absolute -top-2.5 -right-1.5 pointer-events-none inline-flex items-center rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#241407] shadow-md border border-white/70 animate-pulse">
+                <span className="absolute -top-2.5 -right-1 pointer-events-none inline-flex items-center rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 px-1.5 sm:px-2 py-0.5 text-[8.5px] sm:text-[9px] font-black uppercase tracking-wider text-[#241407] shadow-md border border-white/70 animate-pulse">
                   JAMB/WAEC
                 </span>
               </div>
