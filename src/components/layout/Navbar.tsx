@@ -620,7 +620,7 @@ export function Navbar() {
       {/* FULLSCREEN MOBILE NAVIGATION DRAWER */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-ink/80 backdrop-blur-md flex flex-col p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div className="w-full max-w-md mx-auto bg-ink-2 border border-neon/20 rounded-2xl py-3 px-4 shadow-2xl flex flex-col h-full max-h-[92vh] overflow-y-auto scrollbar-hide">
+          <div className="w-full max-w-md mx-auto bg-ink-2 border border-neon/20 rounded-2xl py-3 px-4 shadow-2xl flex flex-col h-full max-h-[95vh] overflow-y-auto scrollbar-hide">
             <div className="space-y-5">
               {/* Drawer Header */}
               <div className="flex items-center justify-between border-b border-neon/10 pb-2.5">
@@ -735,7 +735,7 @@ export function Navbar() {
                       >
                         <span className="flex items-center gap-2 font-medium">
                           <Settings className="h-3.5 w-3.5 text-neon" />
-                          Profile &amp; Pen Name
+                          Profile
                         </span>
                         <span className="text-[9px] text-paper-faint">Settings</span>
                       </Link>
