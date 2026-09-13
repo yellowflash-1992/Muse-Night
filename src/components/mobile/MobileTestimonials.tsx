@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { testimonials } from "./mobileLandingData";
+import { testimonials } from "../../data/mobileLandingData";
 
 export function MobileTestimonials() {
   const sliderRef = useRef<HTMLDivElement>(null);

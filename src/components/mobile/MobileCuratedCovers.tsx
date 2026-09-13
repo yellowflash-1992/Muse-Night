@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { POEMS } from "@/data/literature";
-import { coverThemes } from "./mobileLandingData";
+import { coverThemes } from "../../data/mobileLandingData";
 
 export function MobileCuratedCovers() {
   return (

@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
-import { heroLines, panels } from "./mobileLandingData";
+import { heroLines, panels } from "../../data/mobileLandingData";
 
 export function MobileHero() {
   const [lineIndex, setLineIndex] = useState(0);
