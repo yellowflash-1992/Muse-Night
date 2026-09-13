@@ -8,8 +8,7 @@ export const Route = createFileRoute("/vault")({
       { title: "Your Vault — Muse Books" },
       {
         name: "description",
-        content:
-          "Your personal collection of saved poems.",
+        content: "Your personal collection of saved poems.",
       },
     ],
   }),
