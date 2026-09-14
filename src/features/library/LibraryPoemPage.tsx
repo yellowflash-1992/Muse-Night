@@ -516,7 +516,7 @@ export function LibraryPoemPage() {
 
       {/* MOBILE FLOATING READER BAR (Fixed at bottom with spacious responsive spacing on all mobile screens) */}
       <div className="sm:hidden fixed bottom-4 left-2.5 right-2.5 max-w-md mx-auto z-40 bg-ink-2/95 backdrop-blur-md border border-neon/20 rounded-2xl px-3 py-2.5 shadow-2xl flex items-center justify-between gap-1.5">
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             type="button"
             onClick={() =>

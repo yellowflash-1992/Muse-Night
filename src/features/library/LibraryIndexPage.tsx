@@ -8,6 +8,17 @@ export function LibraryIndexPage() {
   const [search, setSearch] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState<string>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [selectedForm, setSelectedForm] = useState<string>("all");
+
+  const poeticForms = ["Free Verse", "Sonnet", "Haiku", "Epistle", "Prose Poetry"] as const;
+
+  const getPoemForm = (p: (typeof LIBRARY_POEMS)[0]) => {
+    if (p.linesCount === 14) return "Sonnet";
+    if (p.tags.includes("Letters") || p.title.toLowerCase().includes("letter")) return "Epistle";
+    if (p.tags.includes("Wonder") || p.linesCount <= 12) return "Haiku";
+    if (p.tags.includes("Travel") || p.tags.includes("Night")) return "Prose Poetry";
+    return "Free Verse";
+  };
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -27,9 +38,12 @@ export function LibraryIndexPage() {
 
       const matchTag = selectedTag === "all" || poem.tags.includes(selectedTag);
 
-      return matchSearch && matchAuthor && matchTag;
+      const matchForm =
+        selectedForm === "all" || getPoemForm(poem).toLowerCase() === selectedForm.toLowerCase();
+
+      return matchSearch && matchAuthor && matchTag && matchForm;
     });
-  }, [search, selectedAuthor, selectedTag]);
+  }, [search, selectedAuthor, selectedTag, selectedForm]);
 
   return (
     <div className="py-12 sm:py-16">
@@ -96,13 +110,13 @@ export function LibraryIndexPage() {
 
           {/* Tag filters - Horizontal scrollable on mobile */}
           <div className="flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
               Themes:
             </span>
             <button
               type="button"
               onClick={() => setSelectedTag("all")}
-              className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 ${
+              className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
                 selectedTag === "all"
                   ? "bg-neon/15 text-neon border border-neon/30 font-medium"
                   : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
@@ -115,13 +129,45 @@ export function LibraryIndexPage() {
                 key={tag}
                 type="button"
                 onClick={() => setSelectedTag(tag)}
-                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 ${
+                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
                   selectedTag === tag
                     ? "bg-neon/15 text-neon border border-neon/30 font-medium"
                     : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
                 }`}
               >
                 #{tag}
+              </button>
+            ))}
+          </div>
+
+          {/* Form filters - Up to 5 poetic forms */}
+          <div className="flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
+              Forms:
+            </span>
+            <button
+              type="button"
+              onClick={() => setSelectedForm("all")}
+              className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
+                selectedForm === "all"
+                  ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
+                  : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
+              }`}
+            >
+              All Forms
+            </button>
+            {poeticForms.map((form) => (
+              <button
+                key={form}
+                type="button"
+                onClick={() => setSelectedForm(form)}
+                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
+                  selectedForm === form
+                    ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
+                    : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
+                }`}
+              >
+                {form}
               </button>
             ))}
           </div>
@@ -142,6 +188,7 @@ export function LibraryIndexPage() {
                   setSearch("");
                   setSelectedAuthor("all");
                   setSelectedTag("all");
+                  setSelectedForm("all");
                 }}
                 className="mt-4 px-4 py-1.5 text-xs uppercase tracking-[0.2em] bg-neon text-ink rounded hover:bg-neon/90"
               >
@@ -153,23 +200,28 @@ export function LibraryIndexPage() {
               {filteredPoems.map((poem) => (
                 <article
                   key={poem.id}
-                  className="group rounded-lg border border-neon/15 bg-ink-2 p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1"
+                  className="group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
                 >
-                  <div>
-                    <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors">
-                      <Link to="/library/$id" params={{ id: poem.id }}>
-                        {poem.title}
-                      </Link>
-                    </h2>
+                  <div className="min-w-0 overflow-hidden">
+                    <div className="flex items-start justify-between gap-2">
+                      <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2 break-words min-w-0">
+                        <Link to="/library/$id" params={{ id: poem.id }}>
+                          {poem.title}
+                        </Link>
+                      </h2>
+                      <span className="shrink-0 rounded bg-neon/10 px-2 py-0.5 text-[9.5px] uppercase tracking-wider text-neon font-mono border border-neon/20">
+                        {getPoemForm(poem)}
+                      </span>
+                    </div>
 
-                    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-paper-faint">
+                    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-paper-faint truncate">
                       Collection: {poem.collection} ({poem.year})
                     </p>
 
                     {/* First stanza preview */}
-                    <div className="mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3">
+                    <div className="mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3 overflow-hidden min-w-0">
                       {poem.stanzas[0]?.slice(0, 3).map((line, lIdx) => (
-                        <p key={lIdx} className="truncate">
+                        <p key={lIdx} className="truncate block w-full">
                           {line}
                         </p>
                       ))}
@@ -179,18 +231,18 @@ export function LibraryIndexPage() {
                     </div>
 
                     <div className="mt-4 flex items-center justify-between border-t border-neon/10 pt-3 text-[11px] uppercase tracking-[0.2em] text-paper-faint">
-                      <span className="text-neon/80">{poem.author}</span>
-                      <span>{poem.readTime}</span>
+                      <span className="text-neon/80 font-medium truncate mr-2">{poem.author}</span>
+                      <span className="shrink-0">{poem.readTime}</span>
                     </div>
 
                     {/* Tags */}
-                    <div className="mt-5 flex flex-wrap gap-1.5">
+                    <div className="mt-4 flex flex-wrap gap-1.5 overflow-hidden">
                       {poem.tags.map((t) => (
                         <span
                           key={t}
-                          className="text-[10px] uppercase tracking-[0.15em] bg-ink px-2 py-0.5 rounded text-paper-faint border border-neon/10"
+                          className="text-[10px] uppercase tracking-[0.12em] bg-ink px-2 py-0.5 rounded text-paper-faint border border-neon/10 shrink-0"
                         >
-                          {t}
+                          #{t}
                         </span>
                       ))}
                     </div>

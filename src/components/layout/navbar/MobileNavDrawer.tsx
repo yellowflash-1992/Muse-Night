@@ -13,8 +13,8 @@ import {
 import type { RefObject } from "react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
+import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
-import { hubItems, topLinks } from "./navItemsData";
 
 interface MobileNavDrawerProps {
   mobileOpen: boolean;
