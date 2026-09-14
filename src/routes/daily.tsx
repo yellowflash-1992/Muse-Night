@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { DailyPage } from "@/features/daily/DailyPage";
+import { DailyPage } from "@/features/game/DailyPage";
 
 export const Route = createFileRoute("/daily")({
   head: () => ({
@@ -8,8 +8,7 @@ export const Route = createFileRoute("/daily")({
       { title: "Poetry Game — Muse Books" },
       {
         name: "description",
-        content:
-          "Poetry battles and six-word story challenges to unlock bonus poems.",
+        content: "Poetry battles and six-word story challenges to unlock bonus poems.",
       },
     ],
   }),
