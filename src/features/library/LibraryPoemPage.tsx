@@ -217,11 +217,7 @@ export function LibraryPoemPage() {
   let globalLineCount = 0;
 
   return (
-    <div
-      className={`min-h-screen text-paper transition-colors duration-500 ${
-        warmMode ? "bg-[#18110b]" : "bg-ink"
-      }`}
-    >
+    <div className="min-h-screen bg-ink text-paper">
       <div className="mx-auto max-w-xl px-5 sm:px-6 pt-24 pb-20 space-y-8">
         {/* Simple Top Navigation Bar */}
         <div className="flex items-center justify-between py-2">
@@ -256,9 +252,36 @@ export function LibraryPoemPage() {
         </div>
 
         {/* Poem Reader Body */}
-        <div className="rounded-3xl border border-neon/15 bg-ink-2/80 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div
+          className={`rounded-3xl border p-6 sm:p-10 relative overflow-hidden transition-all duration-500 ${
+            warmMode
+              ? "bg-gradient-to-b from-[#25180f] via-[#1d120a] to-[#140b05] border-amber-400/40 shadow-[0_0_45px_rgba(251,191,36,0.22)] ring-1 ring-amber-400/20"
+              : "border-neon/15 bg-ink-2/80 shadow-2xl"
+          }`}
+        >
+          {warmMode && (
+            <>
+              {/* Warm Lamplight Overhead Aura */}
+              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gradient-to-b from-amber-400/20 via-amber-300/10 to-transparent blur-3xl" />
+              {/* Subtle Amber Edge Light */}
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.1),transparent_70%)]" />
+            </>
+          )}
+
+          {/* Warm Mode Active Indicator */}
+          {warmMode && (
+            <div className="mb-4 flex items-center justify-end">
+              <span className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-amber-300/90 font-mono bg-amber-400/10 border border-amber-400/25 px-2.5 py-0.5 rounded-full">
+                <Sparkles className="h-3 w-3 text-amber-300 animate-pulse" />
+                Lamplit Glow
+              </span>
+            </div>
+          )}
+
           <div
-            className={`font-display italic leading-[2.2rem] text-paper space-y-6 ${
+            className={`font-display italic leading-[2.2rem] space-y-6 transition-colors duration-300 ${
+              warmMode ? "text-[#fffbeb] drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]" : "text-paper"
+            } ${
               fontSize === "sm"
                 ? "text-base sm:text-lg leading-[2rem]"
                 : fontSize === "lg"
@@ -284,7 +307,9 @@ export function LibraryPoemPage() {
                         }}
                         className={`text-left w-full transition-colors ${
                           hasNote
-                            ? "underline decoration-dotted decoration-neon/50 underline-offset-[5px] hover:decoration-neon hover:text-neon cursor-pointer"
+                            ? warmMode
+                              ? "underline decoration-dotted decoration-amber-400/60 underline-offset-[5px] hover:decoration-amber-300 hover:text-amber-200 cursor-pointer"
+                              : "underline decoration-dotted decoration-neon/50 underline-offset-[5px] hover:decoration-neon hover:text-neon cursor-pointer"
                             : "cursor-default"
                         }`}
                       >
@@ -292,8 +317,18 @@ export function LibraryPoemPage() {
                       </button>
 
                       {hasNote && openLine === lineIdx && (
-                        <div className="my-3 ml-1 pl-4 border-l-2 border-neon/50 bg-neon/5 py-2.5 px-3.5 rounded-r-xl animate-in fade-in space-y-1 not-italic">
-                          <p className="text-xs font-sans text-neon font-semibold flex items-center gap-1.5">
+                        <div
+                          className={`my-3 ml-1 pl-4 border-l-2 py-2.5 px-3.5 rounded-r-xl animate-in fade-in space-y-1 not-italic ${
+                            warmMode
+                              ? "border-amber-400/70 bg-amber-400/10"
+                              : "border-neon/50 bg-neon/5"
+                          }`}
+                        >
+                          <p
+                            className={`text-xs font-sans font-semibold flex items-center gap-1.5 ${
+                              warmMode ? "text-amber-300" : "text-neon"
+                            }`}
+                          >
                             <Sparkles className="h-3 w-3" />
                             <span>{noteData.count} readers felt this line too</span>
                           </p>
@@ -479,27 +514,27 @@ export function LibraryPoemPage() {
         </div>
       )}
 
-      {/* MOBILE FLOATING READER BAR (Fixed at bottom for easy one-handed mobile reading) */}
-      <div className="sm:hidden fixed bottom-4 left-4 right-4 z-40 bg-ink-2/95 backdrop-blur-md border border-neon/20 rounded-2xl px-4 py-2.5 shadow-2xl flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      {/* MOBILE FLOATING READER BAR (Fixed at bottom with spacious responsive spacing on all mobile screens) */}
+      <div className="sm:hidden fixed bottom-4 left-2.5 right-2.5 max-w-md mx-auto z-40 bg-ink-2/95 backdrop-blur-md border border-neon/20 rounded-2xl px-3 py-2.5 shadow-2xl flex items-center justify-between gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             type="button"
             onClick={() =>
               setFontSize((prev) => (prev === "sm" ? "base" : prev === "base" ? "lg" : "sm"))
             }
-            className="px-2.5 py-1 rounded-full bg-ink border border-neon/20 text-xs text-paper"
+            className="px-2 py-1 rounded-full bg-ink border border-neon/20 text-[11px] text-paper font-mono shrink-0 whitespace-nowrap active:scale-95 transition"
             title="Toggle text size"
           >
-            Size: {fontSize.toUpperCase()}
+            Aa · {fontSize.toUpperCase()}
           </button>
           <button
             type="button"
             onClick={() => setWarmMode(!warmMode)}
             aria-pressed={warmMode}
-            className={`p-1.5 rounded-full border ${
+            className={`p-1.5 rounded-full border shrink-0 transition active:scale-95 ${
               warmMode
-                ? "border-amber-400 bg-amber-400/20 text-amber-200"
-                : "border-neon/20 bg-ink text-paper-dim"
+                ? "border-amber-400 bg-amber-400/20 text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                : "border-neon/20 bg-ink text-paper-dim hover:text-paper"
             }`}
             title="Toggle warm lamplight mode"
           >
@@ -509,7 +544,7 @@ export function LibraryPoemPage() {
         <button
           type="button"
           onClick={() => setShareOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ink border border-neon/20 text-xs font-medium uppercase tracking-[0.15em] text-paper-dim hover:text-neon cursor-pointer"
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink border border-neon/20 text-[11px] font-medium uppercase tracking-[0.12em] text-paper-dim hover:text-neon cursor-pointer shrink-0 active:scale-95 transition"
           title="Share poem card"
         >
           <Share2 className="h-3.5 w-3.5" />
@@ -522,7 +557,7 @@ export function LibraryPoemPage() {
             setToast(saved ? "Removed from your reading vault" : "Saved to your reading vault");
             setTimeout(() => setToast(null), 2500);
           }}
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ink border border-neon/20 text-xs font-medium uppercase tracking-[0.15em] text-paper-dim hover:text-neon cursor-pointer ${
+          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink border border-neon/20 text-[11px] font-medium uppercase tracking-[0.12em] text-paper-dim hover:text-neon cursor-pointer shrink-0 active:scale-95 transition ${
             saved ? "text-amber-300 border-amber-400/40" : ""
           }`}
           title={saved ? "Remove from vault" : "Save to vault"}
