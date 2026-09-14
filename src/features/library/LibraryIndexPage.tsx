@@ -10,13 +10,36 @@ export function LibraryIndexPage() {
   const [selectedTag, setSelectedTag] = useState<string>("all");
   const [selectedForm, setSelectedForm] = useState<string>("all");
 
-  const poeticForms = ["Free Verse", "Sonnet", "Haiku", "Epistle", "Prose Poetry"] as const;
+  const poeticForms = [
+    { label: "Free Verse", detail: "Open Form" },
+    { label: "Sonnet", detail: "14 Lines" },
+    { label: "Haiku", detail: "3 Lines · 5-7-5" },
+    { label: "Epistle", detail: "Verse Letter" },
+    { label: "Prose Poetry", detail: "Poetic Prose" },
+  ] as const;
 
   const getPoemForm = (p: (typeof LIBRARY_POEMS)[0]) => {
-    if (p.linesCount === 14) return "Sonnet";
-    if (p.tags.includes("Letters") || p.title.toLowerCase().includes("letter")) return "Epistle";
-    if (p.tags.includes("Wonder") || p.linesCount <= 12) return "Haiku";
-    if (p.tags.includes("Travel") || p.tags.includes("Night")) return "Prose Poetry";
+    // 1. Haiku: strictly 3 lines (traditional 5-7-5 syllables)
+    if (p.linesCount === 3 || p.tags.includes("Haiku") || p.title.toLowerCase().includes("haiku")) {
+      return "Haiku";
+    }
+    // 2. Sonnet: classical 14 lines
+    if (p.linesCount === 14 || p.tags.includes("Sonnet")) {
+      return "Sonnet";
+    }
+    // 3. Epistle: Letter in verse
+    if (
+      p.tags.includes("Letters") ||
+      p.tags.includes("Epistle") ||
+      p.title.toLowerCase().includes("letter")
+    ) {
+      return "Epistle";
+    }
+    // 4. Prose Poetry: Poetic prose & narrative entries
+    if (p.tags.includes("Prose") || p.tags.includes("Travel") || p.tags.includes("Maps")) {
+      return "Prose Poetry";
+    }
+    // 5. Free Verse: Open form non-metrical poetry
     return "Free Verse";
   };
 
@@ -140,7 +163,7 @@ export function LibraryIndexPage() {
             ))}
           </div>
 
-          {/* Form filters - Up to 5 poetic forms */}
+          {/* Form filters - Up to 5 poetic forms with structural notes */}
           <div className="flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
             <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
               Forms:
@@ -158,16 +181,17 @@ export function LibraryIndexPage() {
             </button>
             {poeticForms.map((form) => (
               <button
-                key={form}
+                key={form.label}
                 type="button"
-                onClick={() => setSelectedForm(form)}
-                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
-                  selectedForm === form
+                onClick={() => setSelectedForm(form.label)}
+                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                  selectedForm === form.label
                     ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
                     : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
                 }`}
               >
-                {form}
+                <span>{form.label}</span>
+                <span className="text-[9.5px] font-mono text-paper-faint/80">({form.detail})</span>
               </button>
             ))}
           </div>
@@ -235,16 +259,33 @@ export function LibraryIndexPage() {
                       <span className="shrink-0">{poem.readTime}</span>
                     </div>
 
-                    {/* Tags */}
-                    <div className="mt-4 flex flex-wrap gap-1.5 overflow-hidden">
-                      {poem.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="text-[10px] uppercase tracking-[0.12em] bg-ink px-2 py-0.5 rounded text-paper-faint border border-neon/10 shrink-0"
-                        >
-                          #{t}
-                        </span>
-                      ))}
+                    {/* Tags / Themes: enters next line when more than 3 */}
+                    <div className="mt-4 space-y-1.5 w-full">
+                      {/* Row 1: up to 3 tags */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {poem.tags.slice(0, 3).map((t) => (
+                          <span
+                            key={t}
+                            className="text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Row 2: enters next line when more than 3 */}
+                      {poem.tags.length > 3 && (
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                          {poem.tags.slice(3).map((t) => (
+                            <span
+                              key={t}
+                              className="text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 

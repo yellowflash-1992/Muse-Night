@@ -545,6 +545,42 @@ export const LIBRARY_POEMS: Poem[] = [
     ],
     note: "Placeholder work for the InkbyNur archive.",
   },
+  {
+    id: "lamplit-midnight-haiku",
+    title: "Midnight Ember (Haiku)",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "A Field Guide to Small Wonders",
+    collectionId: "a-field-guide-to-small-wonders",
+    year: "2024",
+    linesCount: 3,
+    readTime: "30 sec",
+    tags: ["Haiku", "Night", "Silence", "Writing"],
+    stanzas: [
+      ["Single lamp burns low,", "Ink drinks the unsaid quiet,", "Dawn waits at the door."],
+    ],
+    note: "Traditional 3-line Japanese haiku structure (5-7-5 syllables).",
+  },
+  {
+    id: "coastal-letters-haiku",
+    title: "First Frost (Haiku)",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 3,
+    readTime: "30 sec",
+    tags: ["Haiku", "Winter", "Letters", "Memory"],
+    stanzas: [
+      [
+        "Cold wind through the pines,",
+        "Letters waiting in the drawer,",
+        "Silence learns your name.",
+      ],
+    ],
+    note: "Traditional 3-line Japanese haiku structure (5-7-5 syllables).",
+  },
 ];
 
 export const COLLECTIONS: Collection[] = [

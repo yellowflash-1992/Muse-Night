@@ -752,3 +752,12 @@ html.light article.group:hover {
   border-color: rgba(254, 240, 138, 0.65) !important;
   box-shadow: 0 8px 26px rgba(124, 45, 18, 0.28) !important;
 }
+
+/* Light mode Library poem card tags styling */
+html.light article.group span[class*="bg-ink"] {
+  background: rgba(255, 255, 255, 0.32) !important;
+  color: #1a0f05 !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+}
