@@ -223,95 +223,36 @@ export function LibraryPoemPage() {
       }`}
     >
       <div className="mx-auto max-w-xl px-5 sm:px-6 pt-24 pb-20 space-y-8">
-        {/* Simple Floating / Sticky Top Bar */}
-        <div className="sticky top-20 z-30 rounded-2xl border border-neon/20 bg-ink-2/90 backdrop-blur-xl px-4 py-3 shadow-xl flex items-center justify-between">
+        {/* Simple Top Navigation Bar */}
+        <div className="flex items-center justify-between py-2">
           <Link
             to="/library"
-            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-paper-dim hover:text-neon transition"
+            className="inline-flex items-center gap-2 rounded-full border border-neon/20 bg-ink-2/80 hover:bg-neon/10 hover:border-neon/40 px-3.5 py-1.5 text-xs uppercase tracking-[0.18em] text-paper-dim hover:text-paper transition-all shadow-sm cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
-            <span>Back</span>
+            <ArrowLeft className="w-4 h-4 text-neon" strokeWidth={1.5} />
+            <span>Back to archive</span>
           </Link>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() =>
-                setFontSize(fontSize === "sm" ? "base" : fontSize === "base" ? "lg" : "sm")
-              }
-              className="rounded-full border border-neon/20 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-paper-dim hover:border-neon hover:text-paper transition cursor-pointer"
-              title="Toggle font size"
-            >
-              {fontSize.toUpperCase()}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setWarmMode(!warmMode)}
-              className={`rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] transition cursor-pointer ${
-                warmMode
-                  ? "border-amber-400/50 bg-amber-400/15 text-amber-200"
-                  : "border-neon/20 text-paper-dim hover:border-neon hover:text-paper"
-              }`}
-              title="Toggle warm lamplight mode"
-            >
-              {warmMode ? "Warm" : "Quiet"}
-            </button>
-
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="rounded-full border border-neon/20 p-2 text-paper-dim hover:border-neon hover:text-paper transition cursor-pointer"
-              title="Copy complete poem"
-            >
-              {copied ? (
-                <Check className="w-4 h-4 text-neon" strokeWidth={1.5} />
-              ) : (
-                <Copy className="w-4 h-4" strokeWidth={1.5} />
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setShareOpen(true)}
-              className="rounded-full border border-neon/20 p-2 text-paper-dim hover:border-neon hover:text-paper transition cursor-pointer"
-              title="Share card with background"
-            >
-              <Share2 className="w-4 h-4" strokeWidth={1.5} />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setSaved(!saved);
-                setToast(saved ? "Removed from your reading vault" : "Saved to your reading vault");
-                setTimeout(() => setToast(null), 2500);
-              }}
-              className={`rounded-full border p-2 transition cursor-pointer ${
-                saved
-                  ? "border-amber-400/50 bg-amber-400/15 text-amber-300"
-                  : "border-neon/20 text-paper-dim hover:border-neon hover:text-paper"
-              }`}
-              title={saved ? "Saved in Vault" : "Bookmark to Vault"}
-            >
-              <Bookmark
-                className="w-4 h-4"
-                strokeWidth={1.5}
-                fill={saved ? "currentColor" : "none"}
-              />
-            </button>
-          </div>
         </div>
 
         {/* Title Header */}
-        <div className="text-center space-y-2 pt-2 pb-4">
-          <span className="text-[10px] uppercase tracking-[0.24em] text-neon/80 font-medium">
-            From “{poem.collection}” · {poem.readTime}
-          </span>
-          <h1 className="font-display italic text-3xl sm:text-5xl text-paper text-balance">
+        <div className="text-center space-y-3 pt-2 pb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-neon/25 bg-neon/10 px-3.5 py-1 text-[10px] uppercase tracking-[0.22em] text-neon font-medium shadow-sm">
+            <Feather className="h-3 w-3 animate-pulse" />
+            <span>
+              From “{poem.collection}” · {poem.year}
+            </span>
+          </div>
+          <h1 className="font-display italic text-4xl sm:text-6xl text-paper tracking-[-0.01em] leading-[1.12] text-balance drop-shadow-sm">
             {poem.title}
           </h1>
-          <p className="text-xs sm:text-sm text-paper-dim font-medium pt-1">by {poem.author}</p>
+          <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs font-karla text-paper-dim">
+            <span className="font-medium text-paper">by {poem.author}</span>
+            <span className="hidden sm:inline text-paper-faint">·</span>
+            <span className="text-paper-faint font-mono text-[11px]">
+              {poem.linesCount} lines · {poem.readTime} read
+            </span>
+          </div>
+          <div className="w-14 h-0.5 bg-gradient-to-r from-transparent via-neon/40 to-transparent mx-auto mt-3" />
         </div>
 
         {/* Poem Reader Body */}
@@ -372,23 +313,42 @@ export function LibraryPoemPage() {
             Tap an underlined line to see what it made others feel
           </p>
 
-          {/* Previous / Next Navigation inside card */}
-          <div className="mt-8 pt-6 border-t border-neon/10 flex items-center justify-between text-xs font-sans not-italic">
+          {/* Previous / Next Editorial Navigation Cards */}
+          <div className="mt-10 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-3.5 not-italic font-sans">
+            {/* Previous Poem Card */}
             <Link
               to="/library/$id"
               params={{ id: prevPoem.id }}
-              className="inline-flex items-center gap-1.5 text-paper-dim hover:text-neon transition"
+              className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>{prevPoem.title}</span>
+              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
+                <span>Previous Work</span>
+              </div>
+              <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                “{prevPoem.title}”
+              </p>
+              <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                by {prevPoem.author}
+              </span>
             </Link>
+
+            {/* Next Poem Card */}
             <Link
               to="/library/$id"
               params={{ id: nextPoem.id }}
-              className="inline-flex items-center gap-1.5 text-paper-dim hover:text-neon transition"
+              className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left sm:text-right"
             >
-              <span>{nextPoem.title}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <div className="flex items-center justify-start sm:justify-end gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                <span>Next Work</span>
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                “{nextPoem.title}”
+              </p>
+              <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                by {nextPoem.author}
+              </span>
             </Link>
           </div>
         </div>
