@@ -633,11 +633,6 @@ html.light a[href="/library"][class*="rounded-[22px]"] {
   padding-inline: calc(var(--spacing) * 2) !important;
 }
 
-/* Light mode: keep hero CTA buttons on one row on mobile */
-html.light main .flex-wrap {
-  flex-wrap: nowrap !important;
-}
-
 /* Light Mode: Academic Emerald Classroom Button with solid deep emerald fill & pure white text */
 html.light a[href="#jamb-waec"] {
   background: #047857 !important;
@@ -739,18 +734,6 @@ html.light button[aria-label*="quote"] {
   background: rgba(255, 255, 255, 0.3) !important;
   color: #241407 !important;
   border-color: rgba(255, 255, 255, 0.6) !important;
-}
-
-/* Light mode Library Archive cards boundary protection */
-html.light article.group {
-  overflow: hidden !important;
-  border-color: rgba(254, 240, 138, 0.35) !important;
-  background: rgba(198, 94, 46, 0.95) !important;
-  box-shadow: 0 4px 18px rgba(124, 45, 18, 0.18) !important;
-}
-html.light article.group:hover {
-  border-color: rgba(254, 240, 138, 0.65) !important;
-  box-shadow: 0 8px 26px rgba(124, 45, 18, 0.28) !important;
 }
 
 /* Light mode Library poem card tags styling */

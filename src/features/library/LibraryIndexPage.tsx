@@ -259,33 +259,16 @@ export function LibraryIndexPage() {
                       <span className="shrink-0">{poem.readTime}</span>
                     </div>
 
-                    {/* Tags / Themes: enters next line when more than 3 */}
-                    <div className="mt-4 space-y-1.5 w-full">
-                      {/* Row 1: up to 3 tags */}
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {poem.tags.slice(0, 3).map((t) => (
-                          <span
-                            key={t}
-                            className="text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
-                          >
-                            #{t}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Row 2: enters next line when more than 3 */}
-                      {poem.tags.length > 3 && (
-                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                          {poem.tags.slice(3).map((t) => (
-                            <span
-                              key={t}
-                              className="text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
-                            >
-                              #{t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                    {/* Tags / Themes */}
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {poem.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="inline-block max-w-full text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
+                        >
+                          #{t}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
