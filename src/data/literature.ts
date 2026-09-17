@@ -65,9 +65,14 @@ export interface Poet {
   longBio: string;
   aesthetic: string;
   works: string[];
+  literaryIdentity?: string;
   penNames?: string[];
   image?: string;
-  voices?: { name: string; title: string; description: string }[] | undefined;
+  voices?: {
+    name: string;
+    title: string;
+    description: string;
+  }[];
 }
 
 import poetTheo from "@/assets/poet-theo.jpg";
@@ -91,34 +96,35 @@ export const POETS: Record<string, Poet> = {
     id: "muhammad-abdulnasir",
     penName: "Irshand",
     legalName: "Muhammad AbdulNasir",
-    role: "Poet & Child of the Wilderness",
+    role: "Poet & Literary Voice",
+    literaryIdentity: "Child of the Wilderness",
     bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art.\nAttuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within.\nHis work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants.\nHe writes to spark introspection, break inertia, and craft impressions that outlast time.\nIrshand is a living sanctuary—not merely a name.\nThere, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
     longBio:
       "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad—an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
     aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
     works: ["irshand", "SEREIN-SERENE", "APORIA", "WANDERA", "ELYON"],
-    penNames: ["irshand", "serein-serene", "aporia", "wandera", "elyon"],
+    penNames: ["Irshand", "Aporia", "Serein", "Elyon", "Wandera"],
     image: poetTheo,
     voices: [
       {
-        name: "SEREIN-SERENE",
-        title: "The Twilight",
-        description: "Rain from a cloudless sky; peaceful and melancholic.",
-      },
-      {
-        name: "APORIA",
+        name: "Aporia",
         title: "The Logic-Puzzle",
         description: "Where the programmer meets the philosopher in deadlock.",
       },
       {
-        name: "WANDERA",
-        title: "The Nomad",
-        description: "The restless spirit searching the outskirts.",
+        name: "Serein",
+        title: "The Twilight",
+        description: "Rain from a cloudless sky; peaceful and melancholic.",
       },
       {
-        name: "ELYON",
+        name: "Elyon",
         title: "The Ethereal",
         description: "The voice looking down from the highest peaks.",
+      },
+      {
+        name: "Wandera",
+        title: "The Nomad",
+        description: "The restless spirit searching the outskirts.",
       },
     ],
   },
@@ -384,7 +390,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "under-the-first-green",
     title: "Under the First Green",
-    author: "irshand",
+    author: "Irshand",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
@@ -406,7 +412,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "wandera-field-notes",
     title: "Wandera: Field Notes",
-    author: "wander",
+    author: "Wandera",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
@@ -428,7 +434,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "aporia-at-the-threshold",
     title: "Aporia at the Threshold",
-    author: "aporia",
+    author: "Aporia",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
@@ -450,7 +456,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "serein-after-rain",
     title: "Serein After Rain",
-    author: "serein",
+    author: "Serein",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
@@ -472,7 +478,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "elyon-the-high-place",
     title: "Elyon, the High Place",
-    author: "elyon",
+    author: "Elyon",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
@@ -494,7 +500,7 @@ export const LIBRARY_POEMS: Poem[] = [
   {
     id: "the-wondering-kite",
     title: "The Wondering Kite",
-    author: "irshand",
+    author: "Irshand",
     authorId: "muhammad-abdulnasir",
     collection: "Child of the Wilderness",
     collectionId: "child-of-the-wilderness",
