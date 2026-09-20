@@ -45,8 +45,12 @@ export function LibraryIndexPage() {
             Library &amp; Archive
           </h1>
           <p className="mt-4 text-base sm:text-lg text-paper-dim max-w-[56ch] text-pretty">
-            An archive of poems, prose poetry, epistles, and literary works — from our two founding
-            poets and invited contributors writing by lamplight.
+            An archive of poems such as <span className="text-neon font-medium">sonnets</span>,{" "}
+            <span className="text-neon font-medium">haiku</span>,{" "}
+            <span className="text-neon font-medium">free verse</span>,{" "}
+            <span className="text-neon font-medium">epistles</span>,{" "}
+            <span className="text-neon font-medium">prose poetry</span>, and other literary forms —
+            from our founding poets and invited contributors writing by lamplight.
           </p>
         </div>
 

@@ -1,18 +1,5 @@
 import { Link, useParams, useSearch } from "@tanstack/react-router";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Bookmark,
-  Check,
-  Copy,
-  Download,
-  Feather,
-  Heart,
-  Send,
-  Share2,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import {
@@ -25,19 +12,13 @@ import {
 import { getLibraryPoemById, getLiteraryWorldById, LIBRARY_POEMS } from "@/data/literature";
 import { useAuth } from "@/hooks/useAuth";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
-
-const cardFormats: Record<string, string> = {
-  Square: "aspect-square w-full max-w-[240px]",
-  Story: "aspect-[9/16] w-[170px]",
-  Pin: "aspect-[2/3] w-[190px]",
-};
-
-const moodGradients: Record<string, string> = {
-  reflective: "bg-gradient-to-br from-teal-950 via-slate-900 to-ink",
-  grief: "bg-gradient-to-br from-purple-950 via-slate-900 to-ink",
-  love: "bg-gradient-to-br from-rose-950 via-slate-900 to-ink",
-  joy: "bg-gradient-to-br from-amber-950 via-slate-900 to-ink",
-};
+import { formatPoemCitation } from "./lib/share";
+import { useToast } from "./lib/useToast";
+import { LibraryPoemReactions } from "./LibraryPoemReactions";
+import { LibraryPoemReader } from "./LibraryPoemReader";
+import { LibraryPoemReflections } from "./LibraryPoemReflections";
+import { type CardFormat, type CardMood, LibraryPoemShareSheet } from "./LibraryPoemShareSheet";
+import { LibraryReaderControlsBar } from "./LibraryReaderControlsBar";
 
 export function LibraryPoemPage() {
   const { id } = useParams({ from: "/library/$id" });
@@ -54,14 +35,12 @@ export function LibraryPoemPage() {
   const [openLine, setOpenLine] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
-  const [selectedMood, setSelectedMood] = useState<"reflective" | "grief" | "love" | "joy">(
-    "reflective",
-  );
-  const [cardFormat, setCardFormat] = useState<"Square" | "Story" | "Pin">("Square");
+  const [selectedMood, setSelectedMood] = useState<CardMood>("reflective");
+  const [cardFormat, setCardFormat] = useState<CardFormat>("Square");
   const [reactedEmoji, setReactedEmoji] = useState<string | null>(null);
   const [note, setNote] = useState("");
   const [anonymous, setAnonymous] = useState(true);
-  const [toast, setToast] = useState<string | null>(null);
+  const { toast, showToast } = useToast();
 
   const [reactions, setReactions] = useState<ReaderReaction[]>(() => [...INITIAL_READER_REACTIONS]);
 
@@ -103,7 +82,7 @@ export function LibraryPoemPage() {
   const cardExcerpt = poem.stanzas[0]?.slice(0, 3).join("\n") ?? "";
 
   const handleCopy = async () => {
-    const text = `"${poem.title}"\nby ${poem.author}\n\n${poem.stanzas.map((s) => s.join("\n")).join("\n\n")}\n\n(via Muse Night)`;
+    const text = formatPoemCitation(poem);
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -126,8 +105,7 @@ export function LibraryPoemPage() {
       }
     } else {
       handleCopy();
-      setToast("Poem text copied to clipboard!");
-      setTimeout(() => setToast(null), 2500);
+      showToast("Poem text copied to clipboard!");
     }
   };
 
@@ -183,16 +161,12 @@ export function LibraryPoemPage() {
 
     setReflections([newReflection, ...reflections]);
     setNote("");
-    setToast("Your reflection has been shared by lamplight.");
-    setTimeout(() => setToast(null), 3000);
+    showToast("Your reflection has been shared by lamplight.", 3000);
   };
-
-  // Helper counter for global line indexing across stanzas
-  let globalLineCount = 0;
 
   return (
     <div className="min-h-screen bg-ink text-paper">
-      <div className="mx-auto max-w-xl px-5 sm:px-6 pt-24 pb-20 space-y-8">
+      <div className="mx-auto max-w-xl px-5 sm:px-6 pt-12 pb-20 space-y-8">
         {/* Simple Top Navigation Bar */}
         <div className="flex items-center justify-between py-2">
           <Link
@@ -242,94 +216,14 @@ export function LibraryPoemPage() {
               : "border-neon/15 bg-ink-2/80 shadow-2xl"
           }`}
         >
-          {warmMode && (
-            <>
-              {/* Warm Lamplight Overhead Aura */}
-              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gradient-to-b from-amber-400/20 via-amber-300/10 to-transparent blur-3xl" />
-              {/* Subtle Amber Edge Light */}
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.1),transparent_70%)]" />
-            </>
-          )}
-
-          {/* Warm Mode Active Indicator */}
-          {warmMode && (
-            <div className="mb-4 flex items-center justify-end">
-              <span className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-amber-300/90 font-mono bg-amber-400/10 border border-amber-400/25 px-2.5 py-0.5 rounded-full">
-                <Sparkles className="h-3 w-3 text-amber-300 animate-pulse" />
-                Lamplit Glow
-              </span>
-            </div>
-          )}
-
-          <div
-            className={`font-display italic leading-[2.2rem] space-y-6 transition-colors duration-300 ${
-              warmMode ? "text-[#fffbeb] drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]" : "text-paper"
-            } ${
-              fontSize === "sm"
-                ? "text-base sm:text-lg leading-[2rem]"
-                : fontSize === "lg"
-                  ? "text-xl sm:text-2xl leading-[2.5rem]"
-                  : "text-lg sm:text-xl leading-[2.2rem]"
-            }`}
-          >
-            {poem.stanzas.map((stanza, sIdx) => (
-              <div key={sIdx} className="space-y-1">
-                {stanza.map((line) => {
-                  const lineIdx = globalLineCount++;
-                  const noteData = lineNotes[lineIdx];
-                  const hasNote = !!noteData;
-
-                  return (
-                    <div key={lineIdx}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (hasNote) {
-                            setOpenLine(openLine === lineIdx ? null : lineIdx);
-                          }
-                        }}
-                        className={`text-left w-full transition-colors ${
-                          hasNote
-                            ? warmMode
-                              ? "underline decoration-dotted decoration-amber-400/60 underline-offset-[5px] hover:decoration-amber-300 hover:text-amber-200 cursor-pointer"
-                              : "underline decoration-dotted decoration-neon/50 underline-offset-[5px] hover:decoration-neon hover:text-neon cursor-pointer"
-                            : "cursor-default"
-                        }`}
-                      >
-                        {line}
-                      </button>
-
-                      {hasNote && openLine === lineIdx && (
-                        <div
-                          className={`my-3 ml-1 pl-4 border-l-2 py-2.5 px-3.5 rounded-r-xl animate-in fade-in space-y-1 not-italic ${
-                            warmMode
-                              ? "border-amber-400/70 bg-amber-400/10"
-                              : "border-neon/50 bg-neon/5"
-                          }`}
-                        >
-                          <p
-                            className={`text-xs font-sans font-semibold flex items-center gap-1.5 ${
-                              warmMode ? "text-amber-300" : "text-neon"
-                            }`}
-                          >
-                            <Sparkles className="h-3 w-3" />
-                            <span>{noteData.count} readers felt this line too</span>
-                          </p>
-                          <p className="text-sm font-sans text-paper-dim leading-relaxed">
-                            “{noteData.excerpt}”
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-paper-faint mt-8 text-center font-sans not-italic">
-            Tap an underlined line to see what it made others feel
-          </p>
+          <LibraryPoemReader
+            poem={poem}
+            fontSize={fontSize}
+            warmMode={warmMode}
+            openLine={openLine}
+            lineNotes={lineNotes}
+            onToggleLineNote={(lineIdx) => setOpenLine(openLine === lineIdx ? null : lineIdx)}
+          />
 
           {/* Previous / Next Editorial Navigation Cards */}
           {/* Previous / Next Editorial Navigation Cards */}
@@ -387,121 +281,25 @@ export function LibraryPoemPage() {
         </div>
 
         {/* Reactions — Simple Emoji Options */}
-        <div className="flex justify-center gap-2.5 pt-4 pb-2 flex-wrap">
-          {reactions.map((r) => (
-            <button
-              key={r.emoji}
-              type="button"
-              onClick={() => toggleReaction(r.emoji)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-medium transition cursor-pointer active:scale-95 ${
-                reactedEmoji === r.emoji
-                  ? "bg-amber-400/15 border-amber-400/50 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.25)]"
-                  : "border-neon/20 bg-ink-2/60 text-paper-dim hover:border-neon hover:text-paper"
-              }`}
-            >
-              <span className="text-base leading-none">{r.emoji}</span>
-              <span>{r.count}</span>
-            </button>
-          ))}
-        </div>
+        <LibraryPoemReactions
+          reactions={reactions}
+          reactedEmoji={reactedEmoji}
+          onToggleReaction={toggleReaction}
+        />
 
         <div className="border-t border-neon/15" />
 
         {/* Reflections — What this poem stirred */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display italic text-2xl text-paper font-medium">
-              What this poem stirred
-            </h2>
-            <span className="text-xs text-paper-faint font-sans">
-              {reflections.length} reflections
-            </span>
-          </div>
-
-          {/* Write Box */}
-          <form
-            onSubmit={handleShareReflection}
-            className="rounded-2xl border border-neon/20 bg-ink-2/70 p-4 sm:p-5 space-y-3 shadow-md"
-          >
-            <textarea
-              rows={3}
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Share what you felt while reading this verse..."
-              className="w-full bg-ink border border-neon/20 rounded-xl p-3.5 text-sm text-paper placeholder:text-paper-faint/60 focus:outline-none focus:border-neon transition-colors resize-none font-sans"
-            />
-            <div className="flex items-center justify-between pt-1">
-              <button
-                type="button"
-                onClick={() => setAnonymous(!anonymous)}
-                className={`text-xs px-3 py-1.5 rounded-full border transition cursor-pointer ${
-                  anonymous
-                    ? "border-neon/30 bg-neon/10 text-neon"
-                    : "border-neon/15 text-paper-dim hover:text-paper"
-                }`}
-              >
-                {anonymous
-                  ? "Posting anonymously"
-                  : `Posting as ${user?.penName || user?.name || "you"}`}
-              </button>
-
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 text-xs px-5 py-2 rounded-full bg-neon text-ink font-bold uppercase tracking-wider hover:bg-neon/90 transition-all active:scale-95 shadow-md cursor-pointer"
-              >
-                <Send className="h-3 w-3" />
-                <span>Share</span>
-              </button>
-            </div>
-          </form>
-
-          {/* Reflections List */}
-          <div className="space-y-5 pt-2">
-            {reflections.map((r) => (
-              <div
-                key={r.id}
-                className="rounded-2xl border border-neon/15 bg-ink-2/50 p-5 space-y-3 shadow-sm hover:border-neon/30 transition"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-xs font-semibold text-paper font-sans">{r.name}</p>
-                  <span className="text-[10px] text-paper-faint font-mono">{r.date}</span>
-                </div>
-
-                <p className="font-display italic text-base text-paper leading-relaxed">
-                  “{r.text}”
-                </p>
-
-                <div className="flex items-center justify-between pt-1">
-                  <button
-                    type="button"
-                    onClick={() => toggleHeart(r.id)}
-                    className={`flex items-center gap-1.5 text-xs font-sans transition cursor-pointer ${
-                      r.isHearted
-                        ? "text-rose-400 font-semibold"
-                        : "text-paper-faint hover:text-rose-400"
-                    }`}
-                  >
-                    <Heart className="h-3.5 w-3.5" fill={r.isHearted ? "currentColor" : "none"} />
-                    <span>{r.hearts}</span>
-                  </button>
-                </div>
-
-                {/* Poet Reply Card */}
-                {r.poetReply && (
-                  <div className="mt-3 pl-4 border-l-2 border-amber-400/50 bg-amber-400/5 p-3.5 rounded-r-xl space-y-1">
-                    <p className="text-[11px] text-amber-300 font-semibold flex items-center gap-1 font-sans">
-                      <Feather className="h-3 w-3" />
-                      <span>The poet replied</span>
-                    </p>
-                    <p className="font-display italic text-sm text-paper-dim leading-relaxed">
-                      {r.poetReply}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <LibraryPoemReflections
+          reflections={reflections}
+          note={note}
+          anonymous={anonymous}
+          userDisplayName={user?.penName || user?.name || "you"}
+          onNoteChange={setNote}
+          onAnonymousChange={setAnonymous}
+          onToggleHeart={toggleHeart}
+          onSubmit={handleShareReflection}
+        />
       </div>
 
       {/* Confirmation Toast */}
@@ -512,202 +310,40 @@ export function LibraryPoemPage() {
         </div>
       )}
 
-      {/* MOBILE FLOATING READER BAR (Fixed at bottom with spacious responsive spacing on all mobile screens) */}
-      <div className="sm:hidden fixed bottom-4 left-2.5 right-2.5 max-w-md mx-auto z-40 bg-ink-2/95 backdrop-blur-md border border-neon/20 rounded-2xl px-3 py-2.5 shadow-2xl flex items-center justify-between gap-1.5">
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            type="button"
-            onClick={() =>
-              setFontSize((prev) => (prev === "sm" ? "base" : prev === "base" ? "lg" : "sm"))
-            }
-            className="px-2 py-1 rounded-full bg-ink border border-neon/20 text-[11px] text-paper font-mono shrink-0 whitespace-nowrap active:scale-95 transition"
-            title="Toggle text size"
-          >
-            Aa · {fontSize.toUpperCase()}
-          </button>
-          <button
-            type="button"
-            onClick={() => setWarmMode(!warmMode)}
-            aria-pressed={warmMode}
-            className={`p-1.5 rounded-full border shrink-0 transition active:scale-95 ${
-              warmMode
-                ? "border-amber-400 bg-amber-400/20 text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.3)]"
-                : "border-neon/20 bg-ink text-paper-dim hover:text-paper"
-            }`}
-            title="Toggle warm lamplight mode"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-          </button>
-        </div>
-        <button
-          type="button"
-          onClick={() => setShareOpen(true)}
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink border border-neon/20 text-[11px] font-medium uppercase tracking-[0.12em] text-paper-dim hover:text-neon cursor-pointer shrink-0 active:scale-95 transition"
-          title="Share poem card"
-        >
-          <Share2 className="h-3.5 w-3.5" />
-          <span>Share</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSaved(!saved);
-            setToast(saved ? "Removed from your reading vault" : "Saved to your reading vault");
-            setTimeout(() => setToast(null), 2500);
-          }}
-          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink border border-neon/20 text-[11px] font-medium uppercase tracking-[0.12em] text-paper-dim hover:text-neon cursor-pointer shrink-0 active:scale-95 transition ${
-            saved ? "text-amber-300 border-amber-400/40" : ""
-          }`}
-          title={saved ? "Remove from vault" : "Save to vault"}
-        >
-          <Bookmark
-            className="h-3.5 w-3.5"
-            strokeWidth={1.5}
-            fill={saved ? "currentColor" : "none"}
-          />
-          <span>{saved ? "Saved" : "Save"}</span>
-        </button>
-      </div>
+      {/* Mobile floating reader controls */}
+      <LibraryReaderControlsBar
+        fontSize={fontSize}
+        warmMode={warmMode}
+        saved={saved}
+        onFontSizeChange={() =>
+          setFontSize((prev) => (prev === "sm" ? "base" : prev === "base" ? "lg" : "sm"))
+        }
+        onWarmModeToggle={() => setWarmMode(!warmMode)}
+        onShareOpen={() => setShareOpen(true)}
+        onSavedToggle={() => {
+          setSaved(!saved);
+          showToast(saved ? "Removed from your reading vault" : "Saved to your reading vault");
+        }}
+      />
 
       {/* SHARE CARD BOTTOM SHEET (Card Generator with Mood Background) */}
-      {shareOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div
-            className="fixed inset-0 bg-black/75 backdrop-blur-sm"
-            onClick={() => setShareOpen(false)}
-          />
-
-          <div className="relative w-full max-w-md bg-ink-2 border-t sm:border border-neon/20 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl z-10 max-h-[92vh] overflow-y-auto space-y-5">
-            <div className="flex items-center justify-between pb-2 border-b border-neon/10">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.24em] text-neon font-semibold">
-                  Poetic Card Studio
-                </span>
-                <h3 className="font-display text-xl text-paper font-medium">
-                  Share With Background
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShareOpen(false)}
-                className="p-1 rounded-full hover:bg-neon/10 text-paper-dim hover:text-paper cursor-pointer"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Mood Theme Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase tracking-[0.16em] text-paper-faint font-mono">
-                Background Atmosphere
-              </label>
-              <div className="grid grid-cols-4 gap-1.5">
-                {(["reflective", "grief", "love", "joy"] as const).map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() => setSelectedMood(m)}
-                    className={`py-1.5 px-2 rounded-xl text-[11px] capitalize font-medium transition-all cursor-pointer ${
-                      selectedMood === m
-                        ? "bg-neon/20 border border-neon text-neon shadow-sm"
-                        : "bg-ink border border-neon/15 text-paper-dim hover:text-paper"
-                    }`}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Format Picker */}
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-[0.16em] text-paper-faint font-mono">
-                Format:
-              </span>
-              <div className="flex gap-1.5">
-                {(["Square", "Story", "Pin"] as const).map((fmt) => (
-                  <button
-                    key={fmt}
-                    type="button"
-                    onClick={() => setCardFormat(fmt)}
-                    className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold transition cursor-pointer ${
-                      cardFormat === fmt
-                        ? "bg-neon text-ink shadow-sm"
-                        : "bg-ink border border-neon/20 text-paper-dim hover:text-paper"
-                    }`}
-                  >
-                    {fmt}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Live Preview Card with Mood Background Gradient */}
-            <div className="flex justify-center py-2">
-              <div
-                className={`${cardFormats[cardFormat]} rounded-2xl ${moodGradients[selectedMood]} flex flex-col items-center justify-between text-center p-6 relative overflow-hidden border border-neon/20 shadow-2xl transition-all duration-300`}
-              >
-                {/* Atmosphere Tag */}
-                <div className="w-full flex justify-start">
-                  <span className="text-[9px] uppercase tracking-wider bg-white/10 text-paper px-2 py-0.5 rounded-full border border-white/15">
-                    {selectedMood}
-                  </span>
-                </div>
-
-                <div className="space-y-3 my-auto py-2">
-                  <p className="font-display italic text-paper text-sm sm:text-base leading-relaxed text-pretty">
-                    “{cardExcerpt}”
-                  </p>
-                  <p className="text-[11px] text-neon/90 font-medium tracking-wide">
-                    — {poem.author}
-                  </p>
-                </div>
-
-                {/* Watermark Branding */}
-                <div className="pt-2 flex flex-col items-center gap-0.5">
-                  <p className="font-display italic text-[11px] text-paper/80">Muse Night</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-2 pt-2">
-              <button
-                type="button"
-                onClick={handleNativeShare}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-neon text-ink py-3 text-xs font-bold uppercase tracking-[0.16em] shadow-md hover:bg-neon/90 transition-all active:scale-95 cursor-pointer"
-              >
-                <Share2 className="h-4 w-4" />
-                <span>Share to Instagram, WhatsApp...</span>
-              </button>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-neon/30 bg-ink py-2.5 text-xs text-paper hover:bg-neon/10 transition cursor-pointer"
-                >
-                  {copied ? <Check className="h-4 w-4 text-neon" /> : <Copy className="h-4 w-4" />}
-                  <span>{copied ? "Copied" : "Copy text"}</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleCopy();
-                    setToast("Card text copied with background format!");
-                    setTimeout(() => setToast(null), 2500);
-                  }}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-neon/30 bg-ink py-2.5 text-xs text-paper hover:bg-neon/10 transition cursor-pointer"
-                >
-                  <Download className="h-4 w-4 text-amber-400" />
-                  <span>Save Image</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <LibraryPoemShareSheet
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        poem={poem}
+        cardExcerpt={cardExcerpt}
+        selectedMood={selectedMood}
+        onSelectMood={setSelectedMood}
+        cardFormat={cardFormat}
+        onSelectFormat={setCardFormat}
+        onNativeShare={handleNativeShare}
+        onCopy={handleCopy}
+        onSaveImage={() => {
+          handleCopy();
+          showToast("Card text copied with background format!");
+        }}
+        copied={copied}
+      />
     </div>
   );
 }
