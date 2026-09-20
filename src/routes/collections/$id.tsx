@@ -8,8 +8,7 @@ export const Route = createFileRoute("/collections/$id")({
       { title: "Collection — Muse Books" },
       {
         name: "description",
-        content:
-          "Poetry collection by Muse Books.",
+        content: "Poetry collection by Muse Books.",
       },
     ],
   }),

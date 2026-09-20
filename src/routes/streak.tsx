@@ -8,8 +8,7 @@ export const Route = createFileRoute("/streak")({
       { title: "Daily Streak — Muse Books" },
       {
         name: "description",
-        content:
-          "Keep your daily streak and unlock today's bonus poem.",
+        content: "Keep your daily streak and unlock today's bonus poem.",
       },
     ],
   }),

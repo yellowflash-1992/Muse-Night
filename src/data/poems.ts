@@ -1,0 +1,495 @@
+export interface Poem {
+  id: string;
+  title: string;
+  author: string;
+  authorId: string;
+  collection: string;
+  collectionId: string;
+  literaryWorldId?: string;
+  year: string;
+  linesCount: number;
+  readTime: string;
+  tags: string[];
+  stanzas: string[][];
+  note?: string;
+  featured?: boolean;
+  lineNotes?: Record<number, { count: number; excerpt: string }>;
+}
+
+export const POEMS: Poem[] = [
+  {
+    id: "lamplight-late-november",
+    title: "Lamplight, Late November",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "The Quiet Hour",
+    collectionId: "the-quiet-hour",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2023",
+    linesCount: 14,
+    readTime: "1 min",
+    tags: ["Solitude", "Night", "Writing", "Winter"],
+    featured: true,
+    stanzas: [
+      [
+        "The desk keeps its own small weather,",
+        "a lamp the size of a held breath,",
+        "and the room folds its corners down",
+        "until the only honest thing",
+        "is the page turning, slow as snow",
+        "in a window no one minds.",
+      ],
+      [
+        "We do not write to be found.",
+        "We write to leave the light on",
+        "for whoever passes at midnight",
+        "and wonders, briefly, at the glow.",
+      ],
+      [
+        "Let the cold keep the pavement.",
+        "Here, where paper drinks ink like tea,",
+        "the hour is unbroken,",
+        "and the silence knows our name.",
+      ],
+    ],
+    note: "Written on a rainy Thursday at midnight during the first winter freeze in Edinburgh.",
+    lineNotes: {
+      2: {
+        count: 86,
+        excerpt: "This line made me pause. I read it three times and still felt the room fold.",
+      },
+    },
+  },
+  {
+    id: "salt-for-the-wounded-season",
+    title: "Salt for the Wounded Season",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 18,
+    readTime: "2 min",
+    tags: ["Memory", "Distance", "Winter", "Sea"],
+    stanzas: [
+      [
+        "The shoreline forgets its borders by December.",
+        "Tides bring in rusted keys and driftwood bones,",
+        "and I think of the letters that arrived too late",
+        "to tell you that the ice had melted.",
+      ],
+      [
+        "There is a kind of preservation in silence,",
+        "the way salt cures the cod on Atlantic racks,",
+        "keeping the flesh from yielding to decay",
+        "while asking for nothing in return.",
+      ],
+      [
+        "If you walk north tonight, look for the lantern",
+        "swinging on the harbor buoy.",
+        "It blinks once for what was given,",
+        "and twice for what we could not bear to keep.",
+      ],
+    ],
+    note: "Dedicated to the coastal towns along the Swedish west coast where winters settle deep in the marrow.",
+  },
+  {
+    id: "the-quiet-hour",
+    title: "The Quiet Hour",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "The Quiet Hour",
+    collectionId: "the-quiet-hour",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2023",
+    linesCount: 16,
+    readTime: "1.5 min",
+    tags: ["Solitude", "Time", "Memory"],
+    stanzas: [
+      [
+        "There is a clock in every room",
+        "that only the lonely can hear,",
+        "and it ticks in the direction of morning",
+        "with an unbearable patience.",
+      ],
+      [
+        "The tea cools in its ceramic cup.",
+        "The shadows lean against the wainscot.",
+        "Everything that mattered in daylight",
+        "has now become small and tender.",
+      ],
+      [
+        "Listen: the floorboards settle.",
+        "The streetlamp hums its yellow tune.",
+        "This is the hour between breathing in",
+        "and deciding to begin again.",
+      ],
+    ],
+    note: "Title poem of the collection published in November 2023.",
+  },
+  {
+    id: "letters-to-an-unsent-friend",
+    title: "Letters to an Unsent Friend",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 20,
+    readTime: "2 min",
+    tags: ["Letters", "Friendship", "Longing"],
+    stanzas: [
+      [
+        "I have written you a hundred times",
+        "and kept every letter in the bottom drawer,",
+        "the way one keeps a candle",
+        "one has not yet blown out.",
+      ],
+      [
+        "In the first, I wrote of train departures at dusk.",
+        "In the tenth, I described the smell of wet cedar.",
+        "By the fiftieth, I had stopped asking questions",
+        "and started cataloging the things you would have loved:",
+      ],
+      [
+        "A stray dog asleep by the bookstall,",
+        "the second cup of coffee drunk cold,",
+        "the sudden kindness of an archivist in Galway",
+        "who gave me three minutes past closing time.",
+      ],
+      ["These pages are not monuments.", "They are just breath held in envelope form."],
+    ],
+  },
+  {
+    id: "a-field-guide-to-small-wonders",
+    title: "A Field Guide to Small Wonders",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "A Field Guide to Small Wonders",
+    collectionId: "a-field-guide-to-small-wonders",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2024",
+    linesCount: 15,
+    readTime: "1.5 min",
+    tags: ["Nature", "Wonder", "Everyday"],
+    stanzas: [
+      [
+        "Item one: the moth resting upon a spine of Dante.",
+        "Item two: the exact angle at four in the afternoon",
+        "when sunlight cuts gold across a kitchen floor.",
+      ],
+      [
+        "Item three: the phrase forgotten mid-sentence",
+        "that wanders into the room hours later",
+        "like an apology no longer necessary.",
+      ],
+      [
+        "You do not need a telescope to see heaven.",
+        "You only need to look at what you have stepped over",
+        "on your way to becoming someone important.",
+      ],
+    ],
+  },
+  {
+    id: "cartography-of-longing",
+    title: "Cartography of Longing",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 16,
+    readTime: "1.5 min",
+    tags: ["Maps", "Travel", "Distance"],
+    stanzas: [
+      [
+        "Fold the map along the blue river line.",
+        "Notice how two towns twenty miles apart",
+        "now press their paper lips together.",
+      ],
+      [
+        "If distance were only geometry,",
+        "we could cross it with a compass and ruler.",
+        "Instead it is made of railway schedules,",
+        "missed calls, and the stubborn habit of waiting.",
+      ],
+      ["I draw a circle around your harbor.", "I leave the rest of the continent blank."],
+    ],
+  },
+  {
+    id: "the-winter-ledger",
+    title: "The Winter Ledger",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "The Winter Ledger",
+    collectionId: "the-winter-ledger",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2024",
+    linesCount: 18,
+    readTime: "2 min",
+    tags: ["Winter", "Time", "Reflection"],
+    stanzas: [
+      [
+        "What remains after the harvest:",
+        "three jars of apricot preserves,",
+        "two notebooks half-filled with verse,",
+        "and the quiet understanding that some days are merely for enduring.",
+      ],
+      [
+        "The frost is an honest accountant.",
+        "It strikes through all superfluity,",
+        "leaving only the branch, the stone, the root.",
+      ],
+      [
+        "Enter these in the ledger under profit:",
+        "the hour you spent watching sparrows,",
+        "the tea you shared without speaking,",
+        "and the warmth returning slowly to your fingers.",
+      ],
+    ],
+  },
+  {
+    id: "night-ferry-to-lisbon",
+    title: "Night Ferry to Lisbon",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 15,
+    readTime: "1.5 min",
+    tags: ["Night", "Travel", "Sea"],
+    stanzas: [
+      [
+        "The diesel engine beats like an old heart beneath the deck.",
+        "Fog swallows the red beacon of the shore.",
+        "Everyone aboard is going somewhere they were once loved.",
+      ],
+      [
+        "The water in the wake is luminous and dark,",
+        "churned up by propellers into phosphorescent lace.",
+        "I lean over the railing with my notebook",
+        "and let the spray wet the edges of my words.",
+      ],
+    ],
+  },
+];
+
+export const LIBRARY_POEMS: Poem[] = [
+  ...POEMS,
+  {
+    id: "under-the-first-green",
+    title: "Under the First Green",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Nature", "Belonging", "Dawn"],
+    stanzas: [
+      [
+        "I learned my first alphabet from leaves,",
+        "each vein a road returning to the root.",
+        "The forest did not ask me to arrive,",
+        "only to listen until I knew my name.",
+      ],
+      ["Now every morning opens like a hand,", "and I walk softly into what is green."],
+    ],
+    note: "Placeholder work for the irshand signature.",
+  },
+  {
+    id: "wandera-field-notes",
+    title: "Wandera: Field Notes",
+    author: "Wandera",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 13,
+    readTime: "1 min",
+    tags: ["Wandering", "Roads", "Wonder"],
+    stanzas: [
+      [
+        "I carry no compass, only the patience",
+        "of a road that keeps changing its mind.",
+        "At dusk, the far hill becomes a question",
+        "I am willing to spend my life answering.",
+      ],
+      ["Call me by the name the wind invents.", "I will turn, eventually."],
+    ],
+    note: "Placeholder work for the wander signature.",
+  },
+  {
+    id: "aporia-at-the-threshold",
+    title: "Aporia at the Threshold",
+    author: "Aporia",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 14,
+    readTime: "1.5 min",
+    tags: ["Uncertainty", "Faith", "Thresholds"],
+    stanzas: [
+      [
+        "The door is open, but the room is not,",
+        "and every answer leaves a sharper shape.",
+        "I stand between the almost and the never,",
+        "keeping company with the honest doubt.",
+      ],
+      ["Some paths become clear by walking them.", "Some truths require the dark to speak."],
+    ],
+    note: "Placeholder work for the aporia signature.",
+  },
+  {
+    id: "serein-after-rain",
+    title: "Serein After Rain",
+    author: "Serein",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Calm", "Rain", "Silence"],
+    stanzas: [
+      [
+        "After the rain, the garden says less.",
+        "Water gathers every scattered color,",
+        "and the earth, released from its confession,",
+        "rests beneath a softer kind of sky.",
+      ],
+      ["I call this peace by its older name:", "the moment nothing needs to be proved."],
+    ],
+    note: "Placeholder work for the serein signature.",
+  },
+  {
+    id: "elyon-the-high-place",
+    title: "Elyon, the High Place",
+    author: "Elyon",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Ascent", "Light", "Prayer"],
+    stanzas: [
+      [
+        "Above the tree line, the silence widens.",
+        "No crown waits there, no witness, no applause,",
+        "only the long blue patience of the mountain",
+        "and a light that does not need a name.",
+      ],
+      ["I climb until the heart grows spacious", "enough to hold the world without possession."],
+    ],
+    note: "Placeholder work for the elyon signature.",
+  },
+  {
+    id: "the-wondering-kite",
+    title: "The Wondering Kite",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "Child of the Wilderness",
+    collectionId: "child-of-the-wilderness",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Wonder", "Playfulness", "Homecoming"],
+    stanzas: [
+      [
+        "The wondering kite flew 🪁",
+        "Playfully under the day;",
+        "Never a something new",
+        "From summer till May.",
+      ],
+      [
+        "The late-night slept",
+        "Silently through the rain,",
+        "Till there's nothing left",
+        "For the gutters to drain.",
+      ],
+      [
+        "Maybe it's the sound",
+        "From a lovely heart,",
+        "But fortune has found",
+        "Its way home to rahmat.",
+      ],
+    ],
+  },
+  {
+    id: "inkbynur-between-letters",
+    title: "Between Letters",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters Kept Open",
+    collectionId: "letters-kept-open",
+    year: "2025",
+    linesCount: 12,
+    readTime: "1 min",
+    tags: ["Friendship", "Letters", "Memory"],
+    stanzas: [
+      [
+        "There are words we send and words we save,",
+        "small birds folded into the desk drawer.",
+        "Between them lives the truest conversation:",
+        "the pause that knows what speech would bruise.",
+      ],
+      ["Write when the heart is ready.", "Read when the room is kind."],
+    ],
+    note: "Placeholder work for the InkbyNur archive.",
+  },
+  {
+    id: "lamplit-midnight-haiku",
+    title: "Midnight Ember (Haiku)",
+    author: "Irshand",
+    authorId: "muhammad-abdulnasir",
+    collection: "A Field Guide to Small Wonders",
+    collectionId: "a-field-guide-to-small-wonders",
+    literaryWorldId: "child-of-the-wilderness",
+    year: "2024",
+    linesCount: 3,
+    readTime: "30 sec",
+    tags: ["Haiku", "Night", "Silence", "Writing"],
+    stanzas: [
+      ["Single lamp burns low,", "Ink drinks the unsaid quiet,", "Dawn waits at the door."],
+    ],
+    note: "Traditional 3-line Japanese haiku structure (5-7-5 syllables).",
+  },
+  {
+    id: "coastal-letters-haiku",
+    title: "First Frost (Haiku)",
+    author: "InkbyNur",
+    authorId: "nurudeen-abdullah",
+    collection: "Letters to an Unsent Friend",
+    collectionId: "letters-to-an-unsent-friend",
+    year: "2024",
+    linesCount: 3,
+    readTime: "30 sec",
+    tags: ["Haiku", "Winter", "Letters", "Memory"],
+    stanzas: [
+      [
+        "Cold wind through the pines,",
+        "Letters waiting in the drawer,",
+        "Silence learns your name.",
+      ],
+    ],
+    note: "Traditional 3-line Japanese haiku structure (5-7-5 syllables).",
+  },
+];
+
+export function getPoemById(id: string): Poem | undefined {
+  return POEMS.find((p) => p.id === id);
+}
+
+export function getLibraryPoemById(id: string): Poem | undefined {
+  return [...POEMS, ...LIBRARY_POEMS].find((p) => p.id === id);
+}

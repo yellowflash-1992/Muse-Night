@@ -8,8 +8,7 @@ export const Route = createFileRoute("/collections/")({
       { title: "Poetry Collections — Muse Books" },
       {
         name: "description",
-        content:
-          "Explore our published poetry collections, suites, and collaborative anthologies.",
+        content: "Explore our published poetry collections, suites, and collaborative anthologies.",
       },
     ],
   }),

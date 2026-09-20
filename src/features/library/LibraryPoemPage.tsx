@@ -1,4 +1,4 @@
-import { Link, useParams } from "@tanstack/react-router";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,10 +13,18 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import { getLibraryPoemById, LIBRARY_POEMS } from "@/data/literature";
+import {
+  DEFAULT_LINE_NOTES,
+  getInitialReflections,
+  INITIAL_READER_REACTIONS,
+  type ReaderReaction,
+  type ReaderReflection,
+} from "@/data/library-reader";
+import { getLibraryPoemById, getLiteraryWorldById, LIBRARY_POEMS } from "@/data/literature";
 import { useAuth } from "@/hooks/useAuth";
+import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
 
 const cardFormats: Record<string, string> = {
   Square: "aspect-square w-full max-w-[240px]",
@@ -33,7 +41,11 @@ const moodGradients: Record<string, string> = {
 
 export function LibraryPoemPage() {
   const { id } = useParams({ from: "/library/$id" });
+  const { from } = useSearch({ from: "/library/$id" }) as { from?: string };
   const poem = getLibraryPoemById(id);
+  const literaryWorld = poem?.literaryWorldId
+    ? getLiteraryWorldById(poem.literaryWorldId)
+    : undefined;
   const { user } = useAuth();
 
   const [fontSize, setFontSize] = useState<"sm" | "base" | "lg">("base");
@@ -51,42 +63,20 @@ export function LibraryPoemPage() {
   const [anonymous, setAnonymous] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
 
-  const [reactions, setReactions] = useState([
-    { emoji: "❤️", label: "moved me", count: 341 },
-    { emoji: "😢", label: "made me cry", count: 128 },
-    { emoji: "✨", label: "stirred my soul", count: 94 },
-    { emoji: "🔥", label: "loved the writing", count: 52 },
-  ]);
+  const [reactions, setReactions] = useState<ReaderReaction[]>(() => [...INITIAL_READER_REACTIONS]);
 
-  const [reflections, setReflections] = useState([
-    {
-      id: "ref-1",
-      name: "Anonymous",
-      text: "This is the first piece of literature that made the quiet feel less lonely instead of heavier.",
-      hearts: 214,
-      isHearted: false,
-      poetReply: `Thank you for trusting this poem with that. Sending you steadiness under the lamplight. — ${poem?.author?.split(" ")[0] || "The Poet"}`,
-      date: "2 days ago",
-    },
-    {
-      id: "ref-2",
-      name: "Aisha O.",
-      text: "“The desk keeps its own small weather” — I read it three times and still felt the room fold around me.",
-      hearts: 96,
-      isHearted: false,
-      poetReply: null,
-      date: "1 week ago",
-    },
-    {
-      id: "ref-3",
-      name: "Kaelen M.",
-      text: "There is an unbearable tenderness in these lines. Reading it feels like being listened to.",
-      hearts: 58,
-      isHearted: false,
-      poetReply: `That tenderness is where we meet our readers. With deep gratitude. — ${poem?.author || "Muse Press"}`,
-      date: "3 days ago",
-    },
-  ]);
+  const [reflections, setReflections] = useState<ReaderReflection[]>(() =>
+    getInitialReflections(poem?.author),
+  );
+
+  // Next / Prev poem logic
+  const navigationPoems = useMemo(() => resolveNavigationPoems(LIBRARY_POEMS, from), [from]);
+
+  const { previous: prevPoem, next: nextPoem } = useMemo(() => {
+    return poem
+      ? getPoemNavigation(navigationPoems, poem.id)
+      : { previous: undefined, next: undefined };
+  }, [navigationPoems, poem]);
 
   if (!poem) {
     return (
@@ -108,28 +98,12 @@ export function LibraryPoemPage() {
     );
   }
 
-  // Next / Prev poem logic
-  const currentIndex = LIBRARY_POEMS.findIndex((p) => p.id === poem.id);
-  const prevPoem =
-    LIBRARY_POEMS[currentIndex - 1] ?? LIBRARY_POEMS[LIBRARY_POEMS.length - 1] ?? poem;
-  const nextPoem = LIBRARY_POEMS[currentIndex + 1] ?? LIBRARY_POEMS[0] ?? poem;
-
-  const lineNotes = poem.lineNotes || {
-    1: {
-      count: 48,
-      excerpt: "This line stopped me in my tracks. It captured what silence actually feels like.",
-    },
-    2: {
-      count: 86,
-      excerpt:
-        "I had to pause reading for a moment. This line broke me and mended me in the same breath.",
-    },
-  };
+  const lineNotes = poem.lineNotes || DEFAULT_LINE_NOTES;
 
   const cardExcerpt = poem.stanzas[0]?.slice(0, 3).join("\n") ?? "";
 
   const handleCopy = async () => {
-    const text = `"${poem.title}"\nby ${poem.author}\n\n${poem.stanzas.map((s) => s.join("\n")).join("\n\n")}\n\n(via Muse Books)`;
+    const text = `"${poem.title}"\nby ${poem.author}\n\n${poem.stanzas.map((s) => s.join("\n")).join("\n\n")}\n\n(via Muse Night)`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -143,7 +117,7 @@ export function LibraryPoemPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${poem.title} — Muse Books`,
+          title: `${poem.title} — Muse Night`,
           text: `"${cardExcerpt}"\n— ${poem.author}\n`,
           url: window.location.href,
         });
@@ -243,7 +217,16 @@ export function LibraryPoemPage() {
           </h1>
           <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs font-karla text-paper-dim">
             <span className="font-medium text-paper">by {poem.author}</span>
+
+            {literaryWorld && (
+              <>
+                <span className="hidden sm:inline text-paper-faint">·</span>
+                <span className="italic text-paper-dim">{literaryWorld.name}</span>
+              </>
+            )}
+
             <span className="hidden sm:inline text-paper-faint">·</span>
+
             <span className="text-paper-faint font-mono text-[11px]">
               {poem.linesCount} lines · {poem.readTime} read
             </span>
@@ -349,43 +332,58 @@ export function LibraryPoemPage() {
           </p>
 
           {/* Previous / Next Editorial Navigation Cards */}
-          <div className="mt-10 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-3.5 not-italic font-sans">
-            {/* Previous Poem Card */}
-            <Link
-              to="/library/$id"
-              params={{ id: prevPoem.id }}
-              className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
-            >
-              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
-                <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
-                <span>Previous Work</span>
-              </div>
-              <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                “{prevPoem.title}”
-              </p>
-              <span className="text-[10px] text-paper-faint mt-1 font-karla">
-                by {prevPoem.author}
-              </span>
-            </Link>
+          {/* Previous / Next Editorial Navigation Cards */}
+          {(prevPoem || nextPoem) && (
+            <div className="mt-10 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-3.5 not-italic font-sans">
+              {/* Previous Poem Card */}
+              {prevPoem && (
+                <Link
+                  to="/library/$id"
+                  params={{ id: prevPoem.id }}
+                  {...(from ? { search: { from } } : {})}
+                  className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
+                >
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                    <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
+                    <span>Previous Work</span>
+                  </div>
 
-            {/* Next Poem Card */}
-            <Link
-              to="/library/$id"
-              params={{ id: nextPoem.id }}
-              className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left sm:text-right"
-            >
-              <div className="flex items-center justify-start sm:justify-end gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
-                <span>Next Work</span>
-                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-              </div>
-              <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                “{nextPoem.title}”
-              </p>
-              <span className="text-[10px] text-paper-faint mt-1 font-karla">
-                by {nextPoem.author}
-              </span>
-            </Link>
-          </div>
+                  <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                    “{prevPoem.title}”
+                  </p>
+
+                  <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                    by {prevPoem.author}
+                  </span>
+                </Link>
+              )}
+
+              {/* Next Poem Card */}
+              {nextPoem && (
+                <Link
+                  to="/library/$id"
+                  params={{ id: nextPoem.id }}
+                  {...(from ? { search: { from } } : {})}
+                  className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
+                    !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
+                  }`}
+                >
+                  <div className="flex items-center justify-start sm:justify-end gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                    <span>Next Work</span>
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+
+                  <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                    “{nextPoem.title}”
+                  </p>
+
+                  <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                    by {nextPoem.author}
+                  </span>
+                </Link>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Reactions — Simple Emoji Options */}
@@ -667,10 +665,7 @@ export function LibraryPoemPage() {
 
                 {/* Watermark Branding */}
                 <div className="pt-2 flex flex-col items-center gap-0.5">
-                  <p className="font-display italic text-[11px] text-paper/80">Muse Books</p>
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-paper-faint">
-                    musebooks.press
-                  </p>
+                  <p className="font-display italic text-[11px] text-paper/80">Muse Night</p>
                 </div>
               </div>
             </div>

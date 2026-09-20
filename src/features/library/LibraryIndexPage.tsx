@@ -3,45 +3,17 @@ import { ArrowRight, BookOpen, Feather, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { LIBRARY_POEMS, POETS } from "@/data/literature";
+import { LibraryFiltersSheet } from "./LibraryFiltersSheet";
+import { filterPoems, getPoemForm, POETIC_FORMS } from "./lib/library-filters";
 
 export function LibraryIndexPage() {
   const [search, setSearch] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedAuthor, setSelectedAuthor] = useState<string>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
   const [selectedForm, setSelectedForm] = useState<string>("all");
-
-  const poeticForms = [
-    { label: "Free Verse", detail: "Open Form" },
-    { label: "Sonnet", detail: "14 Lines" },
-    { label: "Haiku", detail: "3 Lines · 5-7-5" },
-    { label: "Epistle", detail: "Verse Letter" },
-    { label: "Prose Poetry", detail: "Poetic Prose" },
-  ] as const;
-
-  const getPoemForm = (p: (typeof LIBRARY_POEMS)[0]) => {
-    // 1. Haiku: strictly 3 lines (traditional 5-7-5 syllables)
-    if (p.linesCount === 3 || p.tags.includes("Haiku") || p.title.toLowerCase().includes("haiku")) {
-      return "Haiku";
-    }
-    // 2. Sonnet: classical 14 lines
-    if (p.linesCount === 14 || p.tags.includes("Sonnet")) {
-      return "Sonnet";
-    }
-    // 3. Epistle: Letter in verse
-    if (
-      p.tags.includes("Letters") ||
-      p.tags.includes("Epistle") ||
-      p.title.toLowerCase().includes("letter")
-    ) {
-      return "Epistle";
-    }
-    // 4. Prose Poetry: Poetic prose & narrative entries
-    if (p.tags.includes("Prose") || p.tags.includes("Travel") || p.tags.includes("Maps")) {
-      return "Prose Poetry";
-    }
-    // 5. Free Verse: Open form non-metrical poetry
-    return "Free Verse";
-  };
+  const hasActiveFilters =
+    selectedAuthor !== "all" || selectedTag !== "all" || selectedForm !== "all";
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -50,23 +22,15 @@ export function LibraryIndexPage() {
   }, []);
 
   const filteredPoems = useMemo(() => {
-    return LIBRARY_POEMS.filter((poem) => {
-      const matchSearch =
-        search === "" ||
-        poem.title.toLowerCase().includes(search.toLowerCase()) ||
-        poem.author.toLowerCase().includes(search.toLowerCase()) ||
-        poem.stanzas.some((s) => s.some((l) => l.toLowerCase().includes(search.toLowerCase())));
-
-      const matchAuthor = selectedAuthor === "all" || poem.authorId === selectedAuthor;
-
-      const matchTag = selectedTag === "all" || poem.tags.includes(selectedTag);
-
-      const matchForm =
-        selectedForm === "all" || getPoemForm(poem).toLowerCase() === selectedForm.toLowerCase();
-
-      return matchSearch && matchAuthor && matchTag && matchForm;
+    return filterPoems(LIBRARY_POEMS, {
+      search,
+      selectedAuthor,
+      selectedTag,
+      selectedForm,
     });
   }, [search, selectedAuthor, selectedTag, selectedForm]);
+
+  const filteredPoemIds = useMemo(() => filteredPoems.map((p) => p.id).join(","), [filteredPoems]);
 
   return (
     <div className="py-12 sm:py-16">
@@ -101,8 +65,7 @@ export function LibraryIndexPage() {
               />
             </div>
 
-            {/* Author filter buttons - Horizontal scroll on mobile */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            <div className="hidden md:flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
               <button
                 type="button"
                 onClick={() => setSelectedAuthor("all")}
@@ -129,164 +92,208 @@ export function LibraryIndexPage() {
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Tag filters - Horizontal scrollable on mobile */}
-          <div className="flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
-              Themes:
-            </span>
-            <button
-              type="button"
-              onClick={() => setSelectedTag("all")}
-              className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
-                selectedTag === "all"
-                  ? "bg-neon/15 text-neon border border-neon/30 font-medium"
-                  : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
-              }`}
-            >
-              All Themes
-            </button>
-            {allTags.map((tag) => (
+            <div className="md:hidden flex min-w-0 items-center justify-between gap-2">
+              <span className="min-w-0 truncate text-xs uppercase tracking-[0.16em] text-paper-dim">
+                {filteredPoems.length} {filteredPoems.length === 1 ? "work" : "works"}
+              </span>
+              <div className="flex shrink-0 items-center gap-2">
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedAuthor("all");
+                      setSelectedTag("all");
+                      setSelectedForm("all");
+                    }}
+                    className="whitespace-nowrap rounded-full bg-neon px-3.5 py-2 text-xs font-medium uppercase tracking-[0.16em] text-ink shadow-sm"
+                  >
+                    All Works
+                  </button>
+                )}
+                <LibraryFiltersSheet
+                  filtersOpen={filtersOpen}
+                  setFiltersOpen={setFiltersOpen}
+                  selectedAuthor={selectedAuthor}
+                  setSelectedAuthor={setSelectedAuthor}
+                  selectedTag={selectedTag}
+                  setSelectedTag={setSelectedTag}
+                  selectedForm={selectedForm}
+                  setSelectedForm={setSelectedForm}
+                  allTags={allTags}
+                  poeticForms={POETIC_FORMS}
+                  poets={POETS}
+                  totalPoems={LIBRARY_POEMS.length}
+                />
+              </div>
+            </div>
+
+            {/* Tag filters - visible on desktop */}
+            <div className="hidden md:flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
+                Themes:
+              </span>
               <button
-                key={tag}
                 type="button"
-                onClick={() => setSelectedTag(tag)}
+                onClick={() => setSelectedTag("all")}
                 className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
-                  selectedTag === tag
+                  selectedTag === "all"
                     ? "bg-neon/15 text-neon border border-neon/30 font-medium"
                     : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
                 }`}
               >
-                #{tag}
+                All Themes
               </button>
-            ))}
-          </div>
+              {allTags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setSelectedTag(tag)}
+                  className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
+                    selectedTag === tag
+                      ? "bg-neon/15 text-neon border border-neon/30 font-medium"
+                      : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
+                  }`}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
 
-          {/* Form filters - Up to 5 poetic forms with structural notes */}
-          <div className="flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
-              Forms:
-            </span>
-            <button
-              type="button"
-              onClick={() => setSelectedForm("all")}
-              className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
-                selectedForm === "all"
-                  ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
-                  : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
-              }`}
-            >
-              All Forms
-            </button>
-            {poeticForms.map((form) => (
+            {/* Form filters - visible on desktop */}
+            <div className="hidden md:flex items-center gap-2 pt-3 border-t border-neon/5 overflow-x-auto pb-1 scrollbar-none">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-paper-faint mr-1 shrink-0 font-medium font-karla">
+                Forms:
+              </span>
               <button
-                key={form.label}
                 type="button"
-                onClick={() => setSelectedForm(form.label)}
-                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer flex items-center gap-1.5 ${
-                  selectedForm === form.label
+                onClick={() => setSelectedForm("all")}
+                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
+                  selectedForm === "all"
                     ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
                     : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
                 }`}
               >
-                <span>{form.label}</span>
-                <span className="text-[9.5px] font-mono text-paper-faint/80">({form.detail})</span>
+                All Forms
               </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Poems Grid */}
-        <div className="mt-10">
-          {filteredPoems.length === 0 ? (
-            <div className="text-center py-20 rounded-lg border border-dashed border-neon/20 bg-ink-2/40">
-              <BookOpen className="mx-auto h-8 w-8 text-paper-faint mb-3" />
-              <p className="font-display text-2xl text-paper">No works found</p>
-              <p className="text-sm text-paper-dim mt-1">
-                Try loosening your search term or selecting another theme or author.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch("");
-                  setSelectedAuthor("all");
-                  setSelectedTag("all");
-                  setSelectedForm("all");
-                }}
-                className="mt-4 px-4 py-1.5 text-xs uppercase tracking-[0.2em] bg-neon text-ink rounded hover:bg-neon/90"
-              >
-                Reset Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPoems.map((poem) => (
-                <article
-                  key={poem.id}
-                  className="group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
+              {POETIC_FORMS.map((form) => (
+                <button
+                  key={form.label}
+                  type="button"
+                  onClick={() => setSelectedForm(form.label)}
+                  className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                    selectedForm === form.label
+                      ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
+                      : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
+                  }`}
                 >
-                  <div className="min-w-0 overflow-hidden">
-                    <div className="flex items-start justify-between gap-2">
-                      <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2 break-words min-w-0">
-                        <Link to="/library/$id" params={{ id: poem.id }}>
-                          {poem.title}
-                        </Link>
-                      </h2>
-                      <span className="shrink-0 rounded bg-neon/10 px-2 py-0.5 text-[9.5px] uppercase tracking-wider text-neon font-mono border border-neon/20">
-                        {getPoemForm(poem)}
-                      </span>
-                    </div>
-
-                    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-paper-faint truncate">
-                      Collection: {poem.collection} ({poem.year})
-                    </p>
-
-                    {/* First stanza preview */}
-                    <div className="mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3 overflow-hidden min-w-0">
-                      {poem.stanzas[0]?.slice(0, 3).map((line, lIdx) => (
-                        <p key={lIdx} className="truncate block w-full">
-                          {line}
-                        </p>
-                      ))}
-                      {(poem.stanzas[0]?.length ?? 0) > 3 && (
-                        <p className="text-paper-faint">...</p>
-                      )}
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between border-t border-neon/10 pt-3 text-[11px] uppercase tracking-[0.2em] text-paper-faint">
-                      <span className="text-neon/80 font-medium truncate mr-2">{poem.author}</span>
-                      <span className="shrink-0">{poem.readTime}</span>
-                    </div>
-
-                    {/* Tags / Themes */}
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {poem.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="inline-block max-w-full text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
-                        >
-                          #{t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
-                    <span className="text-xs text-paper-faint">{poem.linesCount} lines</span>
-                    <Link
-                      to="/library/$id"
-                      params={{ id: poem.id }}
-                      className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
-                    >
-                      <span>Read</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </article>
+                  <span>{form.label}</span>
+                  <span className="text-[9.5px] font-mono text-paper-faint/80">
+                    ({form.detail})
+                  </span>
+                </button>
               ))}
             </div>
-          )}
+          </div>
+
+          {/* Poems Grid */}
+          <div className="mt-10">
+            {filteredPoems.length === 0 ? (
+              <div className="text-center py-20 rounded-lg border border-dashed border-neon/20 bg-ink-2/40">
+                <BookOpen className="mx-auto h-8 w-8 text-paper-faint mb-3" />
+                <p className="font-display text-2xl text-paper">No works found</p>
+                <p className="text-sm text-paper-dim mt-1">
+                  Try loosening your search term or selecting another theme or author.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedAuthor("all");
+                    setSelectedTag("all");
+                    setSelectedForm("all");
+                  }}
+                  className="mt-4 px-4 py-1.5 text-xs uppercase tracking-[0.2em] bg-neon text-ink rounded hover:bg-neon/90"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPoems.map((poem) => (
+                  <article
+                    key={poem.id}
+                    className="group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
+                  >
+                    <div className="min-w-0 overflow-hidden">
+                      <div className="flex items-start justify-between gap-2">
+                        <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2 break-words min-w-0">
+                          <Link
+                            to="/library/$id"
+                            params={{ id: poem.id }}
+                            search={{ from: filteredPoemIds }}
+                          >
+                            {poem.title}
+                          </Link>
+                        </h2>
+                        <span className="shrink-0 rounded bg-neon/10 px-2 py-0.5 text-[9.5px] uppercase tracking-wider text-neon font-mono border border-neon/20">
+                          {getPoemForm(poem)}
+                        </span>
+                      </div>
+
+                      <p className="mt-2 text-xs uppercase tracking-[0.16em] text-paper-faint truncate">
+                        Collection: {poem.collection} ({poem.year})
+                      </p>
+
+                      {/* First stanza preview */}
+                      <div className="mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3 overflow-hidden min-w-0">
+                        {poem.stanzas[0]?.slice(0, 3).map((line, lIdx) => (
+                          <p key={lIdx} className="truncate block w-full">
+                            {line}
+                          </p>
+                        ))}
+                        {(poem.stanzas[0]?.length ?? 0) > 3 && (
+                          <p className="text-paper-faint">...</p>
+                        )}
+                      </div>
+
+                      <div className="mt-4 flex items-center justify-between border-t border-neon/10 pt-3 text-[11px] uppercase tracking-[0.2em] text-paper-faint">
+                        <span className="text-neon/80 font-medium truncate mr-2">
+                          {poem.author}
+                        </span>
+                        <span className="shrink-0">{poem.readTime}</span>
+                      </div>
+
+                      {/* Tags / Themes */}
+                      <div className="mt-4 flex flex-wrap gap-1.5">
+                        {poem.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="inline-block max-w-full text-[10px] uppercase tracking-[0.1em] bg-ink px-2.5 py-0.5 rounded text-paper-faint border border-neon/15 whitespace-nowrap"
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
+                      <span className="text-xs text-paper-faint">{poem.linesCount} lines</span>
+                      <Link
+                        to="/library/$id"
+                        params={{ id: poem.id }}
+                        search={{ from: filteredPoemIds }}
+                        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
+                      >
+                        <span>Read</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
