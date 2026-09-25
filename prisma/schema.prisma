@@ -11,13 +11,27 @@ datasource db {
 }
 
 model Person {
-  id        String   @id
-  legalName String
-  role      String
-  bio       String
-  longBio   String
-  aesthetic String
-  imageUrl  String?
+  id             String          @id
+  legalName      String
+  role           String
+  bio            String
+  longBio        String
+  aesthetic      String
+  imageUrl       String?
+  literaryWorlds LiteraryWorld[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model LiteraryWorld {
+  id          String @id
+  name        String
+  creatorId   String
+  description String
+  creator     Person @relation(fields: [creatorId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([creatorId])
 }
