@@ -12,7 +12,7 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  const person = await prisma.person.upsert({
+  const nurudeen = await prisma.person.upsert({
     where: {
       id: "nurudeen-abdullah",
     },
@@ -37,7 +37,33 @@ async function main() {
     },
   });
 
-  console.log("Seeded person:", person.legalName);
+  const abdulnasir = await prisma.person.upsert({
+    where: {
+      id: "muhammad-abdulnasir",
+    },
+    update: {
+      legalName: "Muhammad AbdulNasir",
+      role: "Poet & Child of the Wilderness",
+      bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art. Attuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within. His work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants. He writes to spark introspection, break inertia, and craft impressions that outlast time. Irshand is a living sanctuary—not merely a name. There, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
+      longBio:
+        "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad—an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
+      aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
+      imageUrl: null,
+    },
+    create: {
+      id: "muhammad-abdulnasir",
+      legalName: "Muhammad AbdulNasir",
+      role: "Poet & Child of the Wilderness",
+      bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art. Attuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within. His work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants. He writes to spark introspection, break inertia, and craft impressions that outlast time. Irshand is a living sanctuary—not merely a name. There, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
+      longBio:
+        "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad—an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
+      aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
+      imageUrl: null,
+    },
+  });
+
+  console.log("Seeded person:", nurudeen.legalName);
+  console.log("Seeded person:", abdulnasir.legalName);
 }
 
 main()
