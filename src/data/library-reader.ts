@@ -19,6 +19,12 @@ export interface LineNoteExcerpt {
   excerpt: string;
 }
 
+export interface ReaderData {
+  reactions: ReaderReaction[];
+  reflections: ReaderReflection[];
+  lineNotes: Record<number, LineNoteExcerpt>;
+}
+
 export const INITIAL_READER_REACTIONS: ReaderReaction[] = [
   { emoji: "❤️", label: "moved me", count: 341 },
   { emoji: "😢", label: "made me cry", count: 128 },
@@ -72,3 +78,33 @@ export const DEFAULT_LINE_NOTES: Record<number, LineNoteExcerpt> = {
       "I had to pause reading for a moment. This line broke me and mended me in the same breath.",
   },
 };
+
+const READER_DATA_BY_POEM: Record<string, ReaderData> = {
+  "lamplight-late-november": {
+    reactions: [...INITIAL_READER_REACTIONS],
+    reflections: getInitialReflections("Irshand"),
+    lineNotes: {
+      2: {
+        count: 86,
+        excerpt: "This line made me pause. I read it three times and still felt the room fold.",
+      },
+    },
+  },
+};
+
+export function getReaderDataForPoem(poemId?: string, authorName?: string): ReaderData {
+  if (poemId && READER_DATA_BY_POEM[poemId]) {
+    const cached = READER_DATA_BY_POEM[poemId];
+    return {
+      reactions: [...cached.reactions],
+      reflections: [...cached.reflections],
+      lineNotes: { ...cached.lineNotes },
+    };
+  }
+
+  return {
+    reactions: [...INITIAL_READER_REACTIONS],
+    reflections: getInitialReflections(authorName),
+    lineNotes: { ...DEFAULT_LINE_NOTES },
+  };
+}

@@ -3,11 +3,9 @@ import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import {
-  DEFAULT_LINE_NOTES,
-  getInitialReflections,
-  INITIAL_READER_REACTIONS,
   type ReaderReaction,
   type ReaderReflection,
+  getReaderDataForPoem,
 } from "@/data/library-reader";
 import { getLibraryPoemById, getLiteraryWorldById, LIBRARY_POEMS } from "@/data/literature";
 import { useAuth } from "@/hooks/useAuth";
@@ -42,11 +40,11 @@ export function LibraryPoemPage() {
   const [anonymous, setAnonymous] = useState(true);
   const { toast, showToast } = useToast();
 
-  const [reactions, setReactions] = useState<ReaderReaction[]>(() => [...INITIAL_READER_REACTIONS]);
+  const readerData = getReaderDataForPoem(id, poem?.author);
 
-  const [reflections, setReflections] = useState<ReaderReflection[]>(() =>
-    getInitialReflections(poem?.author),
-  );
+  const [reactions, setReactions] = useState<ReaderReaction[]>(() => readerData.reactions);
+
+  const [reflections, setReflections] = useState<ReaderReflection[]>(() => readerData.reflections);
 
   // Next / Prev poem logic
   const navigationPoems = useMemo(() => resolveNavigationPoems(LIBRARY_POEMS, from), [from]);
@@ -77,7 +75,7 @@ export function LibraryPoemPage() {
     );
   }
 
-  const lineNotes = poem.lineNotes || DEFAULT_LINE_NOTES;
+  const lineNotes = poem?.lineNotes ?? readerData.lineNotes;
 
   const cardExcerpt = poem.stanzas[0]?.slice(0, 3).join("\n") ?? "";
 

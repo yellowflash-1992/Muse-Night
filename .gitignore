@@ -33,3 +33,12 @@ dist-ssr
 .workspace/
 
 .vercel
+
+/src/generated/prisma
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+/src/generated/prisma

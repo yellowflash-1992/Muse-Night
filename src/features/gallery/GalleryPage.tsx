@@ -29,7 +29,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     caption:
       "Handset Bembo roman type stamped in metallic copper ink on 280gsm Zerkall deckle-edged mould-made paper.",
     year: "MMXXIV",
-    link: "/books/the-quiet-hour",
+    link: "/books/the-quiet-hour-chapbook",
     linkText: "View Chapbook",
   },
   {
@@ -41,7 +41,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     caption:
       "Smyth-sewn binding with exposed French spine stitching using raw dyed indigo linen thread.",
     year: "MMXXIV",
-    link: "/books/letters-to-an-unsent-friend",
+    link: "/books/letters-to-an-unsent-friend-chapbook",
     linkText: "View Chapbook",
   },
   {

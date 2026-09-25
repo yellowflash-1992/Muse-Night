@@ -1,7 +1,8 @@
 import { Link, useParams } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Layers, Quote } from "lucide-react";
 
-import { getCollectionById, POEMS } from "@/data/literature";
+import { getCollectionById, LIBRARY_POEMS } from "@/data/literature";
+import { getCollectionPoems } from "@/features/collections/lib/collection-relations";
 
 export function CollectionDetailPage() {
   const { id } = useParams({ from: "/collections/$id" });
@@ -25,10 +26,8 @@ export function CollectionDetailPage() {
     );
   }
 
-  // Get matching poems from POEMS dataset
-  const includedPoems = POEMS.filter(
-    (p) => p.collectionId === collection.id || collection.poemIds.includes(p.id),
-  );
+  // Resolve matching poems from the available library poems
+  const includedPoems = getCollectionPoems(collection, LIBRARY_POEMS);
 
   return (
     <div className="py-12 sm:py-20">

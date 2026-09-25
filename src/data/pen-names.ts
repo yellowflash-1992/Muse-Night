@@ -1,4 +1,4 @@
-import { LITERARY_WORLDS, type LiteraryVoice } from "./literary-worlds";
+import { LITERARY_WORLDS } from "./literary-worlds";
 import { PEOPLE, type Person } from "./people";
 
 export interface PenName {
@@ -16,7 +16,7 @@ export interface Poet extends Person {
   works: string[];
   literaryIdentity?: string;
   penNames?: string[];
-  voices?: LiteraryVoice[];
+  voices?: PenName[];
 }
 
 const primaryPenNameByPersonId: Record<string, string> = {
@@ -92,6 +92,12 @@ export const POETS: Record<string, Poet> = Object.fromEntries(
       (world) => world.authorId === person.id,
     );
 
+    const voices = literaryWorld
+      ? literaryWorld.penNameIds
+          .map((penNameId) => PEN_NAMES[penNameId])
+          .filter((penName): penName is PenName => penName !== undefined)
+      : undefined;
+
     return [
       person.id,
       {
@@ -102,7 +108,7 @@ export const POETS: Record<string, Poet> = Object.fromEntries(
         ...(literaryWorld
           ? {
               literaryIdentity: literaryWorld.name,
-              ...(literaryWorld.voices ? { voices: literaryWorld.voices } : {}),
+              ...(voices ? { voices } : {}),
             }
           : {}),
       },
