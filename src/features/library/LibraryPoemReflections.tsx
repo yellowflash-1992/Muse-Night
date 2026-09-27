@@ -1,6 +1,8 @@
 import { Feather, Heart, Send } from "lucide-react";
 import type { FormEvent } from "react";
 
+import { MemberGate } from "@/components/auth/MemberGate";
+import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
 import type { ReaderReflection } from "@/data/library-reader";
 
 export interface LibraryPoemReflectionsProps {
@@ -32,41 +34,6 @@ export function LibraryPoemReflections({
         </h2>
         <span className="text-xs text-paper-faint font-sans">{reflections.length} reflections</span>
       </div>
-
-      {/* Write Box */}
-      <form
-        onSubmit={onSubmit}
-        className="rounded-2xl border border-neon/20 bg-ink-2/70 p-4 sm:p-5 space-y-3 shadow-md"
-      >
-        <textarea
-          rows={3}
-          value={note}
-          onChange={(e) => onNoteChange(e.target.value)}
-          placeholder="Share what you felt while reading this verse..."
-          className="w-full bg-ink border border-neon/20 rounded-xl p-3.5 text-sm text-paper placeholder:text-paper-faint/60 focus:outline-none focus:border-neon transition-colors resize-none font-sans"
-        />
-        <div className="flex items-center justify-between pt-1">
-          <button
-            type="button"
-            onClick={() => onAnonymousChange(!anonymous)}
-            className={`text-xs px-3 py-1.5 rounded-full border transition cursor-pointer ${
-              anonymous
-                ? "border-neon/30 bg-neon/10 text-neon"
-                : "border-neon/15 text-paper-dim hover:text-paper"
-            }`}
-          >
-            {anonymous ? "Posting anonymously" : `Posting as ${userDisplayName}`}
-          </button>
-
-          <button
-            type="submit"
-            className="inline-flex items-center gap-1.5 text-xs px-5 py-2 rounded-full bg-neon text-ink font-bold uppercase tracking-wider hover:bg-neon/90 transition-all active:scale-95 shadow-md cursor-pointer"
-          >
-            <Send className="h-3 w-3" />
-            <span>Share</span>
-          </button>
-        </div>
-      </form>
 
       {/* Reflections List */}
       <div className="space-y-5 pt-2">
@@ -112,6 +79,43 @@ export function LibraryPoemReflections({
           </div>
         ))}
       </div>
+
+      {/* Write Box / Member-only Reflection Composer */}
+      <MemberGate feature={MEMBER_FEATURES.reflections}>
+        <form
+          onSubmit={onSubmit}
+          className="rounded-2xl border border-neon/20 bg-ink-2/70 p-4 sm:p-5 space-y-3 shadow-md"
+        >
+          <textarea
+            rows={3}
+            value={note}
+            onChange={(e) => onNoteChange(e.target.value)}
+            placeholder="Share what you felt while reading this verse..."
+            className="w-full bg-ink border border-neon/20 rounded-xl p-3.5 text-sm text-paper placeholder:text-paper-faint/60 focus:outline-none focus:border-neon transition-colors resize-none font-sans"
+          />
+          <div className="flex items-center justify-between pt-1">
+            <button
+              type="button"
+              onClick={() => onAnonymousChange(!anonymous)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition cursor-pointer ${
+                anonymous
+                  ? "border-neon/30 bg-neon/10 text-neon"
+                  : "border-neon/15 text-paper-dim hover:text-paper"
+              }`}
+            >
+              {anonymous ? "Posting anonymously" : `Posting as ${userDisplayName}`}
+            </button>
+
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 text-xs px-5 py-2 rounded-full bg-neon text-ink font-bold uppercase tracking-wider hover:bg-neon/90 transition-all active:scale-95 shadow-md cursor-pointer"
+            >
+              <Send className="h-3 w-3" />
+              <span>Share</span>
+            </button>
+          </div>
+        </form>
+      </MemberGate>
     </div>
   );
 }
