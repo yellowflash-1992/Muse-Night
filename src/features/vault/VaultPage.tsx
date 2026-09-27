@@ -1,7 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { Bookmark, Plus } from "lucide-react";
 
+import { MemberGate } from "@/lib/auth/MemberGate";
+import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+
 export function VaultPage() {
+  return (
+    <MemberGate feature={MEMBER_FEATURES.vault}>
+      <VaultContent />
+    </MemberGate>
+  );
+}
+
+function VaultContent() {
   const saved = (() => {
     try {
       const raw = localStorage.getItem("muse-vault-poems");
@@ -15,6 +26,7 @@ export function VaultPage() {
     <div className="min-h-screen bg-ink text-paper px-6 py-14">
       <div className="mx-auto max-w-md">
         <h1 className="font-display text-3xl text-paper mb-1">Your vault</h1>
+
         <p className="text-sm text-paper-dim mb-10">
           {saved.length === 0
             ? "Nothing saved yet."
@@ -24,8 +36,11 @@ export function VaultPage() {
         {saved.length === 0 ? (
           <div className="text-center py-20 border border-dashed border-neon/20 rounded-2xl">
             <Bookmark className="w-8 h-8 text-paper-faint mx-auto mb-4" strokeWidth={1.5} />
+
             <p className="text-sm text-paper-dim mb-1">Your vault is empty</p>
+
             <p className="text-xs text-paper-faint mb-6">Tap save on any poem to keep it here</p>
+
             <Link
               to="/library"
               className="inline-flex items-center gap-2 rounded-full bg-neon px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition"
@@ -44,13 +59,16 @@ export function VaultPage() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-display text-lg text-paper">{p.title}</span>
+
                     {p.mood && (
                       <span className="text-[10px] uppercase tracking-wide text-neon bg-neon/10 px-2 py-0.5 rounded-full">
                         {p.mood}
                       </span>
                     )}
                   </div>
+
                   <p className="text-xs text-paper-dim mb-3">by {p.author}</p>
+
                   {p.line && (
                     <p className="font-display italic text-sm text-paper-dim leading-relaxed">
                       &ldquo;{p.line}&rdquo;
