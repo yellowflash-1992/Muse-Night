@@ -3,6 +3,9 @@ import { Calendar, CheckCircle2, Feather, FileText, Send, Sparkles } from "lucid
 import type React from "react";
 import { useState } from "react";
 
+import { MemberGate } from "@/components/auth/MemberGate";
+import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+
 export function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState("");
@@ -154,123 +157,125 @@ export function SubmitPage() {
                 </div>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="rounded-xl border border-neon/20 bg-ink-2 p-6 sm:p-8 space-y-6"
-              >
-                <div>
-                  <h3 className="font-display text-3xl font-medium text-paper">
-                    Submit Manuscript
-                  </h3>
-                  <p className="text-xs text-paper-dim mt-1">
-                    Please paste your submission text directly below.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                        Your Name / Pen Name *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Rowan Davies"
-                        className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="rowan@example.com"
-                        className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                        Submission Category
-                      </label>
-                      <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper focus:border-neon focus:outline-none"
-                      >
-                        <option value="poem">Single Poem / Suite (1–5 poems)</option>
-                        <option value="chapbook">Chapbook Manuscript (20–35 pages)</option>
-                        <option value="musing">Literary Essay / Musing</option>
-                        <option value="translation">Poetry Translation</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                        Work Title *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="e.g. Winter Letters"
-                        className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
+              <MemberGate feature={MEMBER_FEATURES.submissions}>
+                <form
+                  onSubmit={handleSubmit}
+                  className="rounded-xl border border-neon/20 bg-ink-2 p-6 sm:p-8 space-y-6"
+                >
                   <div>
-                    <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                      Poem / Manuscript Text *
-                    </label>
-                    <textarea
-                      rows={8}
-                      required
-                      value={manuscript}
-                      onChange={(e) => setManuscript(e.target.value)}
-                      placeholder="Paste your poem(s) with your preferred stanza spacing and indentation..."
-                      className="w-full font-serif text-sm rounded bg-ink border border-neon/20 px-3 py-3 text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none leading-relaxed"
-                    />
+                    <h3 className="font-display text-3xl font-medium text-paper">
+                      Submit Manuscript
+                    </h3>
+                    <p className="text-xs text-paper-dim mt-1">
+                      Please paste your submission text directly below.
+                    </p>
                   </div>
 
-                  <div>
-                    <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
-                      Brief Bio &amp; Cover Note (Optional)
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
-                      placeholder="Tell us a little about yourself, your location, and where you write..."
-                      className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-xs text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
-                    />
-                  </div>
-                </div>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                          Your Name / Pen Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="e.g. Rowan Davies"
+                          className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
+                        />
+                      </div>
 
-                <div className="pt-4 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-xs text-paper-faint text-center sm:text-left">
-                    No reading fees. We never charge writers to read their work.
-                  </span>
-                  <button
-                    type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md"
-                  >
-                    <Send className="h-3.5 w-3.5" />
-                    <span>Submit Work</span>
-                  </button>
-                </div>
-              </form>
+                      <div>
+                        <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                          Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="rowan@example.com"
+                          className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                          Submission Category
+                        </label>
+                        <select
+                          value={type}
+                          onChange={(e) => setType(e.target.value)}
+                          className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper focus:border-neon focus:outline-none"
+                        >
+                          <option value="poem">Single Poem / Suite (1–5 poems)</option>
+                          <option value="chapbook">Chapbook Manuscript (20–35 pages)</option>
+                          <option value="musing">Literary Essay / Musing</option>
+                          <option value="translation">Poetry Translation</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                          Work Title *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          placeholder="e.g. Winter Letters"
+                          className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                        Poem / Manuscript Text *
+                      </label>
+                      <textarea
+                        rows={8}
+                        required
+                        value={manuscript}
+                        onChange={(e) => setManuscript(e.target.value)}
+                        placeholder="Paste your poem(s) with your preferred stanza spacing and indentation..."
+                        className="w-full font-serif text-sm rounded bg-ink border border-neon/20 px-3 py-3 text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none leading-relaxed"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase tracking-[0.16em] text-paper-dim mb-1">
+                        Brief Bio &amp; Cover Note (Optional)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        placeholder="Tell us a little about yourself, your location, and where you write..."
+                        className="w-full rounded bg-ink border border-neon/20 px-3 py-2 text-xs text-paper placeholder:text-paper-faint focus:border-neon focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-xs text-paper-faint text-center sm:text-left">
+                      No reading fees. We never charge writers to read their work.
+                    </span>
+                    <button
+                      type="submit"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md"
+                    >
+                      <Send className="h-3.5 w-3.5" />
+                      <span>Submit Work</span>
+                    </button>
+                  </div>
+                </form>
+              </MemberGate>
             )}
           </div>
         </div>
