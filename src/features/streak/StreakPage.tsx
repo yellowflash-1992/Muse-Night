@@ -2,9 +2,20 @@ import { Link } from "@tanstack/react-router";
 import { Flame, Lock, Unlock } from "lucide-react";
 import { useState } from "react";
 
+import { MemberGate } from "@/components/auth/MemberGate";
+import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+
 export function StreakPage() {
+  return (
+    <MemberGate feature={MEMBER_FEATURES.streak}>
+      <StreakContent />
+    </MemberGate>
+  );
+}
+
+function StreakContent() {
   const [streak] = useState(4);
-  const [tasksDone, setTasksDone] = useState(1);
+  const [tasksDone] = useState(1);
   const unlocked = tasksDone >= 3;
 
   return (
