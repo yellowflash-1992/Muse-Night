@@ -2,6 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { Check, Clock, Feather, Mail, MessageCircle, Quote } from "lucide-react";
 import { useState } from "react";
 
+import { MemberGate } from "@/components/auth/MemberGate";
+import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+
 const OCCASIONS = ["Birthday", "Anniversary", "Wedding", "Sympathy", "Just because", "Other"];
 const TONES = ["Romantic", "Nostalgic", "Playful", "Reflective", "Spiritual"];
 
@@ -54,130 +57,136 @@ export function RequestPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-14 grid md:grid-cols-3 gap-10">
-        {/* Form */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(true);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="md:col-span-2 space-y-7"
-        >
-          <div>
-            <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
-              Occasion
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {OCCASIONS.map((o) => (
-                <button
-                  type="button"
-                  key={o}
-                  onClick={() => setOccasion(o)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs border transition ${
-                    occasion === o
-                      ? "border-neon text-neon bg-neon/10"
-                      : "border-neon/20 text-paper-dim hover:border-neon/40"
-                  }`}
-                >
-                  {o}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Form / Member-only Action Area */}
+        <div className="md:col-span-2">
+          <MemberGate feature={MEMBER_FEATURES.poemRequests}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSubmitted(true);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="space-y-7"
+            >
+              <div>
+                <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
+                  Occasion
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {OCCASIONS.map((o) => (
+                    <button
+                      type="button"
+                      key={o}
+                      onClick={() => setOccasion(o)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs border transition ${
+                        occasion === o
+                          ? "border-neon text-neon bg-neon/10"
+                          : "border-neon/20 text-paper-dim hover:border-neon/40"
+                      }`}
+                    >
+                      {o}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
-              Tone
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {TONES.map((t) => (
-                <button
-                  type="button"
-                  key={t}
-                  onClick={() => setTone(t)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs border transition ${
-                    tone === t
-                      ? "border-neon text-neon bg-neon/10"
-                      : "border-neon/20 text-paper-dim hover:border-neon/40"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
+                  Tone
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {TONES.map((t) => (
+                    <button
+                      type="button"
+                      key={t}
+                      onClick={() => setTone(t)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs border transition ${
+                        tone === t
+                          ? "border-neon text-neon bg-neon/10"
+                          : "border-neon/20 text-paper-dim hover:border-neon/40"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
-              Get it delivered on
-            </label>
-            <div className="flex gap-2">
-              {["WhatsApp", "Email"].map((d) => (
-                <button
-                  type="button"
-                  key={d}
-                  onClick={() => setDelivery(d)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs border transition ${
-                    delivery === d
-                      ? "border-neon text-neon bg-neon/10"
-                      : "border-neon/20 text-paper-dim hover:border-neon/40"
-                  }`}
-                >
-                  {d === "WhatsApp" ? (
-                    <MessageCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  ) : (
-                    <Mail className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  )}
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
+                  Get it delivered on
+                </label>
+                <div className="flex gap-2">
+                  {["WhatsApp", "Email"].map((d) => (
+                    <button
+                      type="button"
+                      key={d}
+                      onClick={() => setDelivery(d)}
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs border transition ${
+                        delivery === d
+                          ? "border-neon text-neon bg-neon/10"
+                          : "border-neon/20 text-paper-dim hover:border-neon/40"
+                      }`}
+                    >
+                      {d === "WhatsApp" ? (
+                        <MessageCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      ) : (
+                        <Mail className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      )}
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
-                Who is this for?
-              </label>
-              <input
-                required
-                type="text"
-                placeholder="e.g. My mother, Aisha"
-                className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60"
-              />
-            </div>
-            <div>
-              <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
-                {delivery === "WhatsApp" ? "Your WhatsApp number" : "Your email"}
-              </label>
-              <input
-                required
-                type={delivery === "WhatsApp" ? "tel" : "email"}
-                placeholder={delivery === "WhatsApp" ? "e.g. +234 801 234 5678" : "you@email.com"}
-                className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60"
-              />
-            </div>
-          </div>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
+                    Who is this for?
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. My mother, Aisha"
+                    className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
+                    {delivery === "WhatsApp" ? "Your WhatsApp number" : "Your email"}
+                  </label>
+                  <input
+                    required
+                    type={delivery === "WhatsApp" ? "tel" : "email"}
+                    placeholder={
+                      delivery === "WhatsApp" ? "e.g. +234 801 234 5678" : "you@email.com"
+                    }
+                    className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60"
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
-              Tell us their story
-            </label>
-            <textarea
-              required
-              rows={5}
-              placeholder="What should the poet know? Memories, inside jokes, what makes this person who they are..."
-              className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60 resize-none"
-            />
-          </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wide text-paper-dim mb-2">
+                  Tell us their story
+                </label>
+                <textarea
+                  required
+                  rows={5}
+                  placeholder="What should the poet know? Memories, inside jokes, what makes this person who they are..."
+                  className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60 resize-none"
+                />
+              </div>
 
-          <button
-            type="submit"
-            className="w-full sm:w-auto px-7 py-3 rounded-lg bg-neon text-ink text-sm font-medium hover:bg-neon/90 transition shadow-md"
-          >
-            Request your poem — $5
-          </button>
-        </form>
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-neon text-ink text-sm font-medium hover:bg-neon/90 transition shadow-md"
+              >
+                Request your poem — $5
+              </button>
+            </form>
+          </MemberGate>
+        </div>
 
         {/* Sidebar */}
         <div className="space-y-8">
