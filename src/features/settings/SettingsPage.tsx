@@ -14,6 +14,10 @@ import { useEffect, useState } from "react";
 import { MemberGate } from "@/components/auth/MemberGate";
 import { useAuth } from "@/hooks/useAuth";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+import {
+  getCurrentMemberProfileFn,
+  updateCurrentMemberProfileFn,
+} from "@/lib/member-profile.functions";
 
 export function SettingsPage() {
   return (
@@ -24,36 +28,73 @@ export function SettingsPage() {
 }
 
 function SettingsContent() {
-  const { user, isAuthenticated, logout, updateProfile } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const [name, setName] = useState("");
   const [penName, setPenName] = useState("");
   const [bio, setBio] = useState("");
   const [profileTitle, setProfileTitle] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) {
-      setName(user.name || "");
-      setPenName(user.penName || "");
-      setBio(user.bio || "");
-      setProfileTitle(user.profileTitle || "Reader & Patron");
+    let mounted = true;
+
+    async function loadProfile() {
+      try {
+        setError(null);
+        const profile = await getCurrentMemberProfileFn();
+        if (mounted) {
+          setName(profile.displayName || "");
+          setPenName(profile.penName || "");
+          setBio(profile.bio || "");
+          setProfileTitle(profile.profileTitle || "Reader & Patron");
+        }
+      } catch (err) {
+        if (mounted) {
+          setError(err instanceof Error ? err.message : "Failed to load profile");
+        }
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
     }
-  }, [user]);
 
-  const handleSave = (e: React.FormEvent) => {
+    loadProfile();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || isSaving) return;
 
-    updateProfile({
-      name: name.trim() || user?.name || "Patron",
-      penName: penName.trim() || undefined,
-      bio: bio.trim() || undefined,
-      profileTitle: profileTitle.trim() || "Reader & Patron",
-    });
+    setIsSaving(true);
+    setError(null);
 
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2500);
+    try {
+      await updateCurrentMemberProfileFn({
+        data: {
+          displayName: name.trim() || "Patron",
+          penName: penName.trim() || null,
+          profileTitle: profileTitle.trim() || "Reader & Patron",
+          bio: bio.trim() || null,
+          avatarUrl: null,
+        },
+      });
+
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 2500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save profile");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const getInitial = () => {
@@ -63,6 +104,18 @@ function SettingsContent() {
     return "P";
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-ink text-paper selection:bg-neon selection:text-ink pt-24 pb-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neon" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-ink text-paper selection:bg-neon selection:text-ink pt-24 pb-20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
@@ -70,10 +123,10 @@ function SettingsContent() {
         <div className="border-b border-neon/15 pb-6">
           <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-2 font-medium">
             <Feather className="h-3.5 w-3.5 text-neon" />
-            <span>Patron Studio &amp; Profile</span>
+            <span>Patron Studio & Profile</span>
           </div>
           <h1 className="font-display text-3xl sm:text-5xl font-semibold text-paper leading-tight">
-            Account &amp; <span className="italic font-light text-neon">Pen Name</span>
+            Account & <span className="italic font-light text-neon">Pen Name</span>
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-paper-dim max-w-xl font-karla leading-relaxed">
             Customize how your literary mark appears across Muse Night, your hand-bound orders,
@@ -121,7 +174,7 @@ function SettingsContent() {
                   Personal Soliloquy
                 </p>
                 <p className="font-serif italic text-xs text-paper-dim leading-relaxed">
-                  “{bio.trim() || "A solitary reader leaving the light on after midnight."}”
+                  "{bio.trim() || "A solitary reader leaving the light on after midnight."}"
                 </p>
               </div>
 
@@ -183,6 +236,12 @@ function SettingsContent() {
                   <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-400/30 px-3 py-1 rounded-full animate-in fade-in">
                     <Check className="h-3.5 w-3.5" />
                     <span>Saved successfully</span>
+                  </span>
+                )}
+                {error && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-rose-400 bg-rose-500/10 border border-rose-400/30 px-3 py-1 rounded-full animate-in fade-in">
+                    <span className="h-3.5 w-3.5">!</span>
+                    <span>{error}</span>
                   </span>
                 )}
               </div>
@@ -252,10 +311,11 @@ function SettingsContent() {
               <div className="pt-4 border-t border-neon/10 flex flex-wrap items-center justify-between gap-4">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-xl bg-neon px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-ink shadow-md hover:bg-neon/90 transition-all active:scale-95 cursor-pointer"
+                  disabled={isSaving}
+                  className="inline-flex items-center gap-2 rounded-xl bg-neon px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-ink shadow-md hover:bg-neon/90 transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="h-4 w-4" />
-                  <span>Save Profile Changes</span>
+                  <span>{isSaving ? "Saving..." : "Save Profile Changes"}</span>
                 </button>
 
                 <button
