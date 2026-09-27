@@ -1,4 +1,7 @@
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
+
+import { createClient } from "@/lib/supabase/client";
 
 export interface User {
   id: string;
@@ -9,91 +12,214 @@ export interface User {
   avatar?: string | undefined;
   role?: string | undefined;
   memberSince?: string | undefined;
+  isAnonymous?: boolean;
 }
 
-const STORAGE_KEY = "muse_user";
-const AUTH_EVENT = "muse_auth_changed";
+export interface AuthResult {
+  error: string | null;
+  hasSession: boolean;
+}
 
+function mapAuthUser(authUser: SupabaseUser): User {
+  const metadata = authUser.user_metadata ?? {};
+
+  const metadataName =
+    typeof metadata["name"] === "string" && metadata["name"].trim()
+      ? metadata["name"].trim()
+      : undefined;
+
+  const emailName = authUser.email?.split("@")[0]?.trim();
+
+  const name = metadataName || emailName || "Reader";
+
+  const memberSince = new Intl.DateTimeFormat("en", {
+    month: "long",
+    year: "numeric",
+  }).format(new Date(authUser.created_at));
+
+  return {
+    id: authUser.id,
+    name,
+    penName:
+      typeof metadata["penName"] === "string" && metadata["penName"].trim()
+        ? metadata["penName"]
+        : undefined,
+    email: authUser.email ?? "",
+    bio:
+      typeof metadata["bio"] === "string" && metadata["bio"].trim() ? metadata["bio"] : undefined,
+    avatar:
+      typeof metadata["avatar"] === "string" && metadata["avatar"].trim()
+        ? metadata["avatar"]
+        : undefined,
+    role:
+      typeof metadata["role"] === "string" && metadata["role"].trim()
+        ? metadata["role"]
+        : "Reader & Patron",
+    memberSince,
+    isAnonymous: Boolean((authUser as SupabaseUser & { is_anonymous?: boolean })["is_anonymous"]),
+  };
+}
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadUser = () => {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          setUser(JSON.parse(stored));
-        } else {
-          setUser(null);
+    const supabase = createClient();
+    let mounted = true;
+
+    const loadUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (!mounted) return;
+
+      if (error) {
+        if (error.name !== "AuthSessionMissingError") {
+          console.error("Failed to load authenticated user:", error);
         }
-      } catch {
+
         setUser(null);
-      } finally {
-        setLoading(false);
+      } else {
+        setUser(data.user ? mapAuthUser(data.user) : null);
       }
+
+      setLoading(false);
     };
 
-    loadUser();
+    void loadUser();
 
-    const handleAuthChange = () => loadUser();
-    window.addEventListener(AUTH_EVENT, handleAuthChange);
-    window.addEventListener("storage", handleAuthChange);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+
+      setUser(session?.user ? mapAuthUser(session.user) : null);
+      setLoading(false);
+    });
 
     return () => {
-      window.removeEventListener(AUTH_EVENT, handleAuthChange);
-      window.removeEventListener("storage", handleAuthChange);
+      mounted = false;
+      subscription.unsubscribe();
     };
   }, []);
 
-  const login = (email: string, name?: string) => {
-    const defaultName = name || email.split("@")[0] || "Patron";
-    const formattedName = defaultName.charAt(0).toUpperCase() + defaultName.slice(1);
-    const newUser: User = {
-      id: "user_" + Date.now(),
-      name: formattedName,
-      email,
-      role: "Reader & Patron",
-      memberSince: "Winter 2024",
+  const login = async (email: string, password: string): Promise<AuthResult> => {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    return {
+      error: error?.message ?? null,
+      hasSession: Boolean(data.session),
     };
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-      setUser(newUser);
-      window.dispatchEvent(new Event(AUTH_EVENT));
-    } catch (e) {
-      console.error(e);
-    }
-    return newUser;
   };
 
-  const logout = () => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
+  const signUp = async (email: string, password: string, name: string): Promise<AuthResult> => {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/confirm`,
+        data: {
+          name: name.trim(),
+          role: "Reader & Patron",
+        },
+      },
+    });
+
+    return {
+      error: error?.message ?? null,
+      hasSession: Boolean(data.session),
+    };
+  };
+
+  const signInWithGoogle = async (): Promise<AuthResult> => {
+    const supabase = createClient();
+
+    const returnTo = window.location.pathname + window.location.search + window.location.hash;
+    sessionStorage.setItem("muse-auth-return-to", returnTo);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/confirm`,
+      },
+    });
+
+    return {
+      error: error?.message ?? null,
+      hasSession: false,
+    };
+  };
+
+  const logout = async (): Promise<{ error: string | null }> => {
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signOut({
+      scope: "local",
+    });
+
+    if (error) {
+      console.error("Failed to sign out:", error);
+    } else {
       setUser(null);
-      window.dispatchEvent(new Event(AUTH_EVENT));
-    } catch (e) {
-      console.error(e);
     }
+
+    return {
+      error: error?.message ?? null,
+    };
   };
 
-  const updateProfile = (updates: Partial<User>) => {
-    if (!user) return null;
-    const updatedUser: User = { ...user, ...updates };
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      window.dispatchEvent(new Event(AUTH_EVENT));
-    } catch (e) {
-      console.error(e);
+  const updateProfile = async (updates: Partial<User>): Promise<User | null> => {
+    const supabase = createClient();
+
+    const metadata: Record<string, string | null> = {};
+
+    if ("name" in updates) {
+      metadata["name"] = updates.name?.trim() || null;
     }
+
+    if ("penName" in updates) {
+      metadata["penName"] = updates.penName?.trim() || null;
+    }
+
+    if ("bio" in updates) {
+      metadata["bio"] = updates.bio?.trim() || null;
+    }
+
+    if ("avatar" in updates) {
+      metadata["avatar"] = updates.avatar?.trim() || null;
+    }
+
+    if ("role" in updates) {
+      metadata["role"] = updates.role?.trim() || "Reader & Patron";
+    }
+    const { data, error } = await supabase.auth.updateUser({
+      data: metadata,
+    });
+
+    if (error) {
+      console.error("Failed to update profile:", error);
+      return null;
+    }
+
+    const updatedUser = data.user ? mapAuthUser(data.user) : null;
+    setUser(updatedUser);
+
     return updatedUser;
   };
 
   return {
     user,
-    isAuthenticated: !!user,
+    isAuthenticated: Boolean(user),
     loading,
     login,
+    signUp,
+    signInWithGoogle,
     logout,
     updateProfile,
   };

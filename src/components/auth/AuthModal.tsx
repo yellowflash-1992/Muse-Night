@@ -1,7 +1,6 @@
-import { Check, Feather, Lock, Mail, Sparkles, User, X } from "lucide-react";
-import { useEffect, useState } from "react";
-
 import { useAuth } from "@/hooks/useAuth";
+import { Check, Feather, Lock, Mail, User, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -14,8 +13,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
-  const { login } = useAuth();
+  const { login, signUp, signInWithGoogle } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setMode(initialMode);
@@ -39,26 +41,42 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
 
-    login(email, mode === "signup" ? name : undefined);
-    setSuccess(true);
+    if (!email.trim() || !password) return;
+
+    if (mode === "signup" && !name.trim()) return;
+
+    if (mode === "signup" && password.length < 6) {
+      setError("Your password must contain at least 6 characters.");
+      return;
+    }
+
+    setError(null);
+    setSubmitting(true);
+
+    const result =
+      mode === "signin" ? await login(email, password) : await signUp(email, password, name);
+
+    setSubmitting(false);
+
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+
+    if (mode === "signup" && !result.hasSession) {
+      setSuccessMessage("Check your email to confirm your patron account.");
+      return;
+    }
+
+    setSuccessMessage("Welcome to the Reading Room");
+
     setTimeout(() => {
-      setSuccess(false);
+      setSuccessMessage(null);
       onClose();
     }, 1200);
-  };
-
-  const handleQuickOAuth = (provider: string) => {
-    const mockEmail = provider === "google" ? "patron.reader@gmail.com" : "reader@musebooks.press";
-    login(mockEmail, "Reader");
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false);
-      onClose();
-    }, 1000);
   };
 
   return (
@@ -67,7 +85,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-neon/30 bg-ink-2 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-hide"
+        className="relative w-full max-w-md rounded-2xl border border-neon/30 bg-ink-2 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hide"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -82,16 +100,16 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
           <X className="w-5 h-5" />
         </button>
 
-        {success ? (
+        {successMessage ? (
           <div className="py-10 text-center animate-[fadeIn_0.2s_ease-out]">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-neon/20 border border-neon/40 text-neon">
               <Check className="h-7 w-7" />
             </div>
-            <h3 className="font-display text-2xl text-paper font-medium">
-              Welcome to the Reading Room
-            </h3>
+
+            <h3 className="font-display text-2xl text-paper font-medium">{successMessage}</h3>
+
             <p className="mt-2 text-xs uppercase tracking-[0.2em] text-paper-dim">
-              Signed in as a Patron of Muse Books
+              Muse Night Reading Room
             </p>
           </div>
         ) : (
@@ -102,7 +120,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
                 <Feather className="h-5 w-5" />
               </div>
               <p className="text-[10px] uppercase tracking-[0.28em] text-neon font-medium">
-                Muse Books · Reader Sanctuary
+                Muse Night · Reader Sanctuary
               </p>
               <h2 className="mt-1 font-display text-2xl sm:text-3xl font-medium text-paper">
                 {mode === "signin" ? "Sign In to Your Vault" : "Create Patron Account"}
@@ -193,32 +211,55 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
                   />
                 </div>
               </div>
-
+              {error ? (
+                <p
+                  className="rounded-xl border border-red-400/20 bg-red-400/10 px-3 py-2 text-xs text-red-200"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              ) : null}
               <button
                 type="submit"
-                className="w-full rounded-xl bg-neon py-3 text-xs uppercase tracking-[0.2em] font-bold text-ink hover:bg-neon/90 shadow-lg active:scale-95 transition-all mt-2"
+                disabled={submitting}
+                className="w-full rounded-xl bg-neon py-3 text-xs uppercase tracking-[0.2em] font-bold text-ink hover:bg-neon/90 shadow-lg active:scale-95 transition-all mt-2 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
               >
-                {mode === "signin" ? "Sign In" : "Create Account"}
+                {submitting
+                  ? mode === "signin"
+                    ? "Signing In..."
+                    : "Creating Account..."
+                  : mode === "signin"
+                    ? "Sign In"
+                    : "Create Account"}
               </button>
             </form>
 
             {/* Divider */}
             <div className="my-5 flex items-center gap-3">
-              <div className="h-px flex-1 bg-neon/10" />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-paper-faint">
-                or continue with
+              <div className="h-px flex-1 bg-neon/15" />
+              <span className="text-[10px] uppercase tracking-[0.2em] text-paper-faint font-medium">
+                or
               </span>
-              <div className="h-px flex-1 bg-neon/10" />
+              <div className="h-px flex-1 bg-neon/15" />
             </div>
 
-            {/* Quick OAuth Buttons */}
-            <div className="space-y-2">
+            {/* Secondary Google Authentication */}
+            <div>
               <button
                 type="button"
-                onClick={() => handleQuickOAuth("google")}
-                className="w-full flex items-center justify-center gap-2.5 rounded-xl border border-neon/20 bg-ink/50 py-2.5 text-xs text-paper hover:bg-neon/10 hover:border-neon/40 active:scale-95 transition-all"
+                disabled={googleLoading || submitting}
+                onClick={async () => {
+                  setError(null);
+                  setGoogleLoading(true);
+                  const result = await signInWithGoogle();
+                  if (result.error) {
+                    setError(result.error);
+                    setGoogleLoading(false);
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2.5 rounded-xl border border-neon/20 bg-ink/70 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-paper-dim hover:text-paper hover:bg-neon/10 hover:border-neon/40 active:scale-95 transition-all disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer shadow-sm"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -236,21 +277,12 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>Continue with Google</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickOAuth("email")}
-                className="w-full flex items-center justify-center gap-2 rounded-xl border border-neon/15 bg-ink/30 py-2.5 text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-all"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-neon" />
-                <span>Quick Guest Reader Sign-in</span>
+                <span>{googleLoading ? "Connecting to Google..." : "Continue with Google"}</span>
               </button>
             </div>
 
             <p className="mt-5 text-center text-[10px] text-paper-faint">
-              By continuing, you become a patron of Muse Books lamplit archives.
+              By continuing, you become a patron of Muse Night lamplit archives.
             </p>
           </div>
         )}
