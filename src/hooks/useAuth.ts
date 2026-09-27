@@ -10,7 +10,7 @@ export interface User {
   email: string;
   bio?: string | undefined;
   avatar?: string | undefined;
-  role?: string | undefined;
+  profileTitle?: string | undefined;
   memberSince?: string | undefined;
   isAnonymous?: boolean;
 }
@@ -37,6 +37,13 @@ function mapAuthUser(authUser: SupabaseUser): User {
     year: "numeric",
   }).format(new Date(authUser.created_at));
 
+  const profileTitleFromMetadata =
+    typeof metadata["profileTitle"] === "string" && metadata["profileTitle"].trim()
+      ? metadata["profileTitle"].trim()
+      : typeof metadata["role"] === "string" && metadata["role"].trim()
+        ? metadata["role"].trim()
+        : "Reader & Patron";
+
   return {
     id: authUser.id,
     name,
@@ -51,10 +58,7 @@ function mapAuthUser(authUser: SupabaseUser): User {
       typeof metadata["avatar"] === "string" && metadata["avatar"].trim()
         ? metadata["avatar"]
         : undefined,
-    role:
-      typeof metadata["role"] === "string" && metadata["role"].trim()
-        ? metadata["role"]
-        : "Reader & Patron",
+    profileTitle: profileTitleFromMetadata,
     memberSince,
     isAnonymous: Boolean((authUser as SupabaseUser & { is_anonymous?: boolean })["is_anonymous"]),
   };
@@ -126,7 +130,7 @@ export function useAuth() {
         emailRedirectTo: `${window.location.origin}/auth/confirm`,
         data: {
           name: name.trim(),
-          role: "Reader & Patron",
+          profileTitle: "Reader & Patron",
         },
       },
     });
@@ -195,8 +199,8 @@ export function useAuth() {
       metadata["avatar"] = updates.avatar?.trim() || null;
     }
 
-    if ("role" in updates) {
-      metadata["role"] = updates.role?.trim() || "Reader & Patron";
+    if ("profileTitle" in updates) {
+      metadata["profileTitle"] = updates.profileTitle?.trim() || "Reader & Patron";
     }
     const { data, error } = await supabase.auth.updateUser({
       data: metadata,

@@ -29,7 +29,7 @@ function SettingsContent() {
   const [name, setName] = useState("");
   const [penName, setPenName] = useState("");
   const [bio, setBio] = useState("");
-  const [role, setRole] = useState("");
+  const [profileTitle, setProfileTitle] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function SettingsContent() {
       setName(user.name || "");
       setPenName(user.penName || "");
       setBio(user.bio || "");
-      setRole(user.role || "Reader & Patron");
+      setProfileTitle(user.profileTitle || "Reader & Patron");
     }
   }, [user]);
 
@@ -49,7 +49,7 @@ function SettingsContent() {
       name: name.trim() || user?.name || "Patron",
       penName: penName.trim() || undefined,
       bio: bio.trim() || undefined,
-      role: role.trim() || "Reader & Patron",
+      profileTitle: profileTitle.trim() || "Reader & Patron",
     });
 
     setSavedSuccess(true);
@@ -104,7 +104,7 @@ function SettingsContent() {
                     <p className="text-[11px] text-paper-dim truncate">Legal Name: {name.trim()}</p>
                   )}
                   <span className="inline-block mt-1 text-[9px] uppercase tracking-wider text-neon bg-neon/10 px-2 py-0.5 rounded-full border border-neon/20">
-                    {role || "Reader & Patron"}
+                    {profileTitle || "Reader & Patron"}
                   </span>
                 </div>
               </div>
@@ -220,16 +220,16 @@ function SettingsContent() {
                 />
               </div>
 
-              {/* Patron Title / Role */}
+              {/* Patron Title */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-[0.18em] text-paper-dim">
-                  Patron Title / Role
+                  Patron Title
                 </label>
                 <input
                   type="text"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  placeholder="e.g. Reader &amp; Patron, Child of the Wilderness"
+                  value={profileTitle}
+                  onChange={(e) => setProfileTitle(e.target.value)}
+                  placeholder="e.g. Reader & Patron, Child of the Wilderness"
                   className="w-full rounded-xl bg-ink border border-neon/25 px-4 py-2.5 text-sm text-paper placeholder:text-paper-faint/50 focus:border-neon focus:outline-none transition-colors"
                 />
               </div>

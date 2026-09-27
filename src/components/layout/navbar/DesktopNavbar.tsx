@@ -217,7 +217,7 @@ export function DesktopNavbar({
                       </p>
                       <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
                       <span className="inline-block mt-1 text-[9px] uppercase tracking-wider text-neon bg-neon/10 px-2 py-0.5 rounded-full border border-neon/20">
-                        {user.role || "Patron of Muse Books"}
+                        {user.profileTitle || "Patron of Muse Books"}
                       </span>
                     </div>
 
