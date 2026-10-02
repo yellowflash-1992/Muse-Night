@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Bookmark,
   Check,
@@ -13,11 +14,9 @@ import { useEffect, useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
 import { useAuth } from "@/hooks/useAuth";
+import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
-import {
-  getCurrentMemberProfileFn,
-  updateCurrentMemberProfileFn,
-} from "@/lib/member-profile.functions";
+import { updateCurrentMemberProfileFn } from "@/lib/member-profile.functions";
 
 export function SettingsPage() {
   return (
@@ -29,53 +28,34 @@ export function SettingsPage() {
 
 function SettingsContent() {
   const { user, isAuthenticated, logout } = useAuth();
+  const { profile, isLoading, error: profileError } = useMemberProfile();
+  const queryClient = useQueryClient();
 
   const [name, setName] = useState("");
   const [penName, setPenName] = useState("");
   const [bio, setBio] = useState("");
   const [profileTitle, setProfileTitle] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-
-    async function loadProfile() {
-      try {
-        setError(null);
-        const profile = await getCurrentMemberProfileFn();
-        if (mounted) {
-          setName(profile.displayName || "");
-          setPenName(profile.penName || "");
-          setBio(profile.bio || "");
-          setProfileTitle(profile.profileTitle || "Reader & Patron");
-        }
-      } catch (err) {
-        if (mounted) {
-          setError(err instanceof Error ? err.message : "Failed to load profile");
-        }
-      } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
-      }
+    if (profile && !isInitialized) {
+      setName(profile.displayName || "");
+      setPenName(profile.penName || "");
+      setBio(profile.bio || "");
+      setProfileTitle(profile.profileTitle || "Reader & Patron");
+      setIsInitialized(true);
     }
-
-    loadProfile();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  }, [profile, isInitialized]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated || isSaving) return;
 
     setIsSaving(true);
-    setError(null);
+    setSaveError(null);
 
     try {
       await updateCurrentMemberProfileFn({
@@ -84,14 +64,18 @@ function SettingsContent() {
           penName: penName.trim() || null,
           profileTitle: profileTitle.trim() || "Reader & Patron",
           bio: bio.trim() || null,
-          avatarUrl: null,
+          avatarUrl: profile?.avatarUrl ?? null,
         },
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["member-profile", user?.id],
       });
 
       setSavedSuccess(true);
       setTimeout(() => setSavedSuccess(false), 2500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save profile");
+      setSaveError(err instanceof Error ? err.message : "Failed to save profile");
     } finally {
       setIsSaving(false);
     }
@@ -100,6 +84,7 @@ function SettingsContent() {
   const getInitial = () => {
     if (penName.trim()) return penName.trim().charAt(0).toUpperCase();
     if (name.trim()) return name.trim().charAt(0).toUpperCase();
+    if (profile?.displayName) return profile.displayName.charAt(0).toUpperCase();
     if (user?.name) return user.name.charAt(0).toUpperCase();
     return "P";
   };
@@ -115,6 +100,8 @@ function SettingsContent() {
       </div>
     );
   }
+
+  const displayedError = saveError || (profileError ? profileError.message : null);
 
   return (
     <div className="min-h-screen bg-ink text-paper selection:bg-neon selection:text-ink pt-24 pb-20">
@@ -238,10 +225,10 @@ function SettingsContent() {
                     <span>Saved successfully</span>
                   </span>
                 )}
-                {error && (
+                {displayedError && (
                   <span className="inline-flex items-center gap-1.5 text-xs text-rose-400 bg-rose-500/10 border border-rose-400/30 px-3 py-1 rounded-full animate-in fade-in">
                     <span className="h-3.5 w-3.5">!</span>
-                    <span>{error}</span>
+                    <span>{displayedError}</span>
                   </span>
                 )}
               </div>
