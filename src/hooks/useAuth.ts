@@ -178,45 +178,6 @@ export function useAuth() {
     };
   };
 
-  const updateProfile = async (updates: Partial<User>): Promise<User | null> => {
-    const supabase = createClient();
-
-    const metadata: Record<string, string | null> = {};
-
-    if ("name" in updates) {
-      metadata["name"] = updates.name?.trim() || null;
-    }
-
-    if ("penName" in updates) {
-      metadata["penName"] = updates.penName?.trim() || null;
-    }
-
-    if ("bio" in updates) {
-      metadata["bio"] = updates.bio?.trim() || null;
-    }
-
-    if ("avatar" in updates) {
-      metadata["avatar"] = updates.avatar?.trim() || null;
-    }
-
-    if ("profileTitle" in updates) {
-      metadata["profileTitle"] = updates.profileTitle?.trim() || "Reader & Patron";
-    }
-    const { data, error } = await supabase.auth.updateUser({
-      data: metadata,
-    });
-
-    if (error) {
-      console.error("Failed to update profile:", error);
-      return null;
-    }
-
-    const updatedUser = data.user ? mapAuthUser(data.user) : null;
-    setUser(updatedUser);
-
-    return updatedUser;
-  };
-
   return {
     user,
     isAuthenticated: Boolean(user),
@@ -225,6 +186,5 @@ export function useAuth() {
     signUp,
     signInWithGoogle,
     logout,
-    updateProfile,
   };
 }
