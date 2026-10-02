@@ -5,10 +5,12 @@ import type { RefObject } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
+import type { MemberProfileData } from "@/hooks/useMemberProfile";
 
 interface DesktopNavbarProps {
   currentPath: string;
   user: AuthUser | null;
+  profile?: MemberProfileData | null;
   isAuthenticated: boolean;
   logout: () => void;
   hubDropdownOpen: boolean;
@@ -24,6 +26,7 @@ interface DesktopNavbarProps {
 export function DesktopNavbar({
   currentPath,
   user,
+  profile,
   isAuthenticated,
   logout,
   hubDropdownOpen,
@@ -41,6 +44,16 @@ export function DesktopNavbar({
   };
 
   const isHubActive = hubItems.some((item) => isActive(item.to));
+
+  const displayName = profile?.displayName || user?.name || "Patron";
+  const profileTitle = profile?.profileTitle || user?.profileTitle || "Reader & Patron";
+  const initial = (
+    profile?.penName?.trim()?.charAt(0) ||
+    profile?.displayName?.trim()?.charAt(0) ||
+    user?.penName?.trim()?.charAt(0) ||
+    user?.name?.trim()?.charAt(0) ||
+    "P"
+  ).toUpperCase();
 
   return (
     <header className="hidden lg:block sticky top-0 z-50 bg-ink/90 backdrop-blur-md border-b border-neon/10 transition-colors">
@@ -193,10 +206,10 @@ export function DesktopNavbar({
                   aria-expanded={userMenuOpen}
                 >
                   <div className="flex h-6.5 w-6.5 xl:h-7 xl:w-7 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-xs shadow-inner">
-                    {user.name.charAt(0).toUpperCase()}
+                    {initial}
                   </div>
                   <span className="font-karla text-[10.5px] xl:text-[11px] font-semibold text-paper group-hover:text-neon transition-colors max-w-[90px] xl:max-w-[110px] truncate">
-                    {user.name}
+                    {displayName}
                   </span>
                   <ChevronDown
                     className={`h-3 w-3 text-neon/70 transition-transform duration-200 ${
@@ -213,11 +226,11 @@ export function DesktopNavbar({
                   >
                     <div className="border-b border-neon/10 pb-3 mb-2 px-1">
                       <p className="font-karla text-xs font-semibold text-paper truncate">
-                        {user.name}
+                        {displayName}
                       </p>
                       <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
                       <span className="inline-block mt-1 text-[9px] uppercase tracking-wider text-neon bg-neon/10 px-2 py-0.5 rounded-full border border-neon/20">
-                        {user.profileTitle || "Patron of Muse Books"}
+                        {profileTitle}
                       </span>
                     </div>
 

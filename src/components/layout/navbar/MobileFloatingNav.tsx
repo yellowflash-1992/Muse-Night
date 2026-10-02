@@ -3,9 +3,11 @@ import { Feather, LogOut, Settings, User } from "lucide-react";
 import type { RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
+import type { MemberProfileData } from "@/hooks/useMemberProfile";
 
 interface MobileFloatingNavProps {
   user: AuthUser | null;
+  profile?: MemberProfileData | null;
   isAuthenticated: boolean;
   logout: () => void;
   mobileUserMenuOpen: boolean;
@@ -21,6 +23,7 @@ interface MobileFloatingNavProps {
 
 export function MobileFloatingNav({
   user,
+  profile,
   isAuthenticated,
   logout,
   mobileUserMenuOpen,
@@ -33,6 +36,16 @@ export function MobileFloatingNav({
   setAuthModalMode,
   mobileUserMenuRef,
 }: MobileFloatingNavProps) {
+  const displayName = profile?.displayName || user?.name || "Patron";
+  const profileTitle = profile?.profileTitle || user?.profileTitle || "Reader & Patron";
+  const initial = (
+    profile?.penName?.trim()?.charAt(0) ||
+    profile?.displayName?.trim()?.charAt(0) ||
+    user?.penName?.trim()?.charAt(0) ||
+    user?.name?.trim()?.charAt(0) ||
+    "P"
+  ).toUpperCase();
+
   return (
     <div
       className="block lg:hidden fixed top-3 left-0 right-0 z-50 px-3 pointer-events-none"
@@ -79,13 +92,15 @@ export function MobileFloatingNav({
                   setAuthModalOpen(true);
                 }
               }}
-              aria-label={isAuthenticated && user ? `Account: ${user.name}` : "Sign In or Sign Up"}
+              aria-label={
+                isAuthenticated && user ? `Account: ${displayName}` : "Sign In or Sign Up"
+              }
               aria-expanded={mobileUserMenuOpen}
               aria-haspopup="menu"
               className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
             >
               {isAuthenticated && user ? (
-                <span className="font-bold text-xs">{user.name.charAt(0).toUpperCase()}</span>
+                <span className="font-bold text-xs">{initial}</span>
               ) : (
                 <User className="h-4 w-4" />
               )}
@@ -100,11 +115,11 @@ export function MobileFloatingNav({
                 {/* User Profile Header */}
                 <div className="border-b border-neon/10 pb-2.5 mb-2 px-2">
                   <p className="font-karla text-xs font-semibold text-paper truncate">
-                    {user.name}
+                    {displayName}
                   </p>
                   <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
                   <span className="inline-block mt-1 text-[8.5px] uppercase tracking-wider text-neon bg-neon/10 px-2 py-0.5 rounded-full border border-neon/20">
-                    {user.profileTitle || "Patron of Muse Books"}
+                    {profileTitle}
                   </span>
                 </div>
 

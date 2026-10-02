@@ -15,11 +15,13 @@ import type { RefObject } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
+import type { MemberProfileData } from "@/hooks/useMemberProfile";
 
 interface MobileNavDrawerProps {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
   user: AuthUser | null;
+  profile?: MemberProfileData | null;
   isAuthenticated: boolean;
   logout: () => void;
   currentPath: string;
@@ -40,6 +42,7 @@ export function MobileNavDrawer({
   mobileOpen,
   setMobileOpen,
   user,
+  profile,
   isAuthenticated,
   logout,
   currentPath,
@@ -63,6 +66,15 @@ export function MobileNavDrawer({
   };
 
   const isHubActive = hubItems.some((item) => isActive(item.to));
+
+  const displayName = profile?.displayName || user?.name || "Patron";
+  const initial = (
+    profile?.penName?.trim()?.charAt(0) ||
+    profile?.displayName?.trim()?.charAt(0) ||
+    user?.penName?.trim()?.charAt(0) ||
+    user?.name?.trim()?.charAt(0) ||
+    "P"
+  ).toUpperCase();
 
   const filteredHubItems = searchQuery
     ? hubItems.filter((item) => item.label.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -147,10 +159,12 @@ export function MobileNavDrawer({
               <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 flex items-center justify-between shadow-inner">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-sm shadow-md">
-                    {user.name.charAt(0).toUpperCase()}
+                    {initial}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-karla text-xs font-bold text-paper truncate">{user.name}</p>
+                    <p className="font-karla text-xs font-bold text-paper truncate">
+                      {displayName}
+                    </p>
                     <p className="text-[10px] text-paper-dim truncate">{user.email}</p>
                   </div>
                 </div>

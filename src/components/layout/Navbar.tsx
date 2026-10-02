@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { AuthModal } from "@/components/auth/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
+import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { DesktopNavbar } from "./navbar/DesktopNavbar";
 import { MobileFloatingNav } from "./navbar/MobileFloatingNav";
 import { MobileNavDrawer } from "./navbar/MobileNavDrawer";
@@ -20,6 +21,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { user, isAuthenticated, logout } = useAuth();
+  const { profile } = useMemberProfile();
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileUserMenuRef = useRef<HTMLDivElement>(null);
@@ -80,6 +82,7 @@ export function Navbar() {
       <DesktopNavbar
         currentPath={currentPath}
         user={user}
+        profile={profile}
         isAuthenticated={isAuthenticated}
         logout={logout}
         hubDropdownOpen={hubDropdownOpen}
@@ -95,6 +98,7 @@ export function Navbar() {
       {/* MOBILE FLOATING NAVBAR CARD */}
       <MobileFloatingNav
         user={user}
+        profile={profile}
         isAuthenticated={isAuthenticated}
         logout={logout}
         mobileUserMenuOpen={mobileUserMenuOpen}
@@ -113,6 +117,7 @@ export function Navbar() {
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
         user={user}
+        profile={profile}
         isAuthenticated={isAuthenticated}
         logout={logout}
         currentPath={currentPath}
