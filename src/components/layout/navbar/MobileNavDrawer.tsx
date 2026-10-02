@@ -67,12 +67,10 @@ export function MobileNavDrawer({
 
   const isHubActive = hubItems.some((item) => isActive(item.to));
 
-  const displayName = profile?.displayName || user?.name || "Patron";
+  const displayName = profile?.displayName || "Patron";
   const initial = (
     profile?.penName?.trim()?.charAt(0) ||
     profile?.displayName?.trim()?.charAt(0) ||
-    user?.penName?.trim()?.charAt(0) ||
-    user?.name?.trim()?.charAt(0) ||
     "P"
   ).toUpperCase();
 

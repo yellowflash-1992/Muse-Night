@@ -45,13 +45,11 @@ export function DesktopNavbar({
 
   const isHubActive = hubItems.some((item) => isActive(item.to));
 
-  const displayName = profile?.displayName || user?.name || "Patron";
-  const profileTitle = profile?.profileTitle || user?.profileTitle || "Reader & Patron";
+  const displayName = profile?.displayName || "Patron";
+  const profileTitle = profile?.profileTitle || "Reader & Patron";
   const initial = (
     profile?.penName?.trim()?.charAt(0) ||
     profile?.displayName?.trim()?.charAt(0) ||
-    user?.penName?.trim()?.charAt(0) ||
-    user?.name?.trim()?.charAt(0) ||
     "P"
   ).toUpperCase();
 
