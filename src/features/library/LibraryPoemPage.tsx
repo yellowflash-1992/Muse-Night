@@ -2,6 +2,7 @@ import { Link, useParams, useSearch } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { AuthModal } from "@/components/auth/AuthModal";
 import {
   type ReaderReaction,
   type ReaderReflection,
@@ -9,6 +10,7 @@ import {
 } from "@/data/library-reader";
 import { getLibraryPoemById, getLiteraryWorldById, LIBRARY_POEMS } from "@/data/literature";
 import { useAuth } from "@/hooks/useAuth";
+import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
 import { formatPoemCitation } from "./lib/share";
 import { useToast } from "./lib/useToast";
@@ -25,7 +27,6 @@ export function LibraryPoemPage() {
   const literaryWorld = poem?.literaryWorldId
     ? getLiteraryWorldById(poem.literaryWorldId)
     : undefined;
-  const { user } = useAuth();
 
   const [fontSize, setFontSize] = useState<"sm" | "base" | "lg">("base");
   const [warmMode, setWarmMode] = useState<boolean>(false);
@@ -38,7 +39,16 @@ export function LibraryPoemPage() {
   const [reactedEmoji, setReactedEmoji] = useState<string | null>(null);
   const [note, setNote] = useState("");
   const [anonymous, setAnonymous] = useState(true);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { toast, showToast } = useToast();
+
+  const { user } = useAuth();
+  const { profile } = useMemberProfile();
+  const isAuthenticated = Boolean(user);
+
+  const handleRequireAuthentication = () => {
+    setAuthModalOpen(true);
+  };
 
   const readerData = getReaderDataForPoem(id, poem?.author);
 
@@ -145,7 +155,9 @@ export function LibraryPoemPage() {
     e.preventDefault();
     if (!note.trim()) return;
 
-    const authorName = anonymous ? "Anonymous" : user?.penName || user?.name || "A Visiting Reader";
+    const authorName = anonymous
+      ? "Anonymous"
+      : profile?.penName || profile?.displayName || "A Visiting Reader";
 
     const newReflection = {
       id: `ref-${Date.now()}`,
@@ -292,11 +304,13 @@ export function LibraryPoemPage() {
           reflections={reflections}
           note={note}
           anonymous={anonymous}
-          userDisplayName={user?.penName || user?.name || "you"}
+          userDisplayName={profile?.penName || profile?.displayName || "you"}
+          isAuthenticated={isAuthenticated}
           onNoteChange={setNote}
           onAnonymousChange={setAnonymous}
           onToggleHeart={toggleHeart}
           onSubmit={handleShareReflection}
+          onRequireAuthentication={handleRequireAuthentication}
         />
       </div>
 
@@ -341,6 +355,13 @@ export function LibraryPoemPage() {
           showToast("Card text copied with background format!");
         }}
         copied={copied}
+      />
+
+      {/* Auth Modal for Reflection Composer */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode="signin"
       />
     </div>
   );
