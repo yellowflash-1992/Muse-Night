@@ -85,7 +85,6 @@ function SettingsContent() {
     if (penName.trim()) return penName.trim().charAt(0).toUpperCase();
     if (name.trim()) return name.trim().charAt(0).toUpperCase();
     if (profile?.displayName) return profile.displayName.charAt(0).toUpperCase();
-    if (user?.name) return user.name.charAt(0).toUpperCase();
     return "P";
   };
 
