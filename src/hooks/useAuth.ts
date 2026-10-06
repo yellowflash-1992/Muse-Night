@@ -5,13 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 
 export interface User {
   id: string;
-  name: string;
-  penName?: string | undefined;
   email: string;
-  bio?: string | undefined;
-  avatar?: string | undefined;
-  profileTitle?: string | undefined;
-  memberSince?: string | undefined;
+  memberSince: string;
   isAnonymous?: boolean;
 }
 
@@ -21,44 +16,14 @@ export interface AuthResult {
 }
 
 function mapAuthUser(authUser: SupabaseUser): User {
-  const metadata = authUser.user_metadata ?? {};
-
-  const metadataName =
-    typeof metadata["name"] === "string" && metadata["name"].trim()
-      ? metadata["name"].trim()
-      : undefined;
-
-  const emailName = authUser.email?.split("@")[0]?.trim();
-
-  const name = metadataName || emailName || "Reader";
-
   const memberSince = new Intl.DateTimeFormat("en", {
     month: "long",
     year: "numeric",
   }).format(new Date(authUser.created_at));
 
-  const profileTitleFromMetadata =
-    typeof metadata["profileTitle"] === "string" && metadata["profileTitle"].trim()
-      ? metadata["profileTitle"].trim()
-      : typeof metadata["role"] === "string" && metadata["role"].trim()
-        ? metadata["role"].trim()
-        : "Reader & Patron";
-
   return {
     id: authUser.id,
-    name,
-    penName:
-      typeof metadata["penName"] === "string" && metadata["penName"].trim()
-        ? metadata["penName"]
-        : undefined,
     email: authUser.email ?? "",
-    bio:
-      typeof metadata["bio"] === "string" && metadata["bio"].trim() ? metadata["bio"] : undefined,
-    avatar:
-      typeof metadata["avatar"] === "string" && metadata["avatar"].trim()
-        ? metadata["avatar"]
-        : undefined,
-    profileTitle: profileTitleFromMetadata,
     memberSince,
     isAnonymous: Boolean((authUser as SupabaseUser & { is_anonymous?: boolean })["is_anonymous"]),
   };
