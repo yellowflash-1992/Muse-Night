@@ -95,7 +95,6 @@ export function useAuth() {
         emailRedirectTo: `${window.location.origin}/auth/confirm`,
         data: {
           name: name.trim(),
-          profileTitle: "Reader & Patron",
         },
       },
     });
