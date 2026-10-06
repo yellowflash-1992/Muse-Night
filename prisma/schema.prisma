@@ -23,6 +23,17 @@ model Person {
   updatedAt      DateTime        @updatedAt
 }
 
+model MemberProfile {
+  id           String   @id
+  displayName  String
+  penName      String?
+  profileTitle String   @default("Reader & Patron")
+  bio          String?
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model LiteraryWorld {
   id          String @id
   name        String
