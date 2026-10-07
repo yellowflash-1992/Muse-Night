@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma/client";
 import { requireUser } from "@/lib/auth/server";
 import { z } from "zod";
 
@@ -76,16 +77,30 @@ export async function getCurrentMemberProfile() {
   });
 
   if (!profile) {
-    profile = await prisma.memberProfile.create({
-      data: {
-        id: userId,
-        displayName: deriveDisplayNameFromAuthUser(user),
-        penName: null,
-        profileTitle: deriveProfileTitleFromAuthUser(user),
-        bio: null,
-        avatarUrl: deriveAvatarUrlFromAuthUser(user),
-      },
-    });
+    try {
+      profile = await prisma.memberProfile.create({
+        data: {
+          id: userId,
+          displayName: deriveDisplayNameFromAuthUser(user),
+          penName: null,
+          profileTitle: deriveProfileTitleFromAuthUser(user),
+          bio: null,
+          avatarUrl: deriveAvatarUrlFromAuthUser(user),
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        profile = await prisma.memberProfile.findUnique({
+          where: { id: userId },
+        });
+
+        if (profile) {
+          return profile;
+        }
+      }
+
+      throw error;
+    }
   }
 
   return profile;
