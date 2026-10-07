@@ -3,13 +3,24 @@ import { createFileRoute } from "@tanstack/react-router";
 import { GalleryPage } from "@/features/gallery/GalleryPage";
 
 export const Route = createFileRoute("/gallery")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category:
+      search["category"] === "mystery" ||
+      search["category"] === "masterworks" ||
+      search["category"] === "poem-frames" ||
+      search["category"] === "relics" ||
+      search["category"] === "myth" ||
+      search["category"] === "visual-poetry"
+        ? search["category"]
+        : undefined,
+  }),
   head: () => ({
     meta: [
-      { title: "Press Gallery & Plates — Muse Books" },
+      { title: "A Literary Museum — Visual Archive | Muse Books" },
       {
         name: "description",
         content:
-          "Visual archives of Muse Books: hand-bound chapbook covers, letterpress type specimens, studio photography, and portraits of the poets.",
+          "Explore Muse Night's literary museum: mystery, masterworks, poem frames, literary relics, myth and visual poetry.",
       },
     ],
   }),
