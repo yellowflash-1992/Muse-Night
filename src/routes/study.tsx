@@ -9,7 +9,7 @@ export const Route = createFileRoute("/study")({
       {
         name: "description",
         content:
-          "Curated study guides, prescribed syllabus poetry annotations, drama breakdowns, and past question analysis for JAMB & WAEC Literature-in-English scholars.",
+          "A calm Literature-in-English preparation space for JAMB and WAEC, with study-room placeholders and a path into the Muse Night Library.",
       },
     ],
   }),
