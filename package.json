@@ -8,13 +8,24 @@
     "type": "git",
     "url": "https://github.com/yellowflash-1992/Muse-Night.git"
   },
+  "packageManager": "npm@11.6.2",
   "scripts": {
     "dev": "vite dev",
     "build": "prisma generate && node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build",
     "build:dev": "node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build --mode development",
     "preview": "vite preview",
+    "test": "vitest run",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prisma:generate": "prisma generate",
+    "prisma:validate": "prisma validate",
+    "prisma:migrate:dev": "NODE_ENV=development prisma migrate dev",
+    "prisma:migrate:status": "NODE_ENV=development prisma migrate status",
+    "prisma:migrate:diff": "NODE_ENV=development prisma migrate diff",
+    "prisma:db:pull": "NODE_ENV=development prisma db pull",
+    "prisma:studio": "NODE_ENV=development prisma studio",
+    "db:seed": "NODE_ENV=development tsx prisma/seed.ts",
+    "db:migrate:library": "NODE_ENV=development tsx scripts/migrate-public-library.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -81,7 +92,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@lovable.dev/vite-tanstack-config": "^2.15.0",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
@@ -98,6 +108,7 @@
     "tsx": "^4.23.15",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "8.1.5"
+    "vite": "8.1.5",
+    "vitest": "^5.0.3"
   }
 }

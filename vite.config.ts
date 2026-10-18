@@ -1,34 +1,39 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
+import { defineConfig } from "vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  tanstackStart: {
-    prerender: {
-      crawlLinks: true,
-      routes: [
-        "/",
-        "/library",
-        "/collections",
-        "/books",
-        "/about",
-        "/submit",
-        "/request",
-        "/mood",
-        "/vault",
-        "/streak",
-        "/daily",
-        "/gallery",
-        "/study",
-        "/settings",
+  plugins: [
+    tsConfigPaths(),
+    tailwindcss(),
+    tanstackStart({
+      prerender: {
+        crawlLinks: true,
+      },
+      pages: [
+        { path: "/" },
+        { path: "/library" },
+        { path: "/collections" },
+        { path: "/books" },
+        { path: "/about" },
+        { path: "/submit" },
+        { path: "/request" },
+        { path: "/mood" },
+        { path: "/vault" },
+        { path: "/streak" },
+        { path: "/daily" },
+        { path: "/gallery" },
+        { path: "/study" },
+        { path: "/settings" },
       ],
-    },
-  },
-  nitro: {
-    preset: "vercel",
+    }),
+    viteReact(),
+    nitro({ preset: "vercel" }),
+  ],
+  resolve: {
+    dedupe: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-start"],
   },
 });
