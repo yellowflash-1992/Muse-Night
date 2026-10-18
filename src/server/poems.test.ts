@@ -11,9 +11,10 @@ const PEN_NAME = { id: "irshand", name: "Irshand" };
 const PUBLISHED_COLLECTION = {
   id: "the-quiet-hour",
   title: "The Quiet Hour",
-  author: "Irshand",
+  author: { name: "Irshand" },
   status: "PUBLISHED",
 };
+
 const DRAFT_COLLECTION = { ...PUBLISHED_COLLECTION, status: "DRAFT" };
 
 function baseRow(overrides: Partial<PublishedPoemRow> = {}): PublishedPoemRow {
@@ -102,7 +103,7 @@ describe("mapPoemRowToUi — collection handling", () => {
   it("preserves the collaborative attribution from the collection author label", () => {
     const collaborative = {
       ...PUBLISHED_COLLECTION,
-      author: "Irshand & InkbyNur",
+      author: { name: "Irshand & InkbyNur" },
     };
     const ui = mapPoemRowToUi(baseRow({ collection: collaborative }));
     expect(ui.collectionAuthor).toBe("Irshand & InkbyNur");

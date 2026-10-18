@@ -2,9 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Feather, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { LIBRARY_POEMS, POETS } from "@/data/literature";
+import { getRouteApi } from "@tanstack/react-router";
 import { LibraryFiltersSheet } from "./LibraryFiltersSheet";
 import { filterPoems, getPoemForm, POETIC_FORMS } from "./lib/library-filters";
+
+const routeApi = getRouteApi("/library/");
 
 export function LibraryIndexPage() {
   const [search, setSearch] = useState("");
@@ -15,20 +17,32 @@ export function LibraryIndexPage() {
   const hasActiveFilters =
     selectedAuthor !== "all" || selectedTag !== "all" || selectedForm !== "all";
 
+  const { poems } = routeApi.useLoaderData();
+
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    LIBRARY_POEMS.forEach((p) => p.tags.forEach((t) => tags.add(t)));
+    poems.forEach((p) => p.tags.forEach((t) => tags.add(t)));
     return Array.from(tags);
-  }, []);
+  }, [poems]);
+
+  const poetsMap = useMemo(() => {
+    const map: Record<string, { id: string; penName: string }> = {};
+    poems.forEach((p) => {
+      if (!map[p.penNameId]) {
+        map[p.penNameId] = { id: p.penNameId, penName: p.author };
+      }
+    });
+    return map;
+  }, [poems]);
 
   const filteredPoems = useMemo(() => {
-    return filterPoems(LIBRARY_POEMS, {
+    return filterPoems(poems, {
       search,
       selectedAuthor,
       selectedTag,
       selectedForm,
     });
-  }, [search, selectedAuthor, selectedTag, selectedForm]);
+  }, [poems, search, selectedAuthor, selectedTag, selectedForm]);
 
   const filteredPoemIds = useMemo(() => filteredPoems.map((p) => p.id).join(","), [filteredPoems]);
 
@@ -79,22 +93,24 @@ export function LibraryIndexPage() {
                     : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
                 }`}
               >
-                All Works ({LIBRARY_POEMS.length})
+                All Works ({poems.length})
               </button>
-              {Object.values(POETS).map((poet) => (
-                <button
-                  key={poet.id}
-                  type="button"
-                  onClick={() => setSelectedAuthor(poet.id)}
-                  className={`whitespace-nowrap px-4 py-2 rounded-full text-xs uppercase tracking-[0.16em] transition-all shrink-0 ${
-                    selectedAuthor === poet.id
-                      ? "bg-neon text-ink font-medium shadow-sm"
-                      : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
-                  }`}
-                >
-                  {poet.penName}
-                </button>
-              ))}
+              {Array.from(new Map(poems.map((p) => [p.penNameId, p.author])).entries()).map(
+                ([id, name]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setSelectedAuthor(id)}
+                    className={`whitespace-nowrap px-4 py-2 rounded-full text-xs uppercase tracking-[0.16em] transition-all shrink-0 ${
+                      selectedAuthor === id
+                        ? "bg-neon text-ink font-medium shadow-sm"
+                        : "bg-ink-2 text-paper-dim hover:text-paper border border-neon/10"
+                    }`}
+                  >
+                    {name}
+                  </button>
+                ),
+              )}
             </div>
 
             <div className="md:hidden flex min-w-0 items-center justify-between gap-2">
@@ -126,8 +142,8 @@ export function LibraryIndexPage() {
                   setSelectedForm={setSelectedForm}
                   allTags={allTags}
                   poeticForms={POETIC_FORMS}
-                  poets={POETS}
-                  totalPoems={LIBRARY_POEMS.length}
+                  poets={poetsMap}
+                  totalPoems={poems.length}
                 />
               </div>
             </div>

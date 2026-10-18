@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { LibraryPoemPage } from "@/features/library/LibraryPoemPage";
-import { getPublishedPoem } from "@/lib/poems.functions";
+import { getPublishedPoem, getPublishedPoemsList } from "@/lib/poems.functions";
 
 export const Route = createFileRoute("/library/$id")({
-  // Server-side read: explicitly filters status PUBLISHED (RLS is not enforced
-  // on the direct Prisma connection). Returns null for missing/unpublished.
   loader: async ({ params }) => {
-    const poem = await getPublishedPoem({ data: params.id });
-    return { poem };
+    const [poem, poems] = await Promise.all([
+      getPublishedPoem({ data: params.id }),
+      getPublishedPoemsList(),
+    ]);
+    return { poem, poems };
   },
   head: ({ match }) => {
     const poem = match?.loaderData?.poem;
@@ -20,8 +21,8 @@ export const Route = createFileRoute("/library/$id")({
         {
           name: "description",
           content: poem
-            ? `Read “${poem.title}” by ${poem.author} in the Muse Night archive.`
-            : "Browse works from Muse Night.",
+            ? `Read "${poem.title}" by ${poem.author} — a poem from the Muse Books archive.`
+            : "Read poems from the Muse Books archive.",
         },
       ],
     };

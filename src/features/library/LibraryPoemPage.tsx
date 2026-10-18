@@ -8,7 +8,7 @@ import {
   type ReaderReflection,
   getReaderDataForPoem,
 } from "@/data/library-reader";
-import { LIBRARY_POEMS } from "@/data/literature";
+
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
@@ -29,8 +29,10 @@ export function LibraryPoemPage() {
 
   // Database-backed read (loader in src/routes/library/$id.tsx). The loader
   // returns null for missing/unpublished poems; there is no static fallback.
-  const loaderPoem = routeApi.useLoaderData().poem;
+  const loaderData = routeApi.useLoaderData();
+  const loaderPoem = loaderData.poem;
   const poem = loaderPoem ?? undefined;
+  const allPoems = loaderData.poems;
   const literaryWorld = poem?.literaryWorldName
     ? { id: poem.literaryWorldId, name: poem.literaryWorldName }
     : undefined;
@@ -64,7 +66,10 @@ export function LibraryPoemPage() {
   const [reflections, setReflections] = useState<ReaderReflection[]>(() => readerData.reflections);
 
   // Next / Prev poem logic
-  const navigationPoems = useMemo(() => resolveNavigationPoems(LIBRARY_POEMS, from), [from]);
+  const navigationPoems = useMemo(
+    () => resolveNavigationPoems(allPoems as any, from),
+    [allPoems, from],
+  );
 
   const { previous: prevPoem, next: nextPoem } = useMemo(() => {
     return poem
