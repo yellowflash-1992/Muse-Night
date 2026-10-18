@@ -83,3 +83,27 @@ Wire the Muse Night admin dashboard to the dev DB so admins can create/publish/a
 
 ## Next session start message
 > "Ready for Phase 1. Plan saved at docs/ADMIN_WIRING_PLAN.md"
+
+---
+
+## Pending tasks after Phase 3b (2026-10-19)
+
+### Next session — wire remaining DB-backed pages (~2 hrs)
+- admin.writers.tsx → rename admin.poets.tsx (Person + PenName dual list) — 45 min
+- admin.drafts.tsx / published.tsx / featured.tsx — 5 min each (reuse PoemList)
+- admin.index.tsx dashboard stats (aggregate counts) — 20 min
+- admin.settings.tsx — decide: keep or drop
+
+### Later session — new schema for Lovable-inherited features
+These are real Muse Night features with NO DB table yet:
+- Chapbooks (src/data/chapbooks.ts)
+- Gallery (src/features/gallery)
+- Quotes
+- Homepage Sections
+- Submissions (src/features/submit)
+Each: schema → migration → server fns → admin form → Muse Night read wiring
+
+### Before ANY second user signs up — RLS launch blocker
+Currently DISABLED on: UserRole, FounderAdmin, AdminAccessRequest, MemberProfile, Person, LiteraryWorld
+Fix: enable RLS with per-user policies (own record only). ~30 min SQL migration.
+Trigger: before co-author onboarding. Not urgent tonight — you're the only user.
