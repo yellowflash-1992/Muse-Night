@@ -10,6 +10,23 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AppRole {
+  EDITOR
+  ADMIN
+}
+
+enum AccessRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model Person {
   id             String          @id
   legalName      String
@@ -19,30 +36,158 @@ model Person {
   aesthetic      String
   imageUrl       String?
   literaryWorlds LiteraryWorld[]
+  penNames       PenName[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
 
 model MemberProfile {
-  id           String   @id
-  displayName  String
-  penName      String?
-  profileTitle String   @default("Reader & Patron")
-  bio          String?
-  avatarUrl    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                      String               @id
+  displayName             String
+  penName                 String?
+  profileTitle            String               @default("Reader & Patron")
+  bio                     String?
+  avatarUrl               String?
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
+  userRole                UserRole?
+  founderAdmin            FounderAdmin?
+  submittedAccessRequests AdminAccessRequest[] @relation("AdminAccessRequester")
+  reviewedAccessRequests  AdminAccessRequest[] @relation("AdminAccessReviewer")
+}
+
+model UserRole {
+  userId    String        @id
+  role      AppRole
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  member    MemberProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([role])
+}
+
+model FounderAdmin {
+  slot      Int           @id
+  userId    String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  member    MemberProfile @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+}
+
+model AdminAccessRequest {
+  id              String              @id @default(cuid())
+  requesterId     String
+  requestedRole   AppRole             @default(ADMIN)
+  status          AccessRequestStatus @default(PENDING)
+  reviewerId      String?
+  reviewedAt      DateTime?
+  rejectionReason String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  requester MemberProfile  @relation("AdminAccessRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  reviewer  MemberProfile? @relation("AdminAccessReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([requesterId])
+  @@index([reviewerId])
+  @@index([status])
 }
 
 model LiteraryWorld {
-  id          String @id
+  id          String     @id
   name        String
   creatorId   String
   description String
-  creator     Person @relation(fields: [creatorId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  creator     Person     @relation(fields: [creatorId], references: [id])
+  penNames    PenName[]
+  poems       Poem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([creatorId])
+}
+
+model PenName {
+  id                  String         @id
+  name                String         @unique
+  personId            String
+  person              Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
+  title               String?
+  description         String?
+  literaryIdentity    String?
+  isPrimary           Boolean        @default(false)
+  literaryWorldId     String?
+  literaryWorld       LiteraryWorld? @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
+  poems               Poem[]
+  authoredCollections Collection[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([personId])
+  @@index([literaryWorldId])
+}
+
+model Collection {
+  id            String            @id
+  title         String
+  subtitle      String?
+  description   String
+  foreword      String?
+  featuredQuote String?
+  coverImage    String?
+  status        PublicationStatus @default(DRAFT)
+  authorId      String
+  author        PenName           @relation(fields: [authorId], references: [id])
+  year          String
+  tags          String[]
+  sortOrder     Int               @default(0)
+  poems         Poem[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([authorId])
+  @@index([status])
+  @@index([sortOrder])
+}
+
+model Poem {
+  id               String             @id
+  title            String
+  stanzas          Json               // string[][]
+  body             String?            // Derived: stanzas → text (stanza=\n\n, line=\n)
+  excerpt          String?            // Derived: first 3 lines of stanza 0
+  status           PublicationStatus  @default(DRAFT)
+  featured         Boolean            @default(false)
+
+  penNameId        String
+  penName          PenName            @relation(fields: [penNameId], references: [id])
+
+  collectionId     String?
+  collection       Collection?        @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+
+  literaryWorldId  String?
+  literaryWorld    LiteraryWorld?     @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
+
+  tags             String[]
+  year             String
+  linesCount       Int
+  readTime         String
+  note             String?
+  lineNotes        Json?
+  coverImage       String?
+
+  sortOrder        Int                @default(0)
+  publishedAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([penNameId])
+  @@index([collectionId])
+  @@index([literaryWorldId])
+  @@index([status])
+  @@index([featured])
+  @@index([sortOrder])
+  @@index([publishedAt])
 }

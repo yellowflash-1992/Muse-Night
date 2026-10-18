@@ -1,4 +1,4 @@
-import { Link, useParams, useSearch } from "@tanstack/react-router";
+import { getRouteApi, Link, useParams, useSearch } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -8,7 +8,7 @@ import {
   type ReaderReflection,
   getReaderDataForPoem,
 } from "@/data/library-reader";
-import { getLibraryPoemById, getLiteraryWorldById, LIBRARY_POEMS } from "@/data/literature";
+import { LIBRARY_POEMS } from "@/data/literature";
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
@@ -20,12 +20,19 @@ import { LibraryPoemReflections } from "./LibraryPoemReflections";
 import { type CardFormat, type CardMood, LibraryPoemShareSheet } from "./LibraryPoemShareSheet";
 import { LibraryReaderControlsBar } from "./LibraryReaderControlsBar";
 
+// Typed route API — avoids importing the route module (no circular import).
+const routeApi = getRouteApi("/library/$id");
+
 export function LibraryPoemPage() {
   const { id } = useParams({ from: "/library/$id" });
   const { from } = useSearch({ from: "/library/$id" }) as { from?: string };
-  const poem = getLibraryPoemById(id);
-  const literaryWorld = poem?.literaryWorldId
-    ? getLiteraryWorldById(poem.literaryWorldId)
+
+  // Database-backed read (loader in src/routes/library/$id.tsx). The loader
+  // returns null for missing/unpublished poems; there is no static fallback.
+  const loaderPoem = routeApi.useLoaderData().poem;
+  const poem = loaderPoem ?? undefined;
+  const literaryWorld = poem?.literaryWorldName
+    ? { id: poem.literaryWorldId, name: poem.literaryWorldName }
     : undefined;
 
   const [fontSize, setFontSize] = useState<"sm" | "base" | "lg">("base");
@@ -193,7 +200,8 @@ export function LibraryPoemPage() {
           <div className="inline-flex items-center gap-2 rounded-full border border-neon/25 bg-neon/10 px-3.5 py-1 text-[10px] uppercase tracking-[0.22em] text-neon font-medium shadow-sm">
             <Feather className="h-3 w-3 animate-pulse" />
             <span>
-              From “{poem.collection}” · {poem.year}
+              {poem.collectionId ? `From “${poem.collection}” · ` : ""}
+              {poem.year}
             </span>
           </div>
           <h1 className="font-display italic text-4xl sm:text-6xl text-paper tracking-[-0.01em] leading-[1.12] text-balance drop-shadow-sm">
