@@ -107,3 +107,19 @@ Each: schema → migration → server fns → admin form → Muse Night read wir
 Currently DISABLED on: UserRole, FounderAdmin, AdminAccessRequest, MemberProfile, Person, LiteraryWorld
 Fix: enable RLS with per-user policies (own record only). ~30 min SQL migration.
 Trigger: before co-author onboarding. Not urgent tonight — you're the only user.
+
+---
+
+## Update after Phase 3c (2026-10-20)
+
+### Completed this session
+- admin.poets.tsx (Person + PenName dual list, edit, display order)
+- Person.displayOrder INT column — higher = appears first; founder at 0 (bottom)
+
+### Next session
+- admin.index.tsx — dashboard stats (real aggregate counts)
+- admin.drafts.tsx / published.tsx / featured.tsx — wire to PoemList with lockStatus (~5 min each)
+
+### After that
+- Schema planning for chapbooks, gallery, quotes, sections, submissions
+- RLS per-user policies for auth tables (before co-author signup)
