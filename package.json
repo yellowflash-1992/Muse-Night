@@ -19,13 +19,13 @@
     "format": "prettier --write .",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
-    "prisma:migrate:dev": "NODE_ENV=development prisma migrate dev",
-    "prisma:migrate:status": "NODE_ENV=development prisma migrate status",
-    "prisma:migrate:diff": "NODE_ENV=development prisma migrate diff",
-    "prisma:db:pull": "NODE_ENV=development prisma db pull",
-    "prisma:studio": "NODE_ENV=development prisma studio",
-    "db:seed": "NODE_ENV=development tsx prisma/seed.ts",
-    "db:migrate:library": "NODE_ENV=development tsx scripts/migrate-public-library.ts"
+    "prisma:migrate:dev": "cross-env NODE_ENV=development prisma migrate dev",
+    "prisma:migrate:status": "cross-env NODE_ENV=development prisma migrate status",
+    "prisma:migrate:diff": "cross-env NODE_ENV=development prisma migrate diff",
+    "prisma:db:pull": "cross-env NODE_ENV=development prisma db pull",
+    "prisma:studio": "cross-env NODE_ENV=development prisma studio",
+    "db:seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",
+    "db:migrate:library": "cross-env NODE_ENV=development tsx scripts/migrate-public-library.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -96,6 +96,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.2.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
