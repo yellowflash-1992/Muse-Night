@@ -146,7 +146,7 @@ function Index() {
     {
       title: "JAMB & WAEC Literature",
       desc: "Syllabus-aligned poetry analysis, literary devices, and exam companion guides.",
-      to: "/library",
+      to: "/study",
       count: "Study Hub",
       icon: BookMarked,
       action: "Explore guides",
