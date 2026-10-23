@@ -4,6 +4,7 @@ import type React from "react";
 import { useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
+import { submitPoem } from "@/features/library/lib/submissions.functions";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
 
 export function SubmitPage() {
@@ -14,12 +15,36 @@ export function SubmitPage() {
   const [title, setTitle] = useState("");
   const [manuscript, setManuscript] = useState("");
   const [bio, setBio] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && email && manuscript) {
+    setError(null);
+
+    if (!name || !email || !title || !manuscript) {
+      setError("Please fill in your name, email, title, and manuscript.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await submitPoem({
+        data: {
+          title,
+          manuscript,
+          submissionType: type,
+          name,
+          email,
+          bio: bio || undefined,
+        },
+      });
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Submission failed. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -144,13 +169,13 @@ export function SubmitPage() {
                       setManuscript("");
                       setBio("");
                     }}
-                    className="rounded bg-neon px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90"
+                    className="rounded bg-neon px-1.5 py-1 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90"
                   >
                     Submit Another Piece
                   </button>
                   <Link
                     to="/library"
-                    className="rounded border border-neon/30 px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-paper hover:bg-neon/10"
+                    className="rounded border border-neon/30 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] font-medium text-paper hover:bg-neon/10"
                   >
                     Browse Archive
                   </Link>
@@ -262,16 +287,23 @@ export function SubmitPage() {
                     </div>
                   </div>
 
+                  {error && (
+                    <div className="rounded border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                      {error}
+                    </div>
+                  )}
+
                   <div className="pt-4 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <span className="text-xs text-paper-faint text-center sm:text-left">
                       No reading fees. We never charge writers to read their work.
                     </span>
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md"
+                      disabled={submitting}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Send className="h-3.5 w-3.5" />
-                      <span>Submit Work</span>
+                      <span>{submitting ? "Submitting…" : "Submit Work"}</span>
                     </button>
                   </div>
                 </form>

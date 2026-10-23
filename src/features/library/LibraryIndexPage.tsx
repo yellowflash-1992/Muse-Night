@@ -1,9 +1,11 @@
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Feather, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { getRouteApi } from "@tanstack/react-router";
 import { LibraryFiltersSheet } from "./LibraryFiltersSheet";
+import { Pagination } from "./Pagination";
 import { filterPoems, getPoemForm, POETIC_FORMS } from "./lib/library-filters";
 
 const routeApi = getRouteApi("/library/");
@@ -43,6 +45,29 @@ export function LibraryIndexPage() {
       selectedForm,
     });
   }, [poems, search, selectedAuthor, selectedTag, selectedForm]);
+
+  const isMobile = useIsMobile();
+  const PER_PAGE = isMobile ? 7 : 12;
+
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(filteredPoems.length / PER_PAGE));
+  const pagedPoems = filteredPoems.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  // Reset page on filter change
+  useEffect(() => {
+    setPage(1);
+  }, [search, selectedAuthor, selectedTag, selectedForm]);
+
+  // Reset page on breakpoint change (avoid landing on empty page)
+  useEffect(() => {
+    setPage(1);
+  }, [PER_PAGE]);
+
+  // Scroll to top of poem grid on page change
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const filteredPoemIds = useMemo(() => filteredPoems.map((p) => p.id).join(","), [filteredPoems]);
 
@@ -240,7 +265,7 @@ export function LibraryIndexPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredPoems.map((poem) => (
+                {pagedPoems.map((poem) => (
                   <article
                     key={poem.id}
                     className="group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
@@ -314,6 +339,15 @@ export function LibraryIndexPage() {
               </div>
             )}
           </div>
+          {filteredPoems.length > PER_PAGE ? (
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              total={filteredPoems.length}
+              perPage={PER_PAGE}
+              onChange={handlePageChange}
+            />
+          ) : null}
         </div>
       </div>
     </div>
