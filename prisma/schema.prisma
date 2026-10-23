@@ -124,6 +124,7 @@ model PenName {
   authoredCollections Collection[]
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
+    chapbooks           Chapbook[]
 
   @@index([personId])
   @@index([literaryWorldId])
@@ -190,6 +191,42 @@ model Poem {
   @@index([featured])
   @@index([sortOrder])
   @@index([publishedAt])
+}
+
+model Chapbook {
+  id              String            @id
+  title           String
+  authorId        String
+  author          PenName           @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  // Physical specs
+  price           String            // "£18.00" — string preserves currency symbol
+  pages           Int
+  edition         String            // "First Edition — 150 Hand-Numbered Copies"
+  binding         String
+  paper           String
+  dimensions      String            // "148 × 210 mm (A5)"
+  printRun        String
+  proofNotes      String
+
+  // Content
+  description     String
+  quote           String
+  tableOfContents String[]
+  coverImage      String            // URL or path
+
+  // Metadata
+  inStock         Boolean           @default(true)
+  year            String
+  tags            String[]
+  status          PublicationStatus @default(DRAFT)
+  sortOrder       Int               @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([authorId])
+  @@index([status])
+  @@index([sortOrder])
 }
 
 enum SubmissionStatus {
