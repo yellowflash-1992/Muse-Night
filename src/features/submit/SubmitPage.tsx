@@ -4,7 +4,7 @@ import type React from "react";
 import { useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
-import { submitPoem } from "@/features/library/lib/submissions.functions";
+import { submitPoem } from "@/lib/submissions.functions";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
 
 export function SubmitPage() {
