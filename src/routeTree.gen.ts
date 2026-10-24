@@ -20,6 +20,7 @@ import { Route as StreakRouteImport } from './routes/streak'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as VaultRouteImport } from './routes/vault'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as AuthConfirmRouteImport } from './routes/auth.confirm'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
 import { Route as BooksIdRouteImport } from './routes/books/$id'
@@ -83,6 +84,11 @@ const VaultRoute = VaultRouteImport.update({
   path: '/vault',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthConfirmRoute = AuthConfirmRouteImport.update({
   id: '/auth/confirm',
   path: '/auth/confirm',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/study': typeof StudyRoute
   '/submit': typeof SubmitRoute
   '/vault': typeof VaultRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/books/$id': typeof BooksIdRoute
   '/collections/$id': typeof CollectionsIdRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/study'
     | '/submit'
     | '/vault'
+    | '/api/health'
     | '/auth/confirm'
     | '/books/$id'
     | '/collections/$id'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/study'
     | '/submit'
     | '/vault'
+    | '/api/health'
     | '/auth/confirm'
     | '/books/$id'
     | '/collections/$id'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/study'
     | '/submit'
     | '/vault'
+    | '/api/health'
     | '/auth/confirm'
     | '/books/$id'
     | '/collections/$id'
@@ -255,6 +267,7 @@ export interface RootRouteChildren {
   StudyRoute: typeof StudyRoute
   SubmitRoute: typeof SubmitRoute
   VaultRoute: typeof VaultRoute
+  ApiHealthRoute: typeof ApiHealthRoute
   AuthConfirmRoute: typeof AuthConfirmRoute
   BooksIdRoute: typeof BooksIdRoute
   CollectionsIdRoute: typeof CollectionsIdRoute
@@ -343,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VaultRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/confirm': {
       id: '/auth/confirm'
       path: '/auth/confirm'
@@ -407,6 +427,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudyRoute: StudyRoute,
   SubmitRoute: SubmitRoute,
   VaultRoute: VaultRoute,
+  ApiHealthRoute: ApiHealthRoute,
   AuthConfirmRoute: AuthConfirmRoute,
   BooksIdRoute: BooksIdRoute,
   CollectionsIdRoute: CollectionsIdRoute,
