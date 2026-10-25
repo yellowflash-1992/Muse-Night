@@ -1,5 +1,5 @@
 /**
- * Core literary data — asset-free, database-ready.
+ * Core literary data &mdash; asset-free, database-ready.
  *
  * This module contains ONLY literary metadata needed for:
  * - Database migrations (importer)
@@ -11,7 +11,7 @@
  */
 
 // ============================================================
-// PERSON (author identity — no images)
+// PERSON (author identity &mdash; no images)
 // ============================================================
 
 export interface Person {
@@ -21,7 +21,7 @@ export interface Person {
   bio: string;
   longBio: string;
   aesthetic: string;
-  // image is intentionally omitted — added at presentation layer
+  // image is intentionally omitted &mdash; added at presentation layer
 }
 
 export const PEOPLE: Record<string, Person> = {
@@ -38,9 +38,9 @@ export const PEOPLE: Record<string, Person> = {
     id: "muhammad-abdulnasir",
     legalName: "Muhammad AbdulNasir",
     role: "Poet & Literary Voice",
-    bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art.\nAttuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within.\nHis work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants.\nHe writes to spark introspection, break inertia, and craft impressions that outlast time.\nIrshand is a living sanctuary—not merely a name.\nThere, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
+    bio: "For Muhammad AbdulNasir, writing as Irshand, rigorous observation becomes a luminous art.\nAttuned to the earth's rhythms, he turns the wilderness's resonant hush into verse that settles deep within.\nHis work weaves metaphysical longing with ecological awareness, zeroing in on life's most fleeting instants.\nHe writes to spark introspection, break inertia, and craft impressions that outlast time.\nIrshand is a living sanctuary&mdash;not merely a name.\nThere, language breathes, the landscape speaks its own biography, and stories pulse with enduring life.",
     longBio:
-      "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad—an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
+      "Muhammad AbdulNasir is a poet and observer of the natural world. Writing as Irshand, he transforms the silence of wilderness into words that linger in the soul. The name grew from an earlier signature, Iris-hand, and the root of Irshad&mdash;an evolving mark that eventually found its own voice as Irshand. His work moves through spiritual inquiry, ecological attention, uncertainty, faith, and the quiet discipline of attentive seeing. Through open forms and threshold meditations, he gives language to moments where the inner and natural worlds meet. Irshand is where words breathe, the wilderness speaks, and stories live.",
     aesthetic: "Wilderness lyric, spiritual inquiry, threshold states, and luminous solitude",
   },
 };
@@ -154,7 +154,7 @@ const getPenNamesForPerson = (personId: string) =>
     .map((penName) => penName.name);
 
 // POETS combines person + pen name data for presentation layer
-// This is a derived view — the importer doesn't need it
+// This is a derived view &mdash; the importer doesn't need it
 export interface Poet {
   id: string;
   legalName: string;
@@ -216,7 +216,7 @@ export function getPenNamesByPersonId(personId: string): PenName[] {
 }
 
 // ============================================================
-// COLLECTIONS (core metadata only — no cover images)
+// COLLECTIONS (core metadata only &mdash; no cover images)
 // ============================================================
 
 export interface CollectionCore {
@@ -227,7 +227,7 @@ export interface CollectionCore {
   authorId: string;
   year: string;
   poemsCount: number;
-  // coverImage is intentionally omitted — added at presentation layer
+  // coverImage is intentionally omitted &mdash; added at presentation layer
   description: string;
   foreword: string;
   featuredQuote: string;
@@ -345,6 +345,7 @@ export interface PoemCore {
   linesCount: number;
   readTime: string;
   tags: string[];
+  form?: string;
   stanzas: string[][];
   note?: string;
   featured?: boolean;

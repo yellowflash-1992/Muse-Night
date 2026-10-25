@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { LibraryFiltersSheet } from "./LibraryFiltersSheet";
 import { Pagination } from "./Pagination";
-import { filterPoems, getPoemForm, POETIC_FORMS } from "./lib/library-filters";
+import { filterPoems, POETIC_FORMS } from "./lib/library-filters";
 
 const routeApi = getRouteApi("/library/");
 
@@ -88,8 +88,8 @@ export function LibraryIndexPage() {
             <span className="text-neon font-medium">haiku</span>,{" "}
             <span className="text-neon font-medium">free verse</span>,{" "}
             <span className="text-neon font-medium">epistles</span>,{" "}
-            <span className="text-neon font-medium">prose poetry</span>, and other literary forms —
-            from our founding poets and invited contributors writing by lamplight.
+            <span className="text-neon font-medium">prose poetry</span>, and other literary forms
+            &mdash; from our founding poets and invited contributors writing by lamplight.
           </p>
         </div>
 
@@ -282,7 +282,7 @@ export function LibraryIndexPage() {
                           </Link>
                         </h2>
                         <span className="shrink-0 rounded bg-neon/10 px-2 py-0.5 text-[9.5px] uppercase tracking-wider text-neon font-mono border border-neon/20">
-                          {getPoemForm(poem)}
+                          {poem.form || "Free Verse"}
                         </span>
                       </div>
 

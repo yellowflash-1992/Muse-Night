@@ -1,6 +1,6 @@
 /**
  * Server-side read path for public poem data.
- * Only imported by `poems.functions.ts` — never by routes or client components.
+ * Only imported by `poems.functions.ts` &mdash; never by routes or client components.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -19,6 +19,7 @@ export interface PublishedPoemRow {
   note: string | null;
   lineNotes: Record<number, { count: number; excerpt: string }> | null;
   sortOrder: number;
+  form: string | null;
   penName: { id: string; name: string };
   collection: {
     id: string;
@@ -47,6 +48,7 @@ export interface UiPoem {
   stanzas: string[][];
   note?: string;
   featured: boolean;
+  form: string;
   lineNotes?: Record<number, { count: number; excerpt: string }>;
 }
 
@@ -67,6 +69,7 @@ export function mapPoemRowToUi(row: PublishedPoemRow): UiPoem {
     readTime: row.readTime,
     tags: row.tags,
     featured: row.featured,
+    form: row.form ?? "Free Verse",
     collectionAuthor: collectionVisible ? row.collection!.author.name : null,
     literaryWorldName: row.literaryWorld?.name ?? null,
     ...(row.note !== null ? { note: row.note } : {}),
@@ -89,6 +92,7 @@ const poemSelectShape = {
   note: true,
   lineNotes: true,
   sortOrder: true,
+  form: true,
   penName: { select: { id: true, name: true } },
   collection: {
     select: {

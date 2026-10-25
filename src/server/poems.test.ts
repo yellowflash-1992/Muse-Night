@@ -35,6 +35,7 @@ function baseRow(overrides: Partial<PublishedPoemRow> = {}): PublishedPoemRow {
     note: "Written on a rainy Thursday at midnight.",
     lineNotes: { 2: { count: 86, excerpt: "This line made me pause." } },
     sortOrder: 0,
+    form: null,
     penName: PEN_NAME,
     collection: PUBLISHED_COLLECTION,
     literaryWorld: { id: "child-of-the-wilderness", name: "Child of the Wilderness" },
@@ -42,7 +43,7 @@ function baseRow(overrides: Partial<PublishedPoemRow> = {}): PublishedPoemRow {
   };
 }
 
-describe("mapPoemRowToUi — published poem with pen name", () => {
+describe("mapPoemRowToUi &mdash; published poem with pen name", () => {
   it("maps the core fields from the database row", () => {
     const ui = mapPoemRowToUi(baseRow());
     expect(ui.id).toBe("lamplight-late-november");
@@ -73,7 +74,7 @@ describe("mapPoemRowToUi — published poem with pen name", () => {
   });
 });
 
-describe("mapPoemRowToUi — collection handling", () => {
+describe("mapPoemRowToUi &mdash; collection handling", () => {
   it("exposes a PUBLISHED collection's id, title and author label", () => {
     const ui = mapPoemRowToUi(baseRow());
     expect(ui.collectionId).toBe("the-quiet-hour");
@@ -112,7 +113,7 @@ describe("mapPoemRowToUi — collection handling", () => {
   });
 });
 
-describe("mapPoemRowToUi — literary world and publication date", () => {
+describe("mapPoemRowToUi &mdash; literary world and publication date", () => {
   it("maps the literary world when present", () => {
     const ui = mapPoemRowToUi(baseRow());
     expect(ui.literaryWorldId).toBe("child-of-the-wilderness");

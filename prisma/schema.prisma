@@ -36,7 +36,7 @@ model Person {
   aesthetic      String
   imageUrl       String?
   userId         String?
-    displayOrder   Int             @default(0)        @unique
+  displayOrder   Int             @default(0)        @unique
   literaryWorlds LiteraryWorld[]
   penNames       PenName[]
   createdAt      DateTime        @default(now())
@@ -175,6 +175,7 @@ model Poem {
 
   tags             String[]
   year             String
+  form             String?            // e.g., "Sonnet", "Haiku", "Free Verse"
   linesCount       Int
   readTime         String
   note             String?
