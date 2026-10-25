@@ -35,6 +35,7 @@ model Person {
   longBio        String
   aesthetic      String
   imageUrl       String?
+  userId         String?         @unique
   literaryWorlds LiteraryWorld[]
   penNames       PenName[]
   createdAt      DateTime        @default(now())
