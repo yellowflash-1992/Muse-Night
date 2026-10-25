@@ -10,86 +10,22 @@ export interface UiChapbook {
   title: string;
   author: string;
   authorId: string;
-  price: string;
-  pages: number;
-  edition: string;
-  binding: string;
-  paper: string;
-  dimensions: string;
-  coverImage: string;
   description: string;
   quote: string;
-  tableOfContents: string[];
-  inStock: boolean;
-  year: string;
-  tags: string[];
-  printRun: string;
-  proofNotes: string;
-}
-
-function mapRowToUi(row: {
-  id: string;
-  title: string;
-  authorId: string;
-  price: string;
-  pages: number;
-  edition: string;
-  binding: string;
-  paper: string;
-  dimensions: string;
   coverImage: string;
-  description: string;
-  quote: string;
-  tableOfContents: string[];
-  inStock: boolean;
+  price: string;
   year: string;
-  tags: string[];
-  printRun: string;
-  proofNotes: string;
-  author: { id: string; name: string };
-}): UiChapbook {
-  return {
-    id: row.id,
-    title: row.title,
-    author: row.author.name,
-    authorId: row.authorId,
-    price: row.price,
-    pages: row.pages,
-    edition: row.edition,
-    binding: row.binding,
-    paper: row.paper,
-    dimensions: row.dimensions,
-    coverImage: row.coverImage,
-    description: row.description,
-    quote: row.quote,
-    tableOfContents: row.tableOfContents,
-    inStock: row.inStock,
-    year: row.year,
-    tags: row.tags,
-    printRun: row.printRun,
-    proofNotes: row.proofNotes,
-  };
 }
 
 const chapbookSelect = {
   id: true,
   title: true,
   authorId: true,
-  price: true,
-  pages: true,
-  edition: true,
-  binding: true,
-  paper: true,
-  dimensions: true,
-  coverImage: true,
   description: true,
   quote: true,
-  tableOfContents: true,
-  inStock: true,
+  coverImage: true,
+  price: true,
   year: true,
-  tags: true,
-  printRun: true,
-  proofNotes: true,
   author: { select: { id: true, name: true } },
 } as const;
 
@@ -99,9 +35,17 @@ export async function getPublishedChapbooksRaw(): Promise<UiChapbook[]> {
     select: chapbookSelect,
     orderBy: [{ sortOrder: "asc" }, { year: "desc" }, { title: "asc" }],
   });
-  return rows.map((r) =>
-    JSON.parse(JSON.stringify(mapRowToUi(r as unknown as Parameters<typeof mapRowToUi>[0]))),
-  ) as UiChapbook[];
+  return rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    author: row.author.name,
+    authorId: row.authorId,
+    description: row.description,
+    quote: row.quote,
+    coverImage: row.coverImage,
+    price: row.price,
+    year: row.year,
+  }));
 }
 
 export async function getPublishedChapbookByIdRaw(id: string): Promise<UiChapbook | null> {
@@ -110,7 +54,15 @@ export async function getPublishedChapbookByIdRaw(id: string): Promise<UiChapboo
     select: chapbookSelect,
   });
   if (!row) return null;
-  return JSON.parse(
-    JSON.stringify(mapRowToUi(row as unknown as Parameters<typeof mapRowToUi>[0])),
-  ) as UiChapbook;
+  return {
+    id: row.id,
+    title: row.title,
+    author: row.author.name,
+    authorId: row.authorId,
+    description: row.description,
+    quote: row.quote,
+    coverImage: row.coverImage,
+    price: row.price,
+    year: row.year,
+  };
 }

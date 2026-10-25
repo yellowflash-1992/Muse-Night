@@ -2,7 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { BooksIndexPage } from "@/features/books/BooksIndexPage";
 
+import { listPublishedChapbooks } from "@/lib/chapbooks.functions";
+
 export const Route = createFileRoute("/books/")({
+  loader: async () => {
+    const chapbooks = await listPublishedChapbooks();
+    return { chapbooks };
+  },
   head: () => ({
     meta: [
       { title: "Hand-Bound Chapbooks — Muse Books" },
