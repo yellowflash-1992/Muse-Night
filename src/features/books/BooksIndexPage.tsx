@@ -34,7 +34,7 @@ export function BooksIndexPage() {
           <div className="space-y-1">
             <p className="text-neon uppercase tracking-[0.2em] font-medium">Archival Papers</p>
             <p className="leading-relaxed">
-              Deckle-edged Zerkall and HahnemÃ¼hle cotton mould-made sheets.
+              Deckle-edged Zerkall and Hahnem&uuml;hle cotton mould-made sheets.
             </p>
           </div>
           <div className="space-y-1">
