@@ -92,7 +92,7 @@ export function BookDetailPage() {
             </p>
 
             <div className="p-5 rounded-lg bg-ink-2 border-l-2 border-neon text-paper italic font-display text-xl leading-relaxed">
-              “{book.quote}”
+              &ldquo;{book.quote}&rdquo;
             </div>
 
             <button
@@ -132,7 +132,7 @@ export function BookDetailPage() {
                   <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
                     Dimensions
                   </dt>
-                  <dd className="text-paper-dim">148 × 210 mm (A5)</dd>
+                  <dd className="text-paper-dim">148 &times; 210 mm (A5)</dd>
                 </div>
                 <div className="sm:col-span-2">
                   <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">

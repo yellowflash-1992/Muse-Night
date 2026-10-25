@@ -84,7 +84,7 @@ export function BooksIndexPage() {
                     </Link>
                   </h2>
 
-                  <p className="mt-4 text-sm text-paper-dim italic">â€œ{book.quote}â€</p>
+                  <p className="mt-4 text-sm text-paper-dim italic">&ldquo;{book.quote}&rdquo;</p>
 
                   {/* Specs list */}
                   <div className="mt-6 pt-5 border-t border-neon/10 space-y-2 text-xs text-paper-dim">
