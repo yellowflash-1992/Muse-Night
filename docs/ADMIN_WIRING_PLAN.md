@@ -123,3 +123,28 @@ Trigger: before co-author onboarding. Not urgent tonight — you're the only use
 ### After that
 - Schema planning for chapbooks, gallery, quotes, sections, submissions
 - RLS per-user policies for auth tables (before co-author signup)
+
+---
+
+## Chapbooks shipped (2026-10-25)
+
+### Complete (dev + prod)
+- Chapbook: schema + RLS + read/write + frontend + admin form
+- Prod migration applied via correct prod password (16 chars, i...E)
+- Cover images in public/ (book-quiet-hour.jpg, book-unsent-friend.jpg)
+
+### Next session — Path A2: Gallery
+- Schema: id, title, artist, description, category, imageUrl, linkedPoemId?, status, sortOrder
+- Same pattern: migration with RLS inline → server fns → admin form → frontend
+
+### Lessons learned
+- Dev vs prod password discipline: prod password never in .env, password manager only
+- Leading whitespace in pasted passwords silently fails auth — always .Trim()
+- uidhtehoviakcftenhui = prod, vdrbitnqlijwtitecver = dev — verify project ref before every prod command
+- Hosts file IPv6 fix needed for aws-0 AND aws-1 on this Windows machine
+- Verify full file content with Get-Content -Raw when pasted content shows truncation
+
+### Pending (not blocking)
+- Path D: Deploy admin to Vercel (author prod content)
+- Cleanup: remove NODE_ENV="development" from .env, simplify prisma.config.ts
+- Formalize Submission RLS as migration file (currently manual SQL on prod)
