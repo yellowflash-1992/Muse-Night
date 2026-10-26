@@ -27,6 +27,16 @@ export function LibraryIndexPage() {
     return Array.from(tags);
   }, [poems]);
 
+  const allForms = useMemo(() => {
+    const forms = new Set<string>();
+    poems.forEach((p) => {
+      if (p.form) forms.add(p.form);
+    });
+    // Ensure defaults exist even if no poems use them yet
+    ["Sonnet", "Haiku", "Free Verse", "Epistle", "Prose Poetry"].forEach((f) => forms.add(f));
+    return Array.from(forms).sort();
+  }, [poems]);
+
   const poetsMap = useMemo(() => {
     const map: Record<string, { id: string; penName: string }> = {};
     poems.forEach((p) => {
@@ -221,21 +231,18 @@ export function LibraryIndexPage() {
               >
                 All Forms
               </button>
-              {POETIC_FORMS.map((form) => (
+              {allForms.map((form) => (
                 <button
-                  key={form.label}
+                  key={form}
                   type="button"
-                  onClick={() => setSelectedForm(form.label)}
-                  className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer flex items-center gap-1.5 ${
-                    selectedForm === form.label
+                  onClick={() => setSelectedForm(form)}
+                  className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
+                    selectedForm === form
                       ? "bg-amber-400/20 text-amber-300 border border-amber-400/40 font-medium shadow-sm"
                       : "text-paper-dim hover:text-paper bg-ink-2 border border-transparent"
                   }`}
                 >
-                  <span>{form.label}</span>
-                  <span className="text-[9.5px] font-mono text-paper-faint/80">
-                    ({form.detail})
-                  </span>
+                  {form}
                 </button>
               ))}
             </div>
