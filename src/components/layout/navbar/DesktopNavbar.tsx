@@ -58,12 +58,12 @@ export function DesktopNavbar({
       <div className="mx-auto flex w-full max-w-[1440px] flex-col px-4 sm:px-6 lg:px-8 xl:px-12">
         {/* Top minimal bar (middle text hidden on narrow screens to prevent squashing) */}
         <div className="flex items-center justify-between py-2 text-[9px] lg:text-[10px] uppercase tracking-[0.2em] lg:tracking-[0.28em] text-paper-faint border-b border-neon/5">
-          <span className="shrink-0 whitespace-nowrap">Vol. II — Winter 2024</span>
+          <span className="shrink-0 whitespace-nowrap">Vol. II &mdash; Winter 2024</span>
           <span className="hidden xl:inline">A Small Press for Two Poets &amp; Literary Works</span>
           <span className="shrink-0 whitespace-nowrap">Est. Edinburgh &amp; Stockholm</span>
         </div>
 
-        {/* Main Desktop Navbar — flex-nowrap with stretched responsive spacing */}
+        {/* Main Desktop Navbar &mdash; flex-nowrap with stretched responsive spacing */}
         <div className="flex flex-nowrap items-center justify-between gap-3 lg:gap-4 xl:gap-8 py-3.5">
           <Link
             to="/"
@@ -82,9 +82,9 @@ export function DesktopNavbar({
             </div>
           </Link>
 
-          {/* Desktop Nav Links — streamlined spacing to fit without horizontal scroll */}
+          {/* Desktop Nav Links &mdash; streamlined spacing to fit without horizontal scroll */}
           <nav className="flex flex-nowrap items-center gap-2 lg:gap-3 xl:gap-5 min-w-0">
-            {/* Hub Dropdown Item — click toggle so toggles never cause it to drop down */}
+            {/* Hub Dropdown Item &mdash; click toggle so toggles never cause it to drop down */}
             <div ref={dropdownContainerRef} className="relative">
               <button
                 type="button"
@@ -189,7 +189,7 @@ export function DesktopNavbar({
             })}
           </nav>
 
-          {/* Desktop Actions — comfortably fitted alongside nav links without scroll */}
+          {/* Desktop Actions &mdash; comfortably fitted alongside nav links without scroll */}
           <div className="flex shrink-0 items-center gap-2 lg:gap-2.5 xl:gap-3.5">
             {isAuthenticated && user ? (
               /* Authenticated Patron Avatar & Menu */

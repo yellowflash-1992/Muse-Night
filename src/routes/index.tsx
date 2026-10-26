@@ -21,13 +21,13 @@ import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Muse Books — A Small Press for Poetry & Literature" },
+      { title: "Muse Books &mdash; A Small Press for Poetry & Literature" },
       {
         name: "description",
         content:
           "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Irshand and InkbyNur.",
       },
-      { property: "og:title", content: "Muse Books — A Small Press for Poetry & Literature" },
+      { property: "og:title", content: "Muse Books &mdash; A Small Press for Poetry & Literature" },
       {
         property: "og:description",
         content:
@@ -91,7 +91,7 @@ function Index() {
 
   const handleCopyVerse = () => {
     const lines = activePoem.stanzas[0]?.slice(0, 3) ?? [];
-    const text = `"${lines.join("\n")}"\n— ${activePoem.author}, ${activePoem.title}\n(via Muse Books)`;
+    const text = `"${lines.join("\n")}"\n&mdash; ${activePoem.author}, ${activePoem.title}\n(via Muse Books)`;
     navigator.clipboard.writeText(text);
     setCopiedSnippet(true);
     setTimeout(() => setCopiedSnippet(false), 2000);
@@ -337,7 +337,7 @@ function Index() {
                     ))}
                   </div>
                   <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neon/80 font-medium">
-                    — {activePoem.author} ({activePoem.year})
+                    &mdash; {activePoem.author} ({activePoem.year})
                   </p>
                 </div>
 

@@ -10,11 +10,11 @@
 
 export const COLLECTION_AUTHOR_PENNAME_MAP: Record<string, string> = {
   // Collection.id → PenName.id
-  "the-quiet-hour": "irshand", // authorId: muhammad-abdulnasir → primary: irshand
-  "letters-to-an-unsent-friend": "inkbynur", // authorId: nurudeen-abdullah → primary: inkbynur
-  "a-field-guide-to-small-wonders": "irshand", // authorId: muhammad-abdulnasir → primary: irshand (collaborative, but primary author)
-  "the-winter-ledger": "irshand", // authorId: muhammad-abdulnasir → primary: irshand
-  "irshand-verses": "irshand", // authorId: muhammad-abdulnasir → primary: irshand
+  &ldquo;the-quiet-hour&ldquo;: &ldquo;irshand&ldquo;, // authorId: muhammad-abdulnasir → primary: irshand
+  &ldquo;letters-to-an-unsent-friend&ldquo;: &ldquo;inkbynur&ldquo;, // authorId: nurudeen-abdullah → primary: inkbynur
+  &ldquo;a-field-guide-to-small-wonders&ldquo;: &ldquo;irshand&ldquo;, // authorId: muhammad-abdulnasir → primary: irshand (collaborative, but primary author)
+  &ldquo;the-winter-ledger&ldquo;: &ldquo;irshand&ldquo;, // authorId: muhammad-abdulnasir → primary: irshand
+  &ldquo;irshand-verses&ldquo;: &ldquo;irshand&ldquo;, // authorId: muhammad-abdulnasir → primary: irshand
 };
 
 /**
@@ -28,8 +28,8 @@ export const COLLECTION_AUTHOR_PENNAME_MAP: Record<string, string> = {
  * Source: pen-names.ts PEN_NAMES personId field
  */
 export const PERSON_TO_PENNAMES: Record<string, string[]> = {
-  "muhammad-abdulnasir": ["irshand", "aporia", "serein", "elyon", "wandera"],
-  "nurudeen-abdullah": ["inkbynur"],
+  &ldquo;muhammad-abdulnasir&ldquo;: [&ldquo;irshand&ldquo;, &ldquo;aporia&ldquo;, &ldquo;serein&ldquo;, &ldquo;elyon&ldquo;, &ldquo;wandera&ldquo;],
+  &ldquo;nurudeen-abdullah&ldquo;: [&ldquo;inkbynur&ldquo;],
 };
 
 /**
@@ -37,7 +37,7 @@ export const PERSON_TO_PENNAMES: Record<string, string[]> = {
  * Source: literary-worlds.ts penNameIds array
  */
 export const LITERARY_WORLD_TO_PENNAMES: Record<string, string[]> = {
-  "child-of-the-wilderness": ["irshand", "aporia", "serein", "elyon", "wandera"],
+  &ldquo;child-of-the-wilderness&ldquo;: [&ldquo;irshand&ldquo;, &ldquo;aporia&ldquo;, &ldquo;serein&ldquo;, &ldquo;elyon&ldquo;, &ldquo;wandera&ldquo;],
 };
 
 /**

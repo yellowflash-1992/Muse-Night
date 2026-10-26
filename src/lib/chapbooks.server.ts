@@ -1,6 +1,6 @@
 /**
  * Public read path for chapbooks.
- * Only imported by chapbooks.functions.ts — never by routes or components.
+ * Only imported by chapbooks.functions.ts &mdash; never by routes or components.
  */
 
 import { prisma } from "@/lib/prisma";

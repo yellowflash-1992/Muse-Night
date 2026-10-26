@@ -17,10 +17,15 @@ import { useToast } from "./lib/useToast";
 import { LibraryPoemReactions } from "./LibraryPoemReactions";
 import { LibraryPoemReader } from "./LibraryPoemReader";
 import { LibraryPoemReflections } from "./LibraryPoemReflections";
-import { type CardFormat, type CardMood, LibraryPoemShareSheet } from "./LibraryPoemShareSheet";
+import {
+  type CardFormat,
+  type CardMood,
+  type FrameStyle,
+  LibraryPoemShareSheet,
+} from "./LibraryPoemShareSheet";
 import { LibraryReaderControlsBar } from "./LibraryReaderControlsBar";
 
-// Typed route API — avoids importing the route module (no circular import).
+// Typed route API &mdash; avoids importing the route module (no circular import).
 const routeApi = getRouteApi("/library/$id");
 
 export function LibraryPoemPage() {
@@ -41,6 +46,7 @@ export function LibraryPoemPage() {
   const [warmMode, setWarmMode] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [openLine, setOpenLine] = useState<number | null>(null);
+  const [selectedFrame, setSelectedFrame] = useState<FrameStyle>(null);
   const [saved, setSaved] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [selectedMood, setSelectedMood] = useState<CardMood>("reflective");
@@ -116,8 +122,8 @@ export function LibraryPoemPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${poem.title} — Muse Night`,
-          text: `"${cardExcerpt}"\n— ${poem.author}\n`,
+          title: `${poem.title} &mdash; Muse Night`,
+          text: `"${cardExcerpt}"\n&mdash; ${poem.author}\n`,
           url: window.location.href,
         });
       } catch {
@@ -303,7 +309,7 @@ export function LibraryPoemPage() {
           )}
         </div>
 
-        {/* Reactions — Simple Emoji Options */}
+        {/* Reactions &mdash; Simple Emoji Options */}
         <LibraryPoemReactions
           reactions={reactions}
           reactedEmoji={reactedEmoji}
@@ -312,7 +318,7 @@ export function LibraryPoemPage() {
 
         <div className="border-t border-neon/15" />
 
-        {/* Reflections — What this poem stirred */}
+        {/* Reflections &mdash; What this poem stirred */}
         <LibraryPoemReflections
           reflections={reflections}
           note={note}
@@ -359,6 +365,8 @@ export function LibraryPoemPage() {
         cardExcerpt={cardExcerpt}
         selectedMood={selectedMood}
         onSelectMood={setSelectedMood}
+        selectedFrame={selectedFrame}
+        onSelectFrame={setSelectedFrame}
         cardFormat={cardFormat}
         onSelectFormat={setCardFormat}
         onNativeShare={handleNativeShare}

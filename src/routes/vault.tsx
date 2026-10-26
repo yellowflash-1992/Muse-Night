@@ -5,7 +5,7 @@ import { VaultPage } from "@/features/vault/VaultPage";
 export const Route = createFileRoute("/vault")({
   head: () => ({
     meta: [
-      { title: "Your Vault — Muse Books" },
+      { title: "Your Vault &mdash; Muse Books" },
       {
         name: "description",
         content: "Your personal collection of saved poems.",

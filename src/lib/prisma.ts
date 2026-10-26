@@ -11,7 +11,7 @@ import { buildPrismaPoolConfig } from "./prisma-connection";
  * `rejectUnauthorized: true`, conflicting SSL query parameters stripped from
  * the connection string). When no CA path is configured, the connection string
  * is passed through untouched so existing deployment configurations are
- * preserved. Server-only — reads the local filesystem for the certificate.
+ * preserved. Server-only &mdash; reads the local filesystem for the certificate.
  */
 const directUrl = process.env["DIRECT_URL"];
 if (!directUrl) {

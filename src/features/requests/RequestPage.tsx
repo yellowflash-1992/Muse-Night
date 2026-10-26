@@ -24,7 +24,7 @@ export function RequestPage() {
           <h1 className="font-display text-2xl text-paper mb-3">Your request is in the queue</h1>
           <p className="text-paper-dim text-sm leading-relaxed">
             We'll email you a draft within 3–5 days. Every commissioned poem is handwritten by one
-            of our poets — no templates, no AI.
+            of our poets &mdash; no templates, no AI.
           </p>
           <Link
             to="/"
@@ -51,7 +51,7 @@ export function RequestPage() {
           written just for them.
         </h1>
         <p className="text-paper-dim text-sm mt-5 max-w-md mx-auto">
-          Tell us who it&apos;s for and why. A poet crafts something original — delivered to your
+          Tell us who it&apos;s for and why. A poet crafts something original &mdash; delivered to your
           inbox, ready to give.
         </p>
       </div>
@@ -182,7 +182,7 @@ export function RequestPage() {
                 type="submit"
                 className="w-full sm:w-auto px-7 py-3 rounded-lg bg-neon text-ink text-sm font-medium hover:bg-neon/90 transition shadow-md"
               >
-                Request your poem — $5
+                Request your poem &mdash; $5
               </button>
             </form>
           </MemberGate>
@@ -198,7 +198,7 @@ export function RequestPage() {
                 Share the story and occasion
               </li>
               <li className="flex gap-3">
-                <span className="text-neon font-display italic">2</span>A poet writes it — never
+                <span className="text-neon font-display italic">2</span>A poet writes it &mdash; never
                 AI-generated
               </li>
               <li className="flex gap-3">
@@ -231,10 +231,10 @@ export function RequestPage() {
           <div className="border-l-2 border-neon/15 pl-4">
             <Quote className="w-4 h-4 text-paper-faint mb-2" strokeWidth={1.5} />
             <p className="font-display italic text-sm text-paper-dim leading-relaxed">
-              &ldquo;I didn&apos;t know what to write in her card. They did — and it made her cry,
+              &ldquo;I didn&apos;t know what to write in her card. They did &mdash; and it made her cry,
               the good kind.&rdquo;
             </p>
-            <p className="text-xs text-paper-faint mt-2">— a reader, on an anniversary poem</p>
+            <p className="text-xs text-paper-faint mt-2">&mdash; a reader, on an anniversary poem</p>
           </div>
         </div>
       </div>

@@ -86,7 +86,7 @@ export const testimonials = [
   },
   {
     quote:
-      "To write about water is to write about everything that cannot be held — and everything we keep trying to hold anyway.",
+      "To write about water is to write about everything that cannot be held &mdash; and everything we keep trying to hold anyway.",
     author: "Soren Adeyemi",
     work: "The Glass River",
     image:
@@ -113,7 +113,7 @@ export const testimonials = [
   },
   {
     quote:
-      "Language is the oldest technology. We forget that every word was once invented — by someone desperate to be understood.",
+      "Language is the oldest technology. We forget that every word was once invented &mdash; by someone desperate to be understood.",
     author: "Elara Voss",
     work: "The Weight of Dusk",
     image:

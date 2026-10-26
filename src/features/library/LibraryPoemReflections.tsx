@@ -61,7 +61,7 @@ export function LibraryPoemReflections({
         <span className="text-xs text-paper-faint font-sans">{reflections.length} reflections</span>
       </div>
 
-      {/* Write Box / Reflection Composer — always visible, appears FIRST */}
+      {/* Write Box / Reflection Composer &mdash; always visible, appears FIRST */}
       <form
         onSubmit={onSubmit}
         className="rounded-2xl border border-neon/20 bg-ink-2/70 p-4 sm:p-5 space-y-3 shadow-md"

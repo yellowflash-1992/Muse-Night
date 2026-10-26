@@ -5,7 +5,7 @@ import { SettingsPage } from "@/features/settings/SettingsPage";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Patron Profile & Pen Name — Muse Books" },
+      { title: "Patron Profile & Pen Name &mdash; Muse Books" },
       {
         name: "description",
         content:

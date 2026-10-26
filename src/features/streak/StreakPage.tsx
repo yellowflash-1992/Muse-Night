@@ -60,22 +60,22 @@ function StreakContent() {
           </div>
           <p className="mt-2 text-xs text-paper-dim">
             {unlocked
-              ? "Unlocked — scroll to the bottom to read it"
-              : `${tasksDone}/3 done today — play the poetry game to unlock`}
+              ? "Unlocked &mdash; scroll to the bottom to read it"
+              : `${tasksDone}/3 done today &mdash; play the poetry game to unlock`}
           </p>
         </div>
 
         {unlocked && (
           <div className="rounded-2xl bg-gradient-to-br from-ink-2 via-purple-950 to-ink p-6 text-center">
             <p className="mb-3 text-[10px] uppercase tracking-wide text-amber-400/80">
-              bonus poem — unlocked today only
+              bonus poem &mdash; unlocked today only
             </p>
             <p className="font-display italic leading-relaxed text-paper">
               some days grief is a language
               <br />
               I&apos;m still learning to speak softly.
             </p>
-            <p className="mt-3 text-xs text-paper-dim">— Ada Nwosu</p>
+            <p className="mt-3 text-xs text-paper-dim">&mdash; Ada Nwosu</p>
           </div>
         )}
       </div>

@@ -5,7 +5,7 @@ import { SubmitPage } from "@/features/submit/SubmitPage";
 export const Route = createFileRoute("/submit")({
   head: () => ({
     meta: [
-      { title: "Submissions & Call for Poetry — Muse Books" },
+      { title: "Submissions & Call for Poetry &mdash; Muse Books" },
       {
         name: "description",
         content:

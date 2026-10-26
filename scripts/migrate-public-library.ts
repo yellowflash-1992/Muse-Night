@@ -11,7 +11,7 @@
  *   created only when missing; existing rows are never updated, so editorial
  *   changes survive reruns. If an existing row's identity or relationship
  *   fields conflict with the source (e.g. a PenName pointing at a different
- *   Person), the run FAILS and names the conflicting ID — it never overwrites.
+ *   Person), the run FAILS and names the conflicting ID &mdash; it never overwrites.
  * - Preserves stable public IDs. Excludes Admin mock records (asserted against
  *   the known-public id sets).
  * - Does NOT fabricate publishedAt: stored as NULL when the true date is unknown.
@@ -25,7 +25,7 @@
 
 import { PrismaClient } from "../src/generated/prisma/client";
 
-// Import from core asset-free module — safe for plain Node.js/tsx
+// Import from core asset-free module &mdash; safe for plain Node.js/tsx
 import {
   PEN_NAMES,
   LIBRARY_POEMS_CORE,
@@ -76,7 +76,7 @@ async function main() {
   }
 
   if (errors.length > 0) {
-    console.error(`\nMigration BLOCKED — ${errors.length} validation error(s):`);
+    console.error(`\nMigration BLOCKED &mdash; ${errors.length} validation error(s):`);
     errors.forEach((message, index) => {
       console.error(`  ${index + 1}. ${message}`);
     });
@@ -97,7 +97,7 @@ async function main() {
       let poemsCreated = 0;
       let poemsSkipped = 0;
 
-      // 0. Person (identity data — CREATE-IF-MISSING ONLY).
+      // 0. Person (identity data &mdash; CREATE-IF-MISSING ONLY).
       // MUST run FIRST: both LiteraryWorld.creatorId and PenName.personId are
       // foreign keys into "Person" (LiteraryWorld_creatorId_fkey,
       // PenName_personId_fkey). Creating dependents before this parent is what
@@ -131,7 +131,7 @@ async function main() {
         console.log(`  Person CREATED: ${person.legalName} (${person.id})`);
       }
 
-      // 1. LiteraryWorld (reference data — CREATE-IF-MISSING ONLY).
+      // 1. LiteraryWorld (reference data &mdash; CREATE-IF-MISSING ONLY).
       // Existing rows are never updated, so editorial edits survive reruns.
       // Requires Person rows above (creatorId → Person.id).
       for (const [id, world] of Object.entries(LITERARY_WORLDS)) {
@@ -159,7 +159,7 @@ async function main() {
         console.log(`  LiteraryWorld CREATED: ${world.name} (${id})`);
       }
 
-      // 2. PenNames (reference data — CREATE-IF-MISSING ONLY).
+      // 2. PenNames (reference data &mdash; CREATE-IF-MISSING ONLY).
       // Existing rows are never updated (description, name, title, literaryIdentity,
       // isPrimary and literaryWorldId are NOT overwritten from static data).
       for (const [id, penName] of Object.entries(PEN_NAMES)) {
@@ -191,7 +191,7 @@ async function main() {
         console.log(`  PenName CREATED: ${penName.name} (${id}) → Person: ${penName.personId}`);
       }
 
-      // 3. Collections (INSERT-ONLY — preserves editorial changes on rerun).
+      // 3. Collections (INSERT-ONLY &mdash; preserves editorial changes on rerun).
       for (let index = 0; index < COLLECTIONS_CORE.length; index++) {
         const collection = COLLECTIONS_CORE[index];
         const existing = await tx.collection.findUnique({ where: { id: collection.id } });
@@ -227,7 +227,7 @@ async function main() {
         );
       }
 
-      // 4. Poems (INSERT-ONLY — preserves editorial changes on rerun).
+      // 4. Poems (INSERT-ONLY &mdash; preserves editorial changes on rerun).
       for (let index = 0; index < LIBRARY_POEMS_CORE.length; index++) {
         const poem = LIBRARY_POEMS_CORE[index];
         const existing = await tx.poem.findUnique({ where: { id: poem.id } });

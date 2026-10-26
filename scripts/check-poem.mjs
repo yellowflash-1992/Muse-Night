@@ -1,8 +1,8 @@
-﻿import "dotenv/config";
-import dns from "dns";
-import pkg from "pg";
+﻿import &ldquo;dotenv/config&ldquo;;
+import dns from &ldquo;dns&ldquo;;
+import pkg from &ldquo;pg&ldquo;;
 const { Client } = pkg;
-dns.setDefaultResultOrder("ipv4first");
+dns.setDefaultResultOrder(&ldquo;ipv4first&ldquo;);
 
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
@@ -13,17 +13,17 @@ const client = new Client({
 
 try {
   await client.connect();
-  const r = await client.query(`SELECT id, title, status FROM "Poem" WHERE id = $1`, ["lamplight-late-november"]);
+  const r = await client.query(`SELECT id, title, status FROM &ldquo;Poem&ldquo; WHERE id = $1`, [&ldquo;lamplight-late-november&ldquo;]);
   if (r.rows.length === 0) {
-    console.log("NOT FOUND — that id doesn't exist in dev");
-    const all = await client.query(`SELECT id, title, status FROM "Poem" ORDER BY "sortOrder" LIMIT 20`);
-    console.log("Available poem ids:");
+    console.log(&ldquo;NOT FOUND &mdash; that id doesn't exist in dev&ldquo;);
+    const all = await client.query(`SELECT id, title, status FROM &ldquo;Poem&ldquo; ORDER BY &ldquo;sortOrder&ldquo; LIMIT 20`);
+    console.log(&ldquo;Available poem ids:&ldquo;);
     all.rows.forEach(p => console.log(`  ${p.id} | ${p.status} | ${p.title}`));
   } else {
-    console.log("FOUND:", r.rows[0]);
+    console.log(&ldquo;FOUND:&ldquo;, r.rows[0]);
   }
   await client.end();
 } catch (err) {
-  console.error("FAIL:", err.code || err.name, err.message);
+  console.error(&ldquo;FAIL:&ldquo;, err.code || err.name, err.message);
   await client.end().catch(() => {});
 }

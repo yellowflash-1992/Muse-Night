@@ -126,7 +126,7 @@ export function Footer() {
 
         {/* Bottom copyright line */}
         <div className="mt-14 pt-8 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs uppercase tracking-[0.22em] text-paper-faint">
-          <span>Muse Books — Hand-bound &amp; Typeset · MMXXIV</span>
+          <span>Muse Books &mdash; Hand-bound &amp; Typeset · MMXXIV</span>
           <span>Cormorant &amp; Spectral Typography</span>
         </div>
       </div>

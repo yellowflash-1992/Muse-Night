@@ -5,7 +5,7 @@ import { DailyPage } from "@/features/game/DailyPage";
 export const Route = createFileRoute("/daily")({
   head: () => ({
     meta: [
-      { title: "Poetry Game — Muse Books" },
+      { title: "Poetry Game &mdash; Muse Books" },
       {
         name: "description",
         content: "Poetry battles and six-word story challenges to unlock bonus poems.",

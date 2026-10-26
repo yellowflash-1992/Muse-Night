@@ -29,9 +29,9 @@ export async function createSubmission(
   if (!input.manuscript.trim()) throw new Error("Manuscript is required");
   if (!input.name.trim()) throw new Error("Your name is required");
   if (!input.email.trim()) throw new Error("Email is required");
-  if (input.manuscript.length < 20) throw new Error("Manuscript too short — minimum 20 characters");
+  if (input.manuscript.length < 20) throw new Error("Manuscript too short &mdash; minimum 20 characters");
   if (input.manuscript.length > 50000)
-    throw new Error("Manuscript too long — maximum 50,000 characters");
+    throw new Error("Manuscript too long &mdash; maximum 50,000 characters");
 
   const submission = await prisma.submission.create({
     data: {

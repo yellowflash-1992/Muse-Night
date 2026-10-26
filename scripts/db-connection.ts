@@ -21,7 +21,7 @@ const SSL_QUERY_PARAMS = ["sslmode", "sslrootcert", "sslcert", "sslkey", "sslneg
 /**
  * Strips SSL-related query parameters from the connection STRING itself, before
  * it reaches `pg-connection-string`. This matters because the parser emits its
- * `sslmode=require` warning during parsing — deleting the keys from the parsed
+ * `sslmode=require` warning during parsing &mdash; deleting the keys from the parsed
  * object afterwards is too late to suppress it.
  *
  * Non-SSL parameters (including `options=-c jit=true`) are preserved verbatim.
@@ -149,7 +149,7 @@ export function createPrismaPgAdapter(
 /**
  * Validates a driver-adapter result for the `SELECT 1 as ok` connection check.
  *
- * IMPORTANT — `@prisma/adapter-pg` result contract (verified against the
+ * IMPORTANT &mdash; `@prisma/adapter-pg` result contract (verified against the
  * installed `@prisma/driver-adapter-utils` typings, `SqlResultSet`, L350-370):
  *
  *     columnTypes: Array<ColumnType>
@@ -157,8 +157,8 @@ export function createPrismaPgAdapter(
  *     rows: Array<Array<unknown>>   // POSITIONAL values, NOT objects
  *
  * `rows` is an array of value-arrays aligned with `columnNames`, so a row of
- * `SELECT 1 as ok` arrives as `[1]` and must be read via the column index —
- * `rows[0][0]` — and NOT `rows[0].ok` (which is always `undefined`).
+ * `SELECT 1 as ok` arrives as `[1]` and must be read via the column index &mdash;
+ * `rows[0][0]` &mdash; and NOT `rows[0].ok` (which is always `undefined`).
  *
  * The check is strict: exactly one row, at least one column, and the first
  * column value must strictly equal 1. Empty results, extra/zero rows, NULLs,
@@ -229,7 +229,7 @@ export async function checkConnectionOnly(): Promise<boolean> {
     });
 
     // SqlResultSet.rows is POSITIONAL (Array<Array<unknown>>), aligned with
-    // columnNames — see isValidSelectOneResult for the verified contract.
+    // columnNames &mdash; see isValidSelectOneResult for the verified contract.
     if (!isValidSelectOneResult(result)) {
       throw new Error("Connection check failed: SELECT 1 returned unexpected result");
     }

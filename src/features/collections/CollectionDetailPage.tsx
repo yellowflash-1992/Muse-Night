@@ -96,7 +96,7 @@ export function CollectionDetailPage() {
             “{collection.foreword}”
           </p>
           <p className="mt-4 text-xs uppercase tracking-[0.2em] text-paper-faint">
-            — {collection.author}
+            &mdash; {collection.author}
           </p>
         </div>
 

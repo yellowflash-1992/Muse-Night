@@ -70,7 +70,7 @@ function baseDataset(overrides: {
   };
 }
 
-describe("migration dataset — real public data", () => {
+describe("migration dataset &mdash; real public data", () => {
   it("resolves every poem: zero validation errors on the real data", () => {
     const { errors, warnings } = validateRealData();
     expect(errors).toEqual([]);
@@ -110,7 +110,7 @@ describe("migration dataset — real public data", () => {
 
   it("distinguishes an explicit intentional null from a missing/unreviewed mapping", () => {
     // With BOTH the intentional-null override and the POEMS_WITHOUT_COLLECTION
-    // entry removed, the same poems become UNREVIEWED and must error — proving
+    // entry removed, the same poems become UNREVIEWED and must error &mdash; proving
     // nulls are decisions, not fallbacks.
     const stripped = { ...POEM_COLLECTION_OVERRIDES };
     const strippedWithout = new Set(POEMS_WITHOUT_COLLECTION);
@@ -168,7 +168,7 @@ describe("migration dataset — real public data", () => {
   });
 });
 
-describe("migration dataset — pen name validation", () => {
+describe("migration dataset &mdash; pen name validation", () => {
   it("flags an unknown penNameId", () => {
     const { errors } = validateMigrationDataset(
       baseDataset({ poems: [{ ...VALID_POEM, penNameId: "ghost-writer" }] }),
@@ -186,7 +186,7 @@ describe("migration dataset — pen name validation", () => {
   });
 });
 
-describe("migration dataset — collection author mapping", () => {
+describe("migration dataset &mdash; collection author mapping", () => {
   it("flags a collection with no author mapping", () => {
     const { errors } = validateMigrationDataset(baseDataset({ collectionAuthorPenNameMap: {} }));
     expect(errors.some((e) => e.includes("has no PenName author mapping"))).toBe(true);
@@ -204,7 +204,7 @@ describe("migration dataset — collection author mapping", () => {
   });
 });
 
-describe("migration dataset — literary world + line count + readTime", () => {
+describe("migration dataset &mdash; literary world + line count + readTime", () => {
   it("flags an unknown literaryWorldId", () => {
     const { errors } = validateMigrationDataset(
       baseDataset({ poems: [{ ...VALID_POEM, literaryWorldId: "nowhere" }] }),
@@ -227,7 +227,7 @@ describe("migration dataset — literary world + line count + readTime", () => {
   });
 });
 
-describe("migration dataset — Admin mock exclusion (id set assertions)", () => {
+describe("migration dataset &mdash; Admin mock exclusion (id set assertions)", () => {
   it("flags an unexpected poem id", () => {
     const { errors } = validateMigrationDataset(
       baseDataset({ poems: [{ ...VALID_POEM, id: "admin-mock-draft" }] }),
@@ -252,7 +252,7 @@ describe("migration dataset — Admin mock exclusion (id set assertions)", () =>
   });
 });
 
-describe("migration mapping contract — expected id sets", () => {
+describe("migration mapping contract &mdash; expected id sets", () => {
   it("matches the real LIBRARY_POEMS ids exactly", () => {
     expect(new Set(LIBRARY_POEMS.map((p) => p.id))).toEqual(new Set(EXPECTED_PUBLIC_POEM_IDS));
   });

@@ -5,7 +5,7 @@ import { RequestPage } from "@/features/requests/RequestPage";
 export const Route = createFileRoute("/request")({
   head: () => ({
     meta: [
-      { title: "Request a Poem — Muse Books" },
+      { title: "Request a Poem &mdash; Muse Books" },
       {
         name: "description",
         content:

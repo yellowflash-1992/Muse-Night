@@ -59,7 +59,7 @@ export function MoodPage() {
               A poem for your mood
             </h1>
             <p className="text-sm text-paper-dim mb-6">
-              Pick how you&apos;re feeling — or flip a penny and let it decide.
+              Pick how you&apos;re feeling &mdash; or flip a penny and let it decide.
             </p>
 
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-6">
@@ -114,7 +114,7 @@ export function MoodPage() {
                 {POEM_LINES[mood]?.line ?? "A quiet verse for this hour."}
               </p>
               <p className="text-[10px] text-amber-200/70 mt-3">
-                — {POEM_LINES[mood]?.poet ?? "Muse Books"}
+                &mdash; {POEM_LINES[mood]?.poet ?? "Muse Books"}
               </p>
             </div>
 

@@ -5,11 +5,11 @@ import { MoodPage } from "@/features/mood/MoodPage";
 export const Route = createFileRoute("/mood")({
   head: () => ({
     meta: [
-      { title: "A Poem for Your Mood — Muse Books" },
+      { title: "A Poem for Your Mood &mdash; Muse Books" },
       {
         name: "description",
         content:
-          "Pick how you're feeling — or flip a penny — and receive a poem written for that exact mood.",
+          "Pick how you're feeling &mdash; or flip a penny &mdash; and receive a poem written for that exact mood.",
       },
     ],
   }),

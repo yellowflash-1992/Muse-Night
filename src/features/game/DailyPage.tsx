@@ -145,7 +145,7 @@ export function DailyPage() {
               <p className="text-xs font-semibold text-paper">Today's Challenges</p>
               <p className="text-[11px] text-paper-dim">
                 {tasksCompleted === 2
-                  ? "All challenges finished — streak bonus ready! ✨"
+                  ? "All challenges finished &mdash; streak bonus ready! ✨"
                   : `${tasksCompleted} of 2 completed`}
               </p>
             </div>
@@ -204,7 +204,7 @@ export function DailyPage() {
                     </p>
 
                     <div className="flex items-center justify-between text-xs pt-1">
-                      <span className="text-paper-dim font-medium">— {item.poet}</span>
+                      <span className="text-paper-dim font-medium">&mdash; {item.poet}</span>
 
                       {votedSide ? (
                         <div className="flex items-center gap-2">

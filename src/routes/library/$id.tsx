@@ -16,12 +16,12 @@ export const Route = createFileRoute("/library/$id")({
     return {
       meta: [
         {
-          title: poem ? `${poem.title} — Muse Night` : "Work — Muse Night",
+          title: poem ? `${poem.title} &mdash; Muse Night` : "Work &mdash; Muse Night",
         },
         {
           name: "description",
           content: poem
-            ? `Read "${poem.title}" by ${poem.author} — a poem from the Muse Books archive.`
+            ? `Read "${poem.title}" by ${poem.author} &mdash; a poem from the Muse Books archive.`
             : "Read poems from the Muse Books archive.",
         },
       ],

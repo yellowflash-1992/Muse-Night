@@ -37,7 +37,7 @@ const SSL_QUERY_PARAMS = ["sslmode", "sslrootcert", "sslcert", "sslkey", "sslneg
  * Strips SSL-related query parameters from the connection STRING itself, before
  * it reaches `pg-connection-string` (the parser emits its `sslmode=require`
  * warning during parsing, and replaces the parsed `ssl` object when these
- * params are present — so keys must be removed before parsing, not after).
+ * params are present &mdash; so keys must be removed before parsing, not after).
  *
  * Non-SSL parameters (including the temporary-access JIT option
  * `options=-c jit=true`) are preserved verbatim.
@@ -98,11 +98,11 @@ export function sanitizeConnectionConfig(connectionString: string): Record<strin
 
 /**
  * Reads the Supabase CA certificate from the configured path.
- * Server-side only — uses synchronous filesystem access.
+ * Server-side only &mdash; uses synchronous filesystem access.
  *
  * @throws A sanitized configuration error naming the path and failure stage.
  *   The underlying OS error message is included (it contains filesystem
- *   metadata only — never credential material).
+ *   metadata only &mdash; never credential material).
  */
 export function readSupabaseCaCert(certPath: string): string {
   try {
@@ -136,7 +136,7 @@ export function buildPrismaPoolConfig(
   caCertPath: string | undefined,
 ): PrismaConnectionConfig {
   if (!caCertPath) {
-    // No local CA configured — preserve the existing deployment behavior:
+    // No local CA configured &mdash; preserve the existing deployment behavior:
     // let the driver parse the string as-is (SSL parameters, if any, come
     // from the URL itself; none are injected or removed).
     return {

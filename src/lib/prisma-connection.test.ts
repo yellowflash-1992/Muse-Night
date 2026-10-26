@@ -5,7 +5,7 @@
  * These tests never touch the network or a database. They verify:
  *  - SSL query parameters are stripped from the connection string BEFORE it
  *    reaches the pg driver (pg-connection-string replaces any `ssl` object
- *    when the string contains sslmode/sslrootcert/... — the proven fix from
+ *    when the string contains sslmode/sslrootcert/... &mdash; the proven fix from
  *    scripts/db-connection.ts).
  *  - Host, port, credentials, database name and the temporary-access JIT
  *    option survive sanitization untouched.
@@ -31,7 +31,7 @@ vi.mock("node:fs", () => ({
 
 const MOCK_CERT = "-----BEGIN CERTIFICATE-----\nMOCK\n-----END CERTIFICATE-----";
 
-describe("prisma-connection — SSL query parameter stripping", () => {
+describe("prisma-connection &mdash; SSL query parameter stripping", () => {
   it("strips sslmode before the string reaches the parser", () => {
     const stripped = stripSslQueryParams(
       "postgresql://u:p@h:5432/db?sslmode=require&options=-c%20jit%3Dtrue",
@@ -70,7 +70,7 @@ describe("prisma-connection — SSL query parameter stripping", () => {
   });
 });
 
-describe("prisma-connection — connection config sanitization", () => {
+describe("prisma-connection &mdash; connection config sanitization", () => {
   const withSsl = "postgresql://user:pass@host:5432/db?sslmode=require&options=-c%20jit%3Dtrue";
 
   it("preserves host, port (as number), database, user, password", () => {
@@ -107,7 +107,7 @@ describe("prisma-connection — connection config sanitization", () => {
   });
 });
 
-describe("prisma-connection — CA certificate reading", () => {
+describe("prisma-connection &mdash; CA certificate reading", () => {
   beforeEach(() => {
     vi.mocked(fs.readFileSync).mockReset();
   });
@@ -128,7 +128,7 @@ describe("prisma-connection — CA certificate reading", () => {
   });
 });
 
-describe("prisma-connection — explicit TLS when SUPABASE_CA_CERT_PATH is configured", () => {
+describe("prisma-connection &mdash; explicit TLS when SUPABASE_CA_CERT_PATH is configured", () => {
   const connectionString =
     "postgresql://user:pass@host:5432/db?sslmode=require&options=-c%20jit%3Dtrue";
 
@@ -172,7 +172,7 @@ describe("prisma-connection — explicit TLS when SUPABASE_CA_CERT_PATH is confi
   });
 });
 
-describe("prisma-connection — no CA configured (deployment preservation)", () => {
+describe("prisma-connection &mdash; no CA configured (deployment preservation)", () => {
   it("passes the connection string through untouched when no CA path is supplied", () => {
     const raw = "postgresql://user:pass@host:5432/db?options=-c%20jit%3Dtrue";
     const { poolConfig, tlsExplicit } = buildPrismaPoolConfig(raw, undefined);

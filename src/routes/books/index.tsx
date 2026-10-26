@@ -11,7 +11,7 @@ export const Route = createFileRoute("/books/")({
   },
   head: () => ({
     meta: [
-      { title: "Hand-Bound Chapbooks — Muse Books" },
+      { title: "Hand-Bound Chapbooks &mdash; Muse Books" },
       {
         name: "description",
         content:

@@ -5,16 +5,16 @@
  * `scripts/migrate-public-library.ts` consumes it; it never writes to the database.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * INTENTIONAL COLLECTION OVERRIDES (conservative — no invented groupings)
+ * INTENTIONAL COLLECTION OVERRIDES (conservative &mdash; no invented groupings)
  * ─────────────────────────────────────────────────────────────────────────────
  * The real public data declares collection ids that do not exist in COLLECTIONS:
  *
- *   - "child-of-the-wilderness"  (6 poems) — this is a **LiteraryWorld id**, not a
+ *   - "child-of-the-wilderness"  (6 poems) &mdash; this is a **LiteraryWorld id**, not a
  *     Collection. It is misused as `collectionId` while the same value is the
  *     poem's `literaryWorldId`. The LiteraryWorld membership is preserved; the
  *     bogus Collection membership is resolved below.
  *
- *   - "letters-kept-open"        (1 poem)  — a planned InkbyNur collection that
+ *   - "letters-kept-open"        (1 poem)  &mdash; a planned InkbyNur collection that
  *     was never added to COLLECTIONS. It is NOT safe to assume it equals
  *     `letters-to-an-unsent-friend` (different year/title/cycle).
  *
@@ -31,7 +31,7 @@
  * Explicit override map: poem.id → verified collectionId.
  *
  * `collectionId: null` means "this poem intentionally has no Collection record".
- * A `null` here is a deliberate, reviewed decision — never a fallback for a
+ * A `null` here is a deliberate, reviewed decision &mdash; never a fallback for a
  * missing record. Every entry must carry a `justification` for audit.
  */
 export interface CollectionOverride {
@@ -227,7 +227,7 @@ export function validateMigrationDataset(params: {
   const collectionIds = new Set(collections.map((c) => c.id));
   const penNameIds = new Set(Object.keys(penNames));
 
-  // 1. Exact set match — blocks Admin mock data and unannounced additions.
+  // 1. Exact set match &mdash; blocks Admin mock data and unannounced additions.
   const actualPoemIds = new Set(poems.map((p) => p.id));
   const expectedSet = new Set(expectedPoemIds);
   for (const id of actualPoemIds) {
@@ -311,7 +311,7 @@ export function validateMigrationDataset(params: {
     const override = hasOverride ? overrides[poem.id] : undefined;
 
     if (override && override.collectionId === null) {
-      // (a) Explicit intentional null — distinct from a missing mapping.
+      // (a) Explicit intentional null &mdash; distinct from a missing mapping.
       resolvedCollections.set(poem.id, null);
     } else if (override && !collectionIds.has(override.collectionId as string)) {
       errors.push(
