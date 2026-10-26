@@ -1,28 +1,18 @@
+import { GalleryPage } from "@/features/gallery/GalleryPage";
+import { getGalleryItems } from "@/lib/gallery.functions";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { GalleryPage } from "@/features/gallery/GalleryPage";
+type GallerySearch = {
+  category?: string | undefined;
+};
 
 export const Route = createFileRoute("/gallery")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    category:
-      search["category"] === "mystery" ||
-      search["category"] === "masterworks" ||
-      search["category"] === "poem-frames" ||
-      search["category"] === "relics" ||
-      search["category"] === "myth" ||
-      search["category"] === "visual-poetry"
-        ? search["category"]
-        : undefined,
-  }),
-  head: () => ({
-    meta: [
-      { title: "A Literary Museum — Visual Archive | Muse Books" },
-      {
-        name: "description",
-        content:
-          "Explore Muse Night's literary museum: mystery, masterworks, poem frames, literary relics, myth and visual poetry.",
-      },
-    ],
-  }),
+  validateSearch: (search: Record<string, unknown>): GallerySearch => {
+    return { category: (search["category"] as string) || undefined };
+  },
+  loader: async () => {
+    const collections = await getGalleryItems();
+    return { collections };
+  },
   component: GalleryPage,
 });

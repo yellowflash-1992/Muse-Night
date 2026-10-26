@@ -216,6 +216,62 @@ model Chapbook {
   @@index([sortOrder])
 }
 
+enum GalleryCategory {
+  MYSTERY
+  MASTERWORKS
+  POEM_FRAMES
+  RELICS
+  MYTH
+  VISUAL_POETRY
+}
+
+enum GalleryStatus {
+  CURATED
+  BUILT_IN
+  COMING_SOON
+}
+
+enum GalleryVisual {
+  MYSTERY
+  PORTRAIT
+  FRAME
+  RELIC
+  MYTH
+  POETRY
+}
+
+enum FrameStyle {
+  MINIMAL
+  ROMANTIC
+  MELANCHOLIC
+  MYSTICAL
+  VINTAGE
+  MANUSCRIPT
+}
+
+model GalleryItem {
+  id           String          @id
+  title        String
+  category     GalleryCategory
+  description  String
+  artist       String?
+  era          String?
+  source       String?
+  learnMoreUrl String?
+  status       GalleryStatus   @default(COMING_SOON)
+  visual       GalleryVisual
+  frameStyle   FrameStyle?
+  imageUrl     String?
+  bookId       String?
+  poemId       String?
+  sortOrder    Int             @default(0)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([category])
+  @@index([status])
+}
+
 enum SubmissionStatus {
   NEW
   UNDER_REVIEW

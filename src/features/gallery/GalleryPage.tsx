@@ -1,4 +1,4 @@
-import { Link, useSearch } from "@tanstack/react-router";
+import { getRouteApi, Link, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,10 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-import bookQuietHour from "@/assets/book-quiet-hour.jpg";
-import bookUnsentFriend from "@/assets/book-unsent-friend.jpg";
-import { LIBRARY_POEMS } from "@/data/literature";
+const routeApi = getRouteApi("/gallery");
 
 type GalleryCategoryId =
   "mystery" | "masterworks" | "poem-frames" | "relics" | "myth" | "visual-poetry";
@@ -104,177 +101,177 @@ const categories: {
   },
 ];
 
-const galleryCollections: Record<GalleryCategoryId, GalleryItem[]> = {
-  mystery: [
-    {
-      id: "unanswered-questions",
-      title: "The Unanswered Room",
-      category: "mystery",
-      description:
-        "A place for enigmatic artworks, puzzling objects and histories still open to interpretation.",
-      status: "coming-soon",
-      visual: "mystery",
-    },
-    {
-      id: "traces-in-stone",
-      title: "Traces in Stone",
-      category: "mystery",
-      description:
-        "More historical mysteries and archaeological subjects of debate will be curated here.",
-      status: "coming-soon",
-      visual: "mystery",
-    },
-  ],
-  masterworks: [
-    {
-      id: "mona-lisa",
-      title: "Mona Lisa",
-      category: "masterworks",
-      description:
-        "Leonardo da Vinci's portrait is celebrated for its subtle expression and atmospheric landscape. A properly sourced public-domain image will be added to this collection.",
-      artist: "Leonardo da Vinci",
-      era: "Early 16th century",
-      source: "Louvre Collections",
-      learnMoreUrl: "https://collections.louvre.fr/en/ark:/53355/cl010062370",
-      status: "coming-soon",
-      visual: "portrait",
-    },
-    {
-      id: "masterworks-to-come",
-      title: "A room for masterworks",
-      category: "masterworks",
-      description:
-        "More culturally significant paintings, sculpture and illustration will join this collection as images are carefully sourced.",
-      status: "coming-soon",
-      visual: "portrait",
-    },
-  ],
-  "poem-frames": [
-    {
-      id: "minimal-frame",
-      title: "Quiet Margin",
-      category: "poem-frames",
-      description:
-        "A restrained, minimal frame style. This built-in visual is a gallery sample, not yet connected to poem rendering.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "minimal",
-    },
-    {
-      id: "romantic-frame",
-      title: "Softly Gathered",
-      category: "poem-frames",
-      description:
-        "A romantic frame style with gentle, flowing details. Shown as a visual sample only.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "romantic",
-    },
-    {
-      id: "melancholic-frame",
-      title: "Blue Hour",
-      category: "poem-frames",
-      description:
-        "A subdued, melancholic frame style for the blue hour. Not yet connected to poem rendering.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "melancholic",
-    },
-    {
-      id: "mystical-frame",
-      title: "Night Garden",
-      category: "poem-frames",
-      description:
-        "A mystical frame style inspired by a garden after dark. Shown here as a built-in visual sample.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "mystical",
-    },
-    {
-      id: "vintage-frame",
-      title: "The Old Folio",
-      category: "poem-frames",
-      description:
-        "A vintage frame style with the feeling of a well-kept folio. Not yet connected to poem rendering.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "vintage",
-    },
-    {
-      id: "manuscript-frame",
-      title: "Ink & Paper",
-      category: "poem-frames",
-      description:
-        "A manuscript-inspired frame style. This built-in visual is a gallery sample, not a poem card.",
-      status: "built-in",
-      visual: "frame",
-      frameStyle: "manuscript",
-    },
-  ],
-  relics: [
-    {
-      id: "quiet-hour-edition",
-      title: "The Quiet Hour",
-      image: bookQuietHour,
-      category: "relics",
-      description:
-        "A Muse Night chapbook cover: a small literary object made to be held, opened and returned to.",
-      artist: "Muse Night",
-      era: "2023",
-      status: "curated",
-      visual: "relic",
-      bookId: "the-quiet-hour-chapbook",
-    },
-    {
-      id: "unsent-friend-edition",
-      title: "Letters to an Unsent Friend",
-      image: bookUnsentFriend,
-      category: "relics",
-      description:
-        "A Muse Night chapbook gathered around correspondence, distance and the letters we keep.",
-      artist: "Muse Night",
-      era: "2024",
-      status: "curated",
-      visual: "relic",
-      bookId: "letters-to-an-unsent-friend-chapbook",
-    },
-  ],
-  myth: [
-    {
-      id: "folklore-and-symbol",
-      title: "Signs in the Story",
-      category: "myth",
-      description:
-        "A home for folklore, myth and literary symbols, presented as traditions and stories rather than verified history.",
-      status: "coming-soon",
-      visual: "myth",
-    },
-    {
-      id: "legendary-figures",
-      title: "Figures of Legend",
-      category: "myth",
-      description:
-        "Legendary figures and storytelling objects will be explored with their traditions and interpretations in view.",
-      status: "coming-soon",
-      visual: "myth",
-    },
-  ],
-  "visual-poetry": LIBRARY_POEMS.slice(0, 3).map((poem, index) => ({
-    id: `visual-poem-${poem.id}`,
-    title: poem.title,
-    category: "visual-poetry",
-    description: [
-      "A quiet poem for the lamplit hour. Read the work in the Library, then return to imagine its visual world.",
-      "A poem of distance and unsent words, inviting a visual language of its own.",
-      "A collection of poems gathered under the name of a quiet hour.",
-    ][index]!,
-    artist: poem.author,
-    era: poem.collection,
-    status: "curated" as const,
-    visual: "poetry" as const,
-    poemId: poem.id,
-  })),
-};
+// const galleryCollections: Record<GalleryCategoryId, GalleryItem[]> = {
+//   mystery: [
+//     {
+//       id: "unanswered-questions",
+//       title: "The Unanswered Room",
+//       category: "mystery",
+//       description:
+//         "A place for enigmatic artworks, puzzling objects and histories still open to interpretation.",
+//       status: "coming-soon",
+//       visual: "mystery",
+//     },
+//     {
+//       id: "traces-in-stone",
+//       title: "Traces in Stone",
+//       category: "mystery",
+//       description:
+//         "More historical mysteries and archaeological subjects of debate will be curated here.",
+//       status: "coming-soon",
+//       visual: "mystery",
+//     },
+//   ],
+//   masterworks: [
+//     {
+//       id: "mona-lisa",
+//       title: "Mona Lisa",
+//       category: "masterworks",
+//       description:
+//         "Leonardo da Vinci's portrait is celebrated for its subtle expression and atmospheric landscape. A properly sourced public-domain image will be added to this collection.",
+//       artist: "Leonardo da Vinci",
+//       era: "Early 16th century",
+//       source: "Louvre Collections",
+//       learnMoreUrl: "https://collections.louvre.fr/en/ark:/53355/cl010062370",
+//       status: "coming-soon",
+//       visual: "portrait",
+//     },
+//     {
+//       id: "masterworks-to-come",
+//       title: "A room for masterworks",
+//       category: "masterworks",
+//       description:
+//         "More culturally significant paintings, sculpture and illustration will join this collection as images are carefully sourced.",
+//       status: "coming-soon",
+//       visual: "portrait",
+//     },
+//   ],
+//   "poem-frames": [
+//     {
+//       id: "minimal-frame",
+//       title: "Quiet Margin",
+//       category: "poem-frames",
+//       description:
+//         "A restrained, minimal frame style. This built-in visual is a gallery sample, not yet connected to poem rendering.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "minimal",
+//     },
+//     {
+//       id: "romantic-frame",
+//       title: "Softly Gathered",
+//       category: "poem-frames",
+//       description:
+//         "A romantic frame style with gentle, flowing details. Shown as a visual sample only.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "romantic",
+//     },
+//     {
+//       id: "melancholic-frame",
+//       title: "Blue Hour",
+//       category: "poem-frames",
+//       description:
+//         "A subdued, melancholic frame style for the blue hour. Not yet connected to poem rendering.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "melancholic",
+//     },
+//     {
+//       id: "mystical-frame",
+//       title: "Night Garden",
+//       category: "poem-frames",
+//       description:
+//         "A mystical frame style inspired by a garden after dark. Shown here as a built-in visual sample.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "mystical",
+//     },
+//     {
+//       id: "vintage-frame",
+//       title: "The Old Folio",
+//       category: "poem-frames",
+//       description:
+//         "A vintage frame style with the feeling of a well-kept folio. Not yet connected to poem rendering.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "vintage",
+//     },
+//     {
+//       id: "manuscript-frame",
+//       title: "Ink & Paper",
+//       category: "poem-frames",
+//       description:
+//         "A manuscript-inspired frame style. This built-in visual is a gallery sample, not a poem card.",
+//       status: "built-in",
+//       visual: "frame",
+//       frameStyle: "manuscript",
+//     },
+//   ],
+//   relics: [
+//     {
+//       id: "quiet-hour-edition",
+//       title: "The Quiet Hour",
+//       image: bookQuietHour,
+//       category: "relics",
+//       description:
+//         "A Muse Night chapbook cover: a small literary object made to be held, opened and returned to.",
+//       artist: "Muse Night",
+//       era: "2023",
+//       status: "curated",
+//       visual: "relic",
+//       bookId: "the-quiet-hour-chapbook",
+//     },
+//     {
+//       id: "unsent-friend-edition",
+//       title: "Letters to an Unsent Friend",
+//       image: bookUnsentFriend,
+//       category: "relics",
+//       description:
+//         "A Muse Night chapbook gathered around correspondence, distance and the letters we keep.",
+//       artist: "Muse Night",
+//       era: "2024",
+//       status: "curated",
+//       visual: "relic",
+//       bookId: "letters-to-an-unsent-friend-chapbook",
+//     },
+//   ],
+//   myth: [
+//     {
+//       id: "folklore-and-symbol",
+//       title: "Signs in the Story",
+//       category: "myth",
+//       description:
+//         "A home for folklore, myth and literary symbols, presented as traditions and stories rather than verified history.",
+//       status: "coming-soon",
+//       visual: "myth",
+//     },
+//     {
+//       id: "legendary-figures",
+//       title: "Figures of Legend",
+//       category: "myth",
+//       description:
+//         "Legendary figures and storytelling objects will be explored with their traditions and interpretations in view.",
+//       status: "coming-soon",
+//       visual: "myth",
+//     },
+//   ],
+//   "visual-poetry": LIBRARY_POEMS.slice(0, 3).map((poem, index) => ({
+//     id: `visual-poem-${poem.id}`,
+//     title: poem.title,
+//     category: "visual-poetry",
+//     description: [
+//       "A quiet poem for the lamplit hour. Read the work in the Library, then return to imagine its visual world.",
+//       "A poem of distance and unsent words, inviting a visual language of its own.",
+//       "A collection of poems gathered under the name of a quiet hour.",
+//     ][index]!,
+//     artist: poem.author,
+//     era: poem.collection,
+//     status: "curated" as const,
+//     visual: "poetry" as const,
+//     poemId: poem.id,
+//   })),
+// };
 
 function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }) {
   if (item.image) {
@@ -401,10 +398,15 @@ function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }
 }
 
 export function GalleryPage() {
-  const { category: selectedCategoryId } = useSearch({ from: "/gallery" });
+  const { category: selectedCategoryId } = useSearch({ from: "/gallery" }) as {
+    category?: GalleryCategoryId;
+  };
   const activeCategory = categories.find(({ id }) => id === selectedCategoryId);
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
-  const selectedItems = activeCategory ? galleryCollections[activeCategory.id] : [];
+  const { collections } = routeApi.useLoaderData() as {
+    collections: Record<GalleryCategoryId, GalleryItem[]>;
+  };
+  const selectedItems = activeCategory ? collections[activeCategory.id] || [] : [];
 
   useEffect(() => {
     if (!selectedImage) return;
@@ -1083,7 +1085,7 @@ export function GalleryPage() {
             <header className="mb-8 border-b border-neon/10 pb-7 sm:mb-10 sm:pb-9">
               <Link
                 to="/gallery"
-                search={{ category: undefined }}
+                search={{}}
                 className="mb-7 inline-flex min-h-11 items-center gap-2 rounded-lg px-2 font-karla text-sm font-medium text-paper-dim transition hover:text-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
