@@ -101,178 +101,6 @@ const categories: {
   },
 ];
 
-// const galleryCollections: Record<GalleryCategoryId, GalleryItem[]> = {
-//   mystery: [
-//     {
-//       id: "unanswered-questions",
-//       title: "The Unanswered Room",
-//       category: "mystery",
-//       description:
-//         "A place for enigmatic artworks, puzzling objects and histories still open to interpretation.",
-//       status: "coming-soon",
-//       visual: "mystery",
-//     },
-//     {
-//       id: "traces-in-stone",
-//       title: "Traces in Stone",
-//       category: "mystery",
-//       description:
-//         "More historical mysteries and archaeological subjects of debate will be curated here.",
-//       status: "coming-soon",
-//       visual: "mystery",
-//     },
-//   ],
-//   masterworks: [
-//     {
-//       id: "mona-lisa",
-//       title: "Mona Lisa",
-//       category: "masterworks",
-//       description:
-//         "Leonardo da Vinci's portrait is celebrated for its subtle expression and atmospheric landscape. A properly sourced public-domain image will be added to this collection.",
-//       artist: "Leonardo da Vinci",
-//       era: "Early 16th century",
-//       source: "Louvre Collections",
-//       learnMoreUrl: "https://collections.louvre.fr/en/ark:/53355/cl010062370",
-//       status: "coming-soon",
-//       visual: "portrait",
-//     },
-//     {
-//       id: "masterworks-to-come",
-//       title: "A room for masterworks",
-//       category: "masterworks",
-//       description:
-//         "More culturally significant paintings, sculpture and illustration will join this collection as images are carefully sourced.",
-//       status: "coming-soon",
-//       visual: "portrait",
-//     },
-//   ],
-//   "poem-frames": [
-//     {
-//       id: "minimal-frame",
-//       title: "Quiet Margin",
-//       category: "poem-frames",
-//       description:
-//         "A restrained, minimal frame style. This built-in visual is a gallery sample, not yet connected to poem rendering.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "minimal",
-//     },
-//     {
-//       id: "romantic-frame",
-//       title: "Softly Gathered",
-//       category: "poem-frames",
-//       description:
-//         "A romantic frame style with gentle, flowing details. Shown as a visual sample only.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "romantic",
-//     },
-//     {
-//       id: "melancholic-frame",
-//       title: "Blue Hour",
-//       category: "poem-frames",
-//       description:
-//         "A subdued, melancholic frame style for the blue hour. Not yet connected to poem rendering.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "melancholic",
-//     },
-//     {
-//       id: "mystical-frame",
-//       title: "Night Garden",
-//       category: "poem-frames",
-//       description:
-//         "A mystical frame style inspired by a garden after dark. Shown here as a built-in visual sample.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "mystical",
-//     },
-//     {
-//       id: "vintage-frame",
-//       title: "The Old Folio",
-//       category: "poem-frames",
-//       description:
-//         "A vintage frame style with the feeling of a well-kept folio. Not yet connected to poem rendering.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "vintage",
-//     },
-//     {
-//       id: "manuscript-frame",
-//       title: "Ink & Paper",
-//       category: "poem-frames",
-//       description:
-//         "A manuscript-inspired frame style. This built-in visual is a gallery sample, not a poem card.",
-//       status: "built-in",
-//       visual: "frame",
-//       frameStyle: "manuscript",
-//     },
-//   ],
-//   relics: [
-//     {
-//       id: "quiet-hour-edition",
-//       title: "The Quiet Hour",
-//       image: bookQuietHour,
-//       category: "relics",
-//       description:
-//         "A Muse Night chapbook cover: a small literary object made to be held, opened and returned to.",
-//       artist: "Muse Night",
-//       era: "2023",
-//       status: "curated",
-//       visual: "relic",
-//       bookId: "the-quiet-hour-chapbook",
-//     },
-//     {
-//       id: "unsent-friend-edition",
-//       title: "Letters to an Unsent Friend",
-//       image: bookUnsentFriend,
-//       category: "relics",
-//       description:
-//         "A Muse Night chapbook gathered around correspondence, distance and the letters we keep.",
-//       artist: "Muse Night",
-//       era: "2024",
-//       status: "curated",
-//       visual: "relic",
-//       bookId: "letters-to-an-unsent-friend-chapbook",
-//     },
-//   ],
-//   myth: [
-//     {
-//       id: "folklore-and-symbol",
-//       title: "Signs in the Story",
-//       category: "myth",
-//       description:
-//         "A home for folklore, myth and literary symbols, presented as traditions and stories rather than verified history.",
-//       status: "coming-soon",
-//       visual: "myth",
-//     },
-//     {
-//       id: "legendary-figures",
-//       title: "Figures of Legend",
-//       category: "myth",
-//       description:
-//         "Legendary figures and storytelling objects will be explored with their traditions and interpretations in view.",
-//       status: "coming-soon",
-//       visual: "myth",
-//     },
-//   ],
-//   "visual-poetry": LIBRARY_POEMS.slice(0, 3).map((poem, index) => ({
-//     id: `visual-poem-${poem.id}`,
-//     title: poem.title,
-//     category: "visual-poetry",
-//     description: [
-//       "A quiet poem for the lamplit hour. Read the work in the Library, then return to imagine its visual world.",
-//       "A poem of distance and unsent words, inviting a visual language of its own.",
-//       "A collection of poems gathered under the name of a quiet hour.",
-//     ][index]!,
-//     artist: poem.author,
-//     era: poem.collection,
-//     status: "curated" as const,
-//     visual: "poetry" as const,
-//     poemId: poem.id,
-//   })),
-// };
-
 function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }) {
   if (item.image) {
     return (
@@ -421,6 +249,10 @@ export function GalleryPage() {
     setPage(1);
     setIsZoomed(false);
   }, [activeCategory?.id]);
+
+  useEffect(() => {
+    setIsZoomed(false);
+  }, [selectedImage]);
 
   useEffect(() => {
     if (!selectedImage) return;
@@ -1246,36 +1078,46 @@ export function GalleryPage() {
 
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 p-4 backdrop-blur-md cursor-zoom-out"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 p-4 backdrop-blur-md"
+          onClick={() => {
+            setSelectedImage(null);
+            setIsZoomed(false);
+          }}
           role="presentation"
         >
           <button
             type="button"
-            onClick={() => setSelectedImage(null)}
+            onClick={() => {
+              setSelectedImage(null);
+              setIsZoomed(false);
+            }}
             className="absolute right-4 top-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full border border-neon/30 bg-ink/85 text-paper transition hover:bg-neon hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
             aria-label="Close image viewer"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
 
+          {/* The container changes to overflow-auto when zoomed so you can scroll/pan */}
           <div
-            className="relative w-full h-full flex items-center justify-center overflow-hidden"
+            className={`relative w-full h-full flex items-center justify-center ${
+              isZoomed ? "overflow-auto cursor-grab active:cursor-grabbing" : "overflow-hidden"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={selectedImage.image}
               alt={selectedImage.title}
               onClick={() => setIsZoomed(!isZoomed)}
-              className={`max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl transition-transform duration-300 ease-out ${
-                isZoomed ? "scale-[1.8] cursor-zoom-out" : "scale-100 cursor-zoom-in"
+              className={`object-contain transition-all duration-300 ease-out ${
+                isZoomed
+                  ? "max-w-none w-[200%] h-auto sm:w-[150%] cursor-zoom-out"
+                  : "max-h-[90vh] max-w-full rounded-md shadow-2xl cursor-zoom-in"
               }`}
             />
           </div>
 
-          {/* Subtle hint text */}
           <p className="absolute bottom-6 left-0 right-0 text-center font-karla text-[10px] uppercase tracking-[0.2em] text-paper/50 pointer-events-none">
-            {isZoomed ? "Click to zoom out" : "Click image to zoom"}
+            {isZoomed ? "Drag or scroll to pan. Click to zoom out." : "Click image to zoom"}
           </p>
         </div>
       )}
