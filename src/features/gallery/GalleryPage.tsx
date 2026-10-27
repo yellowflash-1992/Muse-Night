@@ -1097,10 +1097,13 @@ export function GalleryPage() {
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
 
-          {/* The container changes to overflow-auto when zoomed so you can scroll/pan */}
+          {/*
+            When zoomed, we use a flex container with overflow-auto, and m-auto on the image.
+            This is the CSS trick to allow panning in ALL directions (left, right, up, down).
+          */}
           <div
-            className={`relative w-full h-full flex items-center justify-center ${
-              isZoomed ? "overflow-auto cursor-grab active:cursor-grabbing" : "overflow-hidden"
+            className={`relative w-full h-full flex ${
+              isZoomed ? "overflow-auto" : "items-center justify-center overflow-hidden"
             }`}
             onClick={(e) => e.stopPropagation()}
           >
@@ -1108,10 +1111,10 @@ export function GalleryPage() {
               src={selectedImage.image}
               alt={selectedImage.title}
               onClick={() => setIsZoomed(!isZoomed)}
-              className={`object-contain transition-all duration-300 ease-out ${
+              className={`transition-all duration-300 ease-out ${
                 isZoomed
-                  ? "max-w-none w-[200%] h-auto sm:w-[150%] cursor-zoom-out"
-                  : "max-h-[90vh] max-w-full rounded-md shadow-2xl cursor-zoom-in"
+                  ? "m-auto w-[250%] max-w-none h-auto cursor-zoom-out"
+                  : "max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl cursor-zoom-in"
               }`}
             />
           </div>
