@@ -403,10 +403,24 @@ export function GalleryPage() {
   };
   const activeCategory = categories.find(({ id }) => id === selectedCategoryId);
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false); // For the lightbox zoom
+  const [page, setPage] = useState(1); // For pagination
+
   const { collections } = routeApi.useLoaderData() as {
     collections: Record<GalleryCategoryId, GalleryItem[]>;
   };
   const selectedItems = activeCategory ? collections[activeCategory.id] || [] : [];
+
+  // Pagination Logic
+  const ITEMS_PER_PAGE = 5;
+  const totalPages = Math.ceil(selectedItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = selectedItems.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  // Reset page when changing categories or closing the lightbox
+  useEffect(() => {
+    setPage(1);
+    setIsZoomed(false);
+  }, [activeCategory?.id]);
 
   useEffect(() => {
     if (!selectedImage) return;
@@ -1112,7 +1126,7 @@ export function GalleryPage() {
             <section aria-label={`${activeCategory.title} collection`}>
               {selectedItems.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-                  {selectedItems.map((item) => (
+                  {paginatedItems.map((item) => (
                     <article
                       key={item.id}
                       className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-neon/15 bg-ink-2/70 transition-colors hover:border-neon/35"
@@ -1192,6 +1206,29 @@ export function GalleryPage() {
                   This collection is being curated. New works will appear here as they are ready.
                 </p>
               )}
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-10 flex items-center justify-between border-t border-neon/10 pt-6">
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    className="inline-flex items-center gap-2 rounded-lg bg-ink-2 px-4 py-2 font-karla text-xs uppercase tracking-widest text-paper transition hover:bg-ink-3 disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <ArrowLeft className="h-4 w-4" /> Prev
+                  </button>
+                  <span className="font-karla text-xs uppercase tracking-[0.2em] text-paper-faint">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    className="inline-flex items-center gap-2 rounded-lg bg-ink-2 px-4 py-2 font-karla text-xs uppercase tracking-widest text-paper transition hover:bg-ink-3 disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    Next <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </section>
 
             <p className="mt-7 font-karla text-sm text-paper-faint">{activeCategory.futureNote}</p>
@@ -1209,55 +1246,37 @@ export function GalleryPage() {
 
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/90 p-4 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 p-4 backdrop-blur-md cursor-zoom-out"
           onClick={() => setSelectedImage(null)}
           role="presentation"
         >
-          <section
-            className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-neon/30 bg-ink-2 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="gallery-lightbox-title"
+          <button
+            type="button"
+            onClick={() => setSelectedImage(null)}
+            className="absolute right-4 top-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full border border-neon/30 bg-ink/85 text-paper transition hover:bg-neon hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
+            aria-label="Close image viewer"
           >
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute right-3 top-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-neon/30 bg-ink/85 text-paper transition hover:text-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
-              aria-label="Close image viewer"
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-            <div className="max-h-[65vh] overflow-hidden bg-ink-3">
-              <img
-                src={selectedImage.image}
-                alt={selectedImage.title}
-                className="mx-auto max-h-[65vh] w-full object-contain"
-              />
-            </div>
-            <div className="p-5 sm:p-6">
-              <h2
-                id="gallery-lightbox-title"
-                className="font-display text-2xl font-medium text-paper"
-              >
-                {selectedImage.title}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-paper-dim">
-                {selectedImage.description}
-              </p>
-              {selectedImage.bookId && (
-                <Link
-                  to="/books/$id"
-                  params={{ id: selectedImage.bookId }}
-                  onClick={() => setSelectedImage(null)}
-                  className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-2 font-karla text-sm font-medium text-neon hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
-                >
-                  View chapbook
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              )}
-            </div>
-          </section>
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+
+          <div
+            className="relative w-full h-full flex items-center justify-center overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedImage.image}
+              alt={selectedImage.title}
+              onClick={() => setIsZoomed(!isZoomed)}
+              className={`max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl transition-transform duration-300 ease-out ${
+                isZoomed ? "scale-[1.8] cursor-zoom-out" : "scale-100 cursor-zoom-in"
+              }`}
+            />
+          </div>
+
+          {/* Subtle hint text */}
+          <p className="absolute bottom-6 left-0 right-0 text-center font-karla text-[10px] uppercase tracking-[0.2em] text-paper/50 pointer-events-none">
+            {isZoomed ? "Click to zoom out" : "Click image to zoom"}
+          </p>
         </div>
       )}
     </div>
