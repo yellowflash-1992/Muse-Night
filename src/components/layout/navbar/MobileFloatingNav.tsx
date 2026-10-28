@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Feather, LogOut, Settings, User } from "lucide-react";
+import { Feather, Flame, LogOut, Settings, User } from "lucide-react";
 import type { RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
@@ -72,11 +72,17 @@ export function MobileFloatingNav({
         {/* Right Navigation Group */}
         <div className="ml-6 flex items-center gap-1.5 sm:gap-5 shrink-0">
           {/* CTA Button */}
+          {/* Daily streak — Compact Icon */}
           <Link
             to="/streak"
-            className="font-karla text-xs font-semibold text-ink bg-neon hover:bg-neon/90 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
+            aria-label="Daily streak"
+            className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-neon/15 border border-neon/30 text-neon hover:bg-neon/25 transition-all shadow-inner active:scale-95 shrink-0"
           >
-            Daily streak
+            <Flame className="h-4 w-4" />
+            {/* The red badge with the number (e.g., 3) */}
+            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white shadow-sm border border-ink-2">
+              3
+            </span>
           </Link>
 
           {/* Mobile Avatar Button with Dropdown Menu */}
