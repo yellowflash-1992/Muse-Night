@@ -36,7 +36,7 @@ model Person {
   aesthetic      String
   imageUrl       String?
   userId         String?
-  displayOrder   Int             @default(0)        @unique
+  displayOrder   Int             @unique @default(0)
   literaryWorlds LiteraryWorld[]
   penNames       PenName[]
   createdAt      DateTime        @default(now())
@@ -98,15 +98,15 @@ model AdminAccessRequest {
 }
 
 model LiteraryWorld {
-  id          String     @id
+  id          String    @id
   name        String
   creatorId   String
   description String
-  creator     Person     @relation(fields: [creatorId], references: [id])
+  creator     Person    @relation(fields: [creatorId], references: [id])
   penNames    PenName[]
   poems       Poem[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([creatorId])
 }
@@ -126,7 +126,7 @@ model PenName {
   authoredCollections Collection[]
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
-    chapbooks           Chapbook[]
+  chapbooks           Chapbook[]
 
   @@index([personId])
   @@index([literaryWorldId])
@@ -156,36 +156,36 @@ model Collection {
 }
 
 model Poem {
-  id               String             @id
-  title            String
-  stanzas          Json               // string[][]
-  body             String?            // Derived: stanzas → text (stanza=\n\n, line=\n)
-  excerpt          String?            // Derived: first 3 lines of stanza 0
-  status           PublicationStatus  @default(DRAFT)
-  featured         Boolean            @default(false)
+  id       String            @id
+  title    String
+  stanzas  Json // string[][]
+  body     String? // Derived: stanzas â†’ text (stanza=\n\n, line=\n)
+  excerpt  String? // Derived: first 3 lines of stanza 0
+  status   PublicationStatus @default(DRAFT)
+  featured Boolean           @default(false)
 
-  penNameId        String
-  penName          PenName            @relation(fields: [penNameId], references: [id])
+  penNameId String
+  penName   PenName @relation(fields: [penNameId], references: [id])
 
-  collectionId     String?
-  collection       Collection?        @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
 
-  literaryWorldId  String?
-  literaryWorld    LiteraryWorld?     @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
+  literaryWorldId String?
+  literaryWorld   LiteraryWorld? @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
 
-  tags             String[]
-  year             String
-  form             String?            // e.g., "Sonnet", "Haiku", "Free Verse"
-  linesCount       Int
-  readTime         String
-  note             String?
-  lineNotes        Json?
-  coverImage       String?
+  tags       String[]
+  year       String
+  form       String? // e.g., "Sonnet", "Haiku", "Free Verse"
+  linesCount Int
+  readTime   String
+  note       String?
+  lineNotes  Json?
+  coverImage String?
 
-  sortOrder        Int                @default(0)
-  publishedAt      DateTime?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  sortOrder   Int       @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([penNameId])
   @@index([collectionId])
@@ -272,6 +272,38 @@ model GalleryItem {
   @@index([status])
 }
 
+model Reaction {
+  id        String   @id @default(cuid())
+  poemId    String
+  userId    String
+  emoji     String
+  createdAt DateTime @default(now())
+
+  @@unique([poemId, userId, emoji]) // A user can only react once per emoji per poem
+  @@index([poemId])
+}
+
+model Reflection {
+  id          String           @id @default(cuid())
+  poemId      String
+  userId      String
+  text        String
+  isAnonymous Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  likes       ReflectionLike[]
+
+  @@index([poemId])
+}
+
+model ReflectionLike {
+  id           String     @id @default(cuid())
+  reflectionId String
+  userId       String
+  reflection   Reflection @relation(fields: [reflectionId], references: [id], onDelete: Cascade)
+
+  @@unique([reflectionId, userId])
+}
+
 enum SubmissionStatus {
   NEW
   UNDER_REVIEW
@@ -280,30 +312,30 @@ enum SubmissionStatus {
 }
 
 model Submission {
-  id              String           @id @default(cuid())
-  title           String
-  manuscript      String           // plain text — parsed to stanzas on accept
-  submissionType  String           // "poem" | "chapbook" | "musing"
-  submitterName   String
-  submitterEmail  String
-  submitterBio    String?
+  id             String  @id @default(cuid())
+  title          String
+  manuscript     String // plain text â€” parsed to stanzas on accept
+  submissionType String // "poem" | "chapbook" | "musing"
+  submitterName  String
+  submitterEmail String
+  submitterBio   String?
 
-  // Optional FK to auth.users.id (no real constraint — matches Person.userId pattern)
-  submitterUserId String?
+  // Optional FK to auth.users.id (no real constraint â€” matches Person.userId pattern)
+  submitterUserId    String?
   // Optional preference for which pen name to publish under (if submitter has one)
   preferredPenNameId String?
 
   status          SubmissionStatus @default(NEW)
-  reviewerId      String?          // MemberProfile.id of reviewing admin
+  reviewerId      String? // MemberProfile.id of reviewing admin
   reviewedAt      DateTime?
   rejectionReason String?
   editorialNote   String?
 
-  // Set when admin accepts → creates a DRAFT Poem and links back
-  acceptedPoemId  String?          @unique
+  // Set when admin accepts â†’ creates a DRAFT Poem and links back
+  acceptedPoemId String? @unique
 
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([status])
   @@index([submitterEmail])

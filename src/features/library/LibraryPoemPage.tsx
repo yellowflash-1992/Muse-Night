@@ -1,13 +1,15 @@
+import {
+  createReflectionFn,
+  getInteractions,
+  toggleReactionFn,
+  toggleReflectionLikeFn,
+} from "@/lib/interactions.functions";
 import { getRouteApi, Link, useParams, useSearch } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { AuthModal } from "@/components/auth/AuthModal";
-import {
-  type ReaderReaction,
-  type ReaderReflection,
-  getReaderDataForPoem,
-} from "@/data/library-reader";
+import { getReaderDataForPoem } from "@/data/library-reader";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
@@ -67,9 +69,19 @@ export function LibraryPoemPage() {
 
   const readerData = getReaderDataForPoem(id, poem?.author);
 
-  const [reactions, setReactions] = useState<ReaderReaction[]>(() => readerData.reactions);
+  const [reactions, setReactions] = useState<any[]>([]);
+  const [reflections, setReflections] = useState<any[]>([]);
+  const [loadingInteractions, setLoadingInteractions] = useState(true);
 
-  const [reflections, setReflections] = useState<ReaderReflection[]>(() => readerData.reflections);
+  useEffect(() => {
+    getInteractions({ data: { poemId: id } })
+      .then((data) => {
+        setReactions(data.reactions);
+        setReflections(data.reflections);
+        setLoadingInteractions(false);
+      })
+      .catch(console.error);
+  }, [id]);
 
   // Next / Prev poem logic
   const navigationPoems = useMemo(
@@ -135,61 +147,76 @@ export function LibraryPoemPage() {
     }
   };
 
-  const toggleReaction = (emoji: string) => {
-    if (reactedEmoji === emoji) {
-      setReactedEmoji(null);
-      setReactions((prev) =>
-        prev.map((r) => (r.emoji === emoji ? { ...r, count: r.count - 1 } : r)),
-      );
-    } else {
-      setReactedEmoji(emoji);
-      setReactions((prev) =>
-        prev.map((r) => {
-          if (r.emoji === emoji) return { ...r, count: r.count + 1 };
-          if (r.emoji === reactedEmoji) return { ...r, count: r.count - 1 };
-          return r;
-        }),
-      );
+  const toggleReaction = async (emoji: string) => {
+    if (!isAuthenticated) return handleRequireAuthentication();
+
+    // Optimistic UI update
+    const existing = reactions.find((r) => r.emoji === emoji);
+    setReactions((prev) =>
+      prev.map((r) => {
+        if (r.emoji === emoji)
+          return {
+            ...r,
+            count: r.isReacted ? r.count - 1 : r.count + 1,
+            isReacted: !r.isReacted,
+          };
+        return r;
+      }),
+    );
+
+    try {
+      await toggleReactionFn({ data: { poemId: id, emoji } });
+    } catch (e) {
+      // Revert on fail
+      getInteractions({ data: { poemId: id } }).then((d) => setReactions(d.reactions));
+      showToast("Failed to save reaction");
     }
   };
 
-  const toggleHeart = (refId: string) => {
+  const toggleHeart = async (refId: string) => {
+    if (!isAuthenticated) return handleRequireAuthentication();
+
     setReflections((prev) =>
       prev.map((r) => {
         if (r.id === refId) {
-          const isHearted = !r.isHearted;
           return {
             ...r,
-            isHearted,
-            hearts: isHearted ? r.hearts + 1 : r.hearts - 1,
+            isHearted: !r.isHearted,
+            hearts: r.isHearted ? r.hearts - 1 : r.hearts + 1,
           };
         }
         return r;
       }),
     );
+
+    try {
+      await toggleReflectionLikeFn({ data: { reflectionId: refId } });
+    } catch (e) {
+      getInteractions({ data: { poemId: id } }).then((d) => setReflections(d.reflections));
+    }
   };
 
-  const handleShareReflection = (e: React.FormEvent) => {
+  const handleShareReflection = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!note.trim()) return;
 
-    const authorName = anonymous
-      ? "Anonymous"
-      : profile?.penName || profile?.displayName || "A Visiting Reader";
+    if (!isAuthenticated) return handleRequireAuthentication();
 
-    const newReflection = {
-      id: `ref-${Date.now()}`,
-      name: authorName,
-      text: note.trim(),
-      hearts: 1,
-      isHearted: true,
-      poetReply: null,
-      date: "Just now",
-    };
-
-    setReflections([newReflection, ...reflections]);
+    const textToSubmit = note.trim();
     setNote("");
-    showToast("Your reflection has been shared by lamplight.", 3000);
+
+    try {
+      await createReflectionFn({
+        data: { poemId: id, text: textToSubmit, isAnonymous: anonymous },
+      });
+      // Refresh the list
+      const data = await getInteractions({ data: { poemId: id } });
+      setReflections(data.reflections);
+      showToast("Your reflection has been shared by lamplight.", 3000);
+    } catch (err) {
+      showToast("Failed to post reflection");
+      setNote(textToSubmit); // Restore text
+    }
   };
 
   return (
@@ -211,7 +238,7 @@ export function LibraryPoemPage() {
           <div className="inline-flex items-center gap-2 rounded-full border border-neon/25 bg-neon/10 px-3.5 py-1 text-[10px] uppercase tracking-[0.22em] text-neon font-medium shadow-sm">
             <Feather className="h-3 w-3 animate-pulse" />
             <span>
-              {poem.collectionId ? `From “${poem.collection}” · ` : ""}
+              {poem.collectionId ? `From â€œ${poem.collection}â€ Â· ` : ""}
               {poem.year}
             </span>
           </div>
@@ -223,15 +250,15 @@ export function LibraryPoemPage() {
 
             {literaryWorld && (
               <>
-                <span className="hidden sm:inline text-paper-faint">·</span>
+                <span className="hidden sm:inline text-paper-faint">Â·</span>
                 <span className="italic text-paper-dim">{literaryWorld.name}</span>
               </>
             )}
 
-            <span className="hidden sm:inline text-paper-faint">·</span>
+            <span className="hidden sm:inline text-paper-faint">Â·</span>
 
             <span className="text-paper-faint font-mono text-[11px]">
-              {poem.linesCount} lines · {poem.readTime} read
+              {poem.linesCount} lines Â· {poem.readTime} read
             </span>
           </div>
           <div className="w-14 h-0.5 bg-gradient-to-r from-transparent via-neon/40 to-transparent mx-auto mt-3" />
@@ -272,7 +299,7 @@ export function LibraryPoemPage() {
                   </div>
 
                   <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                    “{prevPoem.title}”
+                    â€œ{prevPoem.title}â€
                   </p>
 
                   <span className="text-[10px] text-paper-faint mt-1 font-karla">
@@ -297,7 +324,7 @@ export function LibraryPoemPage() {
                   </div>
 
                   <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                    “{nextPoem.title}”
+                    â€œ{nextPoem.title}â€
                   </p>
 
                   <span className="text-[10px] text-paper-faint mt-1 font-karla">
@@ -310,11 +337,7 @@ export function LibraryPoemPage() {
         </div>
 
         {/* Reactions &mdash; Simple Emoji Options */}
-        <LibraryPoemReactions
-          reactions={reactions}
-          reactedEmoji={reactedEmoji}
-          onToggleReaction={toggleReaction}
-        />
+        <LibraryPoemReactions reactions={reactions} onToggleReaction={toggleReaction} />
 
         <div className="border-t border-neon/15" />
 
