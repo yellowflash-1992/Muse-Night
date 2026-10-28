@@ -68,7 +68,8 @@ export function NotificationBell() {
       </button>
 
       {/* 2. The Panel: Fixed width, aligned to the right, and stays on screen */}
-             <div className="fixed inset-x-4 top-[70px] sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 sm:w-[280px] rounded-2xl border border-neon/20 bg-ink-2 shadow-2xl p-2 z-[100]">
+      {isOpen && (
+        <div className="fixed inset-x-4 top-[70px] sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 sm:w-[280px] rounded-2xl border border-neon/20 bg-ink-2 shadow-2xl p-2 z-[100]">
           <div className="flex items-center justify-between px-3 py-2 border-b border-neon/10">
             <span className="text-xs font-semibold text-paper uppercase tracking-widest">
               Notifications
