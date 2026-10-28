@@ -72,15 +72,27 @@ export function MobileFloatingNav({
         {/* Right Navigation Group */}
         <div className="ml-6 flex items-center gap-1.5 sm:gap-5 shrink-0">
           {/* CTA Button */}
-          {/* Daily streak — Compact Icon */}
+          {/* Daily streak — Neon Flame Pill */}
           <Link
             to="/streak"
-            aria-label="Daily streak"
-            className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-neon/15 border border-neon/30 text-neon hover:bg-neon/25 transition-all shadow-inner active:scale-95 shrink-0"
+            aria-label="Daily streak: 3 days"
+            className="relative group flex items-center gap-1 pl-1.5 pr-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-rose-500/20 border border-amber-400/50 hover:border-amber-400/80 shadow-[0_0_12px_rgba(251,146,60,0.35)] hover:shadow-[0_0_20px_rgba(251,146,60,0.55)] transition-all duration-300 active:scale-95 shrink-0"
           >
-            <Flame className="h-4 w-4" />
-            {/* The red badge with the number (e.g., 3) */}
-            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white shadow-sm border border-ink-2">
+            {/* Soft pulsing aura */}
+            <span
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400/30 to-rose-400/20 blur-md -z-10 animate-pulse"
+              aria-hidden="true"
+            />
+
+            {/* Glowing flame */}
+            <Flame
+              className="h-3.5 w-3.5 text-amber-300 drop-shadow-[0_0_4px_rgba(251,191,36,1)] transition-transform duration-300 group-hover:scale-110"
+              fill="currentColor"
+              aria-hidden="true"
+            />
+
+            {/* Streak count */}
+            <span className="text-[11px] font-bold text-amber-50 leading-none tracking-tight">
               3
             </span>
           </Link>
