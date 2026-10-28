@@ -1,17 +1,13 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getInteractionsRaw(poemId: string, userId: string | null) {
-  const DEFAULT_EMOJIS = ["❤️", "🔥", "😢", "👏"]; // Add whatever emojis you want here
-
-  // 1. Get Reactions (Aggregated)
+  const DEFAULT_EMOJIS = ["❤️", "🔥", "😢", "👍"];
   const reactionRows = await prisma.reaction.findMany({ where: { poemId } });
-  const reactionCounts: Record<string, number> = {};
 
-  // Initialize counts for default emojis so the buttons always show up
+  const reactionCounts: Record<string, number> = {};
   DEFAULT_EMOJIS.forEach((e) => {
     reactionCounts[e] = 0;
   });
-
   reactionRows.forEach((r) => {
     reactionCounts[r.emoji] = (reactionCounts[r.emoji] || 0) + 1;
   });
@@ -22,19 +18,12 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
     isReacted: userId ? reactionRows.some((r) => r.emoji === emoji && r.userId === userId) : false,
   }));
 
-  // 2. Get Reflections (with Profile & Likes)
-  // ... (leave the rest of the function exactly as it is)
-
-  // 2. Get Reflections (with Profile & Likes)
   const reflections = await prisma.reflection.findMany({
     where: { poemId },
-    include: {
-      likes: true,
-    },
+    include: { likes: true },
     orderBy: { createdAt: "desc" },
   });
 
-  // Fetch member profiles for the reflections
   const userIds = [...new Set(reflections.map((r) => r.userId))];
   const profiles = await prisma.memberProfile.findMany({
     where: { id: { in: userIds } },
@@ -57,7 +46,7 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
           day: "numeric",
           year: "numeric",
         }),
-        poetReply: null, // Future feature
+        poetReply: null,
       };
     }),
   };
@@ -65,11 +54,17 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
 
 export async function toggleReactionRaw(poemId: string, userId: string, emoji: string) {
   const existing = await prisma.reaction.findUnique({
-    where: { poemId_userId_emoji: { poemId, userId, emoji } },
+    where: { poemId_userId: { poemId, userId } },
   });
+
   if (existing) {
-    await prisma.reaction.delete({ where: { id: existing.id } });
-    return { action: "removed" };
+    if (existing.emoji === emoji) {
+      await prisma.reaction.delete({ where: { id: existing.id } });
+      return { action: "removed" };
+    } else {
+      await prisma.reaction.update({ where: { id: existing.id }, data: { emoji } });
+      return { action: "updated" };
+    }
   } else {
     await prisma.reaction.create({ data: { poemId, userId, emoji } });
     return { action: "added" };
@@ -89,11 +84,42 @@ export async function toggleReflectionLikeRaw(reflectionId: string, userId: stri
   const existing = await prisma.reflectionLike.findUnique({
     where: { reflectionId_userId: { reflectionId, userId } },
   });
+
   if (existing) {
     await prisma.reflectionLike.delete({ where: { id: existing.id } });
     return { action: "removed" };
   } else {
     await prisma.reflectionLike.create({ data: { reflectionId, userId } });
+
+    // --- NOTIFICATION LOGIC ---
+    try {
+      const reflection = await prisma.reflection.findUnique({
+        where: { id: reflectionId },
+        select: { userId: true, poemId: true },
+      });
+
+      // Only notify if they are liking someone else's comment
+      if (reflection && reflection.userId !== userId) {
+        // Find the actor's name
+        const actor = await prisma.memberProfile.findUnique({
+          where: { id: userId },
+          select: { displayName: true, penName: true },
+        });
+        const actorName = actor?.penName || actor?.displayName || "Someone";
+
+        await prisma.notification.create({
+          data: {
+            userId: reflection.userId, // The receiver
+            actorId: userId, // The liker
+            type: "LIKE",
+            message: `${actorName} loved your reflection.`,
+            link: `/library/${reflection.poemId}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to create notification:", error);
+    }
     return { action: "added" };
   }
 }

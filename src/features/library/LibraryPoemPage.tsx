@@ -151,18 +151,25 @@ export function LibraryPoemPage() {
     if (!isAuthenticated) return handleRequireAuthentication();
 
     // Optimistic UI update
-    const existing = reactions.find((r) => r.emoji === emoji);
-    setReactions((prev) =>
-      prev.map((r) => {
-        if (r.emoji === emoji)
-          return {
-            ...r,
-            count: r.isReacted ? r.count - 1 : r.count + 1,
-            isReacted: !r.isReacted,
-          };
+    setReactions((prev) => {
+      const alreadyReactedEmoji = prev.find((r) => r.isReacted)?.emoji;
+
+      return prev.map((r) => {
+        // If we clicked the same one, remove it
+        if (r.emoji === emoji && r.isReacted) {
+          return { ...r, count: r.count - 1, isReacted: false };
+        }
+        // If we clicked a new one, add to it
+        if (r.emoji === emoji && !r.isReacted) {
+          return { ...r, count: r.count + 1, isReacted: true };
+        }
+        // If this is the old reaction we're switching away from, remove it
+        if (r.emoji === alreadyReactedEmoji) {
+          return { ...r, count: r.count - 1, isReacted: false };
+        }
         return r;
-      }),
-    );
+      });
+    });
 
     try {
       await toggleReactionFn({ data: { poemId: id, emoji } });

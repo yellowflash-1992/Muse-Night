@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
+import { NotificationBell } from "../NotificationBell";
 
 interface MobileFloatingNavProps {
   user: AuthUser | null;
@@ -79,6 +80,7 @@ export function MobileFloatingNav({
           </Link>
 
           {/* Mobile Avatar Button with Dropdown Menu */}
+          {isAuthenticated && <NotificationBell />}
           <div ref={mobileUserMenuRef} className="relative">
             <button
               type="button"

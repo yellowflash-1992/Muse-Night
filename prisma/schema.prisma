@@ -279,7 +279,7 @@ model Reaction {
   emoji     String
   createdAt DateTime @default(now())
 
-  @@unique([poemId, userId, emoji]) // A user can only react once per emoji per poem
+  @@unique([poemId, userId])
   @@index([poemId])
 }
 
@@ -302,6 +302,21 @@ model ReflectionLike {
   reflection   Reflection @relation(fields: [reflectionId], references: [id], onDelete: Cascade)
 
   @@unique([reflectionId, userId])
+  @@index([reflectionId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  actorId   String
+  type      String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
 }
 
 enum SubmissionStatus {
