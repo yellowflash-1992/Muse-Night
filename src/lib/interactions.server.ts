@@ -1,9 +1,17 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getInteractionsRaw(poemId: string, userId: string | null) {
+  const DEFAULT_EMOJIS = ["❤️", "🔥", "😢", "👏"]; // Add whatever emojis you want here
+
   // 1. Get Reactions (Aggregated)
   const reactionRows = await prisma.reaction.findMany({ where: { poemId } });
   const reactionCounts: Record<string, number> = {};
+
+  // Initialize counts for default emojis so the buttons always show up
+  DEFAULT_EMOJIS.forEach((e) => {
+    reactionCounts[e] = 0;
+  });
+
   reactionRows.forEach((r) => {
     reactionCounts[r.emoji] = (reactionCounts[r.emoji] || 0) + 1;
   });
@@ -13,6 +21,9 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
     count,
     isReacted: userId ? reactionRows.some((r) => r.emoji === emoji && r.userId === userId) : false,
   }));
+
+  // 2. Get Reflections (with Profile & Likes)
+  // ... (leave the rest of the function exactly as it is)
 
   // 2. Get Reflections (with Profile & Likes)
   const reflections = await prisma.reflection.findMany({
