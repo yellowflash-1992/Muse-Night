@@ -238,7 +238,7 @@ export function LibraryPoemPage() {
           <div className="inline-flex items-center gap-2 rounded-full border border-neon/25 bg-neon/10 px-3.5 py-1 text-[10px] uppercase tracking-[0.22em] text-neon font-medium shadow-sm">
             <Feather className="h-3 w-3 animate-pulse" />
             <span>
-              {poem.collectionId ? `From â€œ${poem.collection}â€ Â· ` : ""}
+              {poem.collectionId ? `From “${poem.collection}” · ` : ""}
               {poem.year}
             </span>
           </div>
@@ -250,21 +250,21 @@ export function LibraryPoemPage() {
 
             {literaryWorld && (
               <>
-                <span className="hidden sm:inline text-paper-faint">Â·</span>
+                <span className="hidden sm:inline text-paper-faint">·</span>
                 <span className="italic text-paper-dim">{literaryWorld.name}</span>
               </>
             )}
 
-            <span className="hidden sm:inline text-paper-faint">Â·</span>
+            <span className="hidden sm:inline text-paper-faint">·</span>
 
             <span className="text-paper-faint font-mono text-[11px]">
-              {poem.linesCount} lines Â· {poem.readTime} read
+              {poem.linesCount} lines · {poem.readTime} read
             </span>
           </div>
           <div className="w-14 h-0.5 bg-gradient-to-r from-transparent via-neon/40 to-transparent mx-auto mt-3" />
         </div>
 
-        {/* Poem Reader Body */}
+        {/* Poem Reader Body & Reactions (Grouped Together) */}
         <div
           className={`rounded-3xl border p-6 sm:p-10 relative overflow-hidden transition-all duration-500 ${
             warmMode
@@ -281,67 +281,18 @@ export function LibraryPoemPage() {
             onToggleLineNote={(lineIdx) => setOpenLine(openLine === lineIdx ? null : lineIdx)}
           />
 
-          {/* Previous / Next Editorial Navigation Cards */}
-          {/* Previous / Next Editorial Navigation Cards */}
-          {(prevPoem || nextPoem) && (
-            <div className="mt-10 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-3.5 not-italic font-sans">
-              {/* Previous Poem Card */}
-              {prevPoem && (
-                <Link
-                  to="/library/$id"
-                  params={{ id: prevPoem.id }}
-                  {...(from ? { search: { from } } : {})}
-                  className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
-                >
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
-                    <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
-                    <span>Previous Work</span>
-                  </div>
-
-                  <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                    â€œ{prevPoem.title}â€
-                  </p>
-
-                  <span className="text-[10px] text-paper-faint mt-1 font-karla">
-                    by {prevPoem.author}
-                  </span>
-                </Link>
-              )}
-
-              {/* Next Poem Card */}
-              {nextPoem && (
-                <Link
-                  to="/library/$id"
-                  params={{ id: nextPoem.id }}
-                  {...(from ? { search: { from } } : {})}
-                  className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
-                    !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
-                  }`}
-                >
-                  <div className="flex items-center justify-start sm:justify-end gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
-                    <span>Next Work</span>
-                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-
-                  <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
-                    â€œ{nextPoem.title}â€
-                  </p>
-
-                  <span className="text-[10px] text-paper-faint mt-1 font-karla">
-                    by {nextPoem.author}
-                  </span>
-                </Link>
-              )}
-            </div>
-          )}
+          {/* Reaction Buttons - Right at the bottom of the poem */}
+          <div className="mt-8 pt-6 border-t border-neon/10">
+            <p className="text-center text-[10px] uppercase tracking-[0.2em] text-paper-faint mb-1">
+              How did this make you feel?
+            </p>
+            <LibraryPoemReactions reactions={reactions} onToggleReaction={toggleReaction} />
+          </div>
         </div>
-
-        {/* Reactions &mdash; Simple Emoji Options */}
-        <LibraryPoemReactions reactions={reactions} onToggleReaction={toggleReaction} />
 
         <div className="border-t border-neon/15" />
 
-        {/* Reflections &mdash; What this poem stirred */}
+        {/* Reflections (Comments) */}
         <LibraryPoemReflections
           reflections={reflections}
           note={note}
@@ -354,6 +305,53 @@ export function LibraryPoemPage() {
           onSubmit={handleShareReflection}
           onRequireAuthentication={handleRequireAuthentication}
         />
+
+        {/* Previous / Next Editorial Navigation Cards (Moved to bottom) */}
+        {(prevPoem || nextPoem) && (
+          <div className="mt-12 pt-8 border-t border-neon/15 grid grid-cols-1 sm:grid-cols-2 gap-3.5 not-italic font-sans">
+            {prevPoem && (
+              <Link
+                to="/library/$id"
+                params={{ id: prevPoem.id }}
+                {...(from ? { search: { from } } : {})}
+                className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
+              >
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                  <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
+                  <span>Previous Work</span>
+                </div>
+                <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                  “{prevPoem.title}”
+                </p>
+                <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                  by {prevPoem.author}
+                </span>
+              </Link>
+            )}
+
+            {nextPoem && (
+              <Link
+                to="/library/$id"
+                params={{ id: nextPoem.id }}
+                {...(from ? { search: { from } } : {})}
+                className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
+                  !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
+                }`}
+              >
+                <div className="flex items-center justify-start sm:justify-end gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
+                  <span>Next Work</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+                <p className="font-display italic text-base sm:text-lg text-paper group-hover:text-neon transition-colors line-clamp-1 mt-1.5">
+                  “{nextPoem.title}”
+                </p>
+                <span className="text-[10px] text-paper-faint mt-1 font-karla">
+                  by {nextPoem.author}
+                </span>
+              </Link>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Confirmation Toast */}
@@ -380,7 +378,7 @@ export function LibraryPoemPage() {
         }}
       />
 
-      {/* SHARE CARD BOTTOM SHEET (Card Generator with Mood Background) */}
+      {/* SHARE CARD BOTTOM SHEET */}
       <LibraryPoemShareSheet
         isOpen={shareOpen}
         onClose={() => setShareOpen(false)}
@@ -401,7 +399,7 @@ export function LibraryPoemPage() {
         copied={copied}
       />
 
-      {/* Auth Modal for Reflection Composer */}
+      {/* Auth Modal */}
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
