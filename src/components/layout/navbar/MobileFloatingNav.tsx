@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Feather, Flame, LogOut, Settings, User } from "lucide-react";
-import type { RefObject } from "react";
+import { Feather, Flame, LogOut, Settings, Swords, User } from "lucide-react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
@@ -45,6 +45,19 @@ export function MobileFloatingNav({
     "P"
   ).toUpperCase();
 
+  const [flameMenuOpen, setFlameMenuOpen] = useState(false);
+  const flameMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (flameMenuRef.current && !flameMenuRef.current.contains(event.target as Node)) {
+        setFlameMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div
       className="block lg:hidden fixed top-3 left-0 right-0 z-50 px-3 pointer-events-none"
@@ -72,30 +85,49 @@ export function MobileFloatingNav({
         {/* Right Navigation Group */}
         <div className="ml-6 flex items-center gap-1.5 sm:gap-5 shrink-0">
           {/* CTA Button */}
-          {/* Daily streak — Neon Flame Pill */}
-          <Link
-            to="/streak"
-            aria-label="Daily streak: 3 days"
-            className="relative group flex items-center gap-1 pl-1.5 pr-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-rose-500/20 border border-amber-400/50 hover:border-amber-400/80 shadow-[0_0_12px_rgba(251,146,60,0.35)] hover:shadow-[0_0_20px_rgba(251,146,60,0.55)] transition-all duration-300 active:scale-95 shrink-0"
-          >
-            {/* Soft pulsing aura */}
-            <span
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400/30 to-rose-400/20 blur-md -z-10 animate-pulse"
-              aria-hidden="true"
-            />
+          {/* Daily streak & Poetry Battle Dropdown */}
+          <div className="relative" ref={flameMenuRef}>
+            <button
+              type="button"
+              onClick={() => setFlameMenuOpen(!flameMenuOpen)}
+              aria-label="Daily features"
+              className="relative group flex items-center gap-1 pl-1.5 pr-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-rose-500/20 border border-amber-400/50 hover:border-amber-400/80 shadow-[0_0_12px_rgba(251,146,60,0.35)] hover:shadow-[0_0_20px_rgba(251,146,60,0.55)] transition-all duration-300 active:scale-95 shrink-0"
+            >
+              <span
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400/30 to-rose-400/20 blur-md -z-10 animate-pulse"
+                aria-hidden="true"
+              />
+              <Flame
+                className="h-3.5 w-3.5 text-amber-300 drop-shadow-[0_0_4px_rgba(251,191,36,1)] transition-transform duration-300 group-hover:scale-110"
+                fill="currentColor"
+                aria-hidden="true"
+              />
+              <span className="text-[11px] font-bold text-amber-50 leading-none tracking-tight">
+                3
+              </span>
+            </button>
 
-            {/* Glowing flame */}
-            <Flame
-              className="h-3.5 w-3.5 text-amber-300 drop-shadow-[0_0_4px_rgba(251,191,36,1)] transition-transform duration-300 group-hover:scale-110"
-              fill="currentColor"
-              aria-hidden="true"
-            />
-
-            {/* Streak count */}
-            <span className="text-[11px] font-bold text-amber-50 leading-none tracking-tight">
-              3
-            </span>
-          </Link>
+            {flameMenuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl border border-neon/30 bg-ink-2/98 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-[fadeIn_0.15s_ease-out]">
+                <Link
+                  to="/streak"
+                  onClick={() => setFlameMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-paper hover:bg-neon/10 transition-colors"
+                >
+                  <Flame className="h-4 w-4 text-amber-400" />
+                  <span>Daily Streak</span>
+                </Link>
+                <Link
+                  to="/daily"
+                  onClick={() => setFlameMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-paper hover:bg-neon/10 transition-colors"
+                >
+                  <Swords className="h-4 w-4 text-rose-400" />
+                  <span>Poetry Battle</span>
+                </Link>
+              </div>
+            )}
+          </div>
 
           {/* Mobile Avatar Button with Dropdown Menu */}
           {isAuthenticated && <NotificationBell />}
