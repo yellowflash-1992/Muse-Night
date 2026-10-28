@@ -1,18 +1,29 @@
 import { useAuth } from "@/hooks/useAuth";
-import { createClient } from "@/lib/supabase/client"; // <-- Import createClient
+import { createClient } from "@/lib/supabase/client";
 import { Link } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function NotificationBell() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const supabase = createClient(); // <-- Initialize it here
+  const supabase = createClient();
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
-  // Fetch notifications
+  // 1. Close the panel when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const fetchNotifications = async () => {
     if (!user) return;
     const { data } = await supabase
@@ -22,11 +33,9 @@ export function NotificationBell() {
       .limit(10);
     if (data) setNotifications(data);
   };
-  // ... rest of the component stays exactly the same
 
   useEffect(() => {
     fetchNotifications();
-    // Optional: Use Supabase Realtime here later to listen for new notifications live
   }, [user]);
 
   const markAsRead = async () => {
@@ -42,24 +51,25 @@ export function NotificationBell() {
   if (!user) return null;
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button
         onClick={() => {
           setIsOpen(!isOpen);
           if (!isOpen) markAsRead();
         }}
-        className="relative p-2 rounded-full hover:bg-neon/10 text-paper transition"
+        className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-paper hover:bg-neon/10 transition-colors"
       >
-        <Bell className="h-5 w-5" />
+        <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm">
+          <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm border border-ink-2">
             {unreadCount}
           </span>
         )}
       </button>
 
+      {/* 2. The Panel: Fixed width, aligned to the right, and stays on screen */}
       {isOpen && (
-        <div className="absolute right-0 top-12 w-80 rounded-2xl border border-neon/20 bg-ink-2 shadow-2xl p-2 z-50">
+        <div className="absolute right-0 top-12 w-[280px] max-w-[calc(100vw-2rem)] rounded-2xl border border-neon/20 bg-ink-2 shadow-2xl p-2 z-[100]">
           <div className="flex items-center justify-between px-3 py-2 border-b border-neon/10">
             <span className="text-xs font-semibold text-paper uppercase tracking-widest">
               Notifications
