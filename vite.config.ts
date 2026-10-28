@@ -3,11 +3,9 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [
-    tsConfigPaths(),
     tailwindcss(),
     tanstackStart({
       prerender: {
@@ -34,6 +32,7 @@ export default defineConfig({
     nitro({ preset: "vercel" }),
   ],
   resolve: {
+    tsconfigPaths: true, // <--- Vite 8 native path resolution
     dedupe: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-start"],
   },
 });
