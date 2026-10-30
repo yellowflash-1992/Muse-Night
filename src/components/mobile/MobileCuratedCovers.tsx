@@ -1,9 +1,23 @@
-import { Link } from "@tanstack/react-router";
-
-import { POEMS } from "@/data/literature";
+import { Link, getRouteApi } from "@tanstack/react-router";
 import { coverThemes } from "../../data/mobileLandingData";
 
+const routeApi = getRouteApi("/");
+
 export function MobileCuratedCovers() {
+  const { poems } = routeApi.useLoaderData();
+
+  // Hide the entire section if the database has no published poems yet
+  if (poems.length === 0) return null;
+
+  // 1. Get up to 2 poems from the primary founder (You)
+  const founderPoems = poems.filter((p) => p.author !== "InkbyNur").slice(0, 2);
+
+  // 2. Get up to 2 poems from the co-founder (InkbyNur)
+  const coFounderPoems = poems.filter((p) => p.author === "InkbyNur").slice(0, 2);
+
+  // 3. Combine them. (If InkbyNur has 0 poems, it just shows your 2 for now).
+  const curatedPoems = [...founderPoems, ...coFounderPoems];
+
   return (
     <section id="library" className="px-5 py-12 space-y-6 scroll-mt-20">
       <div className="flex items-baseline justify-between border-b border-neon/10 pb-3">
@@ -19,12 +33,12 @@ export function MobileCuratedCovers() {
           to="/library"
           className="text-[11px] uppercase tracking-[0.16em] text-neon font-medium"
         >
-          All {POEMS.length} &rarr;
+          All {poems.length} &rarr;
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3.5">
-        {POEMS.slice(0, 4).map((poem, index) => {
+        {curatedPoems.map((poem, index) => {
           const theme = (coverThemes[index % coverThemes.length] ?? coverThemes[0])!;
           return (
             <Link
