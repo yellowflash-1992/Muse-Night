@@ -319,6 +319,16 @@ model Notification {
   @@index([isRead])
 }
 
+model Quote {
+  id        String   @id @default(cuid())
+  text      String
+  author    String   @default("Muse Night")
+  status    String   @default("PUBLISHED") // PUBLISHED or HIDDEN
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum SubmissionStatus {
   NEW
   UNDER_REVIEW

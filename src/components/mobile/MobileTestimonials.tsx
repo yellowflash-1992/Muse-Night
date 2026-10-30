@@ -1,11 +1,27 @@
+import { getRouteApi } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
-import { testimonials } from "../../data/mobileLandingData";
+const routeApi = getRouteApi("/");
+
+// Rotations for the hand-placed aesthetic
+const rotations = ["rotate-1", "-rotate-1", "rotate-2", "-rotate-2", "rotate-0"];
 
 export function MobileTestimonials() {
+  const { poems } = routeApi.useLoaderData();
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // 1. Pick 4 random poems on load
+  const [randomPoems, setRandomPoems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (poems.length > 0) {
+      // Shuffle array and pick up to 4
+      const shuffled = [...poems].sort(() => 0.5 - Math.random());
+      setRandomPoems(shuffled.slice(0, 4));
+    }
+  }, [poems]);
 
   const scrollAmount = 460;
 
@@ -18,12 +34,12 @@ export function MobileTestimonials() {
 
   useEffect(() => {
     const el = sliderRef.current;
-    if (!el) return;
+    if (!el || randomPoems.length === 0) return;
 
-    // On mount, scroll to Card 2 so Card 1 is partially sunk off the left screen
+    // Scroll to Card 2 so Card 1 is partially sunk off the left screen
     const firstCard = el.children[0] as HTMLElement;
     if (firstCard) {
-      const gap = 20; // Matches `gap-5` (1.25rem = 20px)
+      const gap = 20;
       const cardWidth = firstCard.offsetWidth + gap;
       const scrollPadding = parseFloat(getComputedStyle(el).scrollPaddingLeft) || 0;
       el.scrollLeft = cardWidth - scrollPadding;
@@ -37,7 +53,10 @@ export function MobileTestimonials() {
       el.removeEventListener("scroll", updateSliderButtons);
       window.removeEventListener("resize", updateSliderButtons);
     };
-  }, []);
+  }, [randomPoems.length]);
+
+  // Hide section if there are no poems yet
+  if (poems.length === 0) return null;
 
   return (
     <section className="relative overflow-hidden border-y border-white/10 bg-[linear-gradient(145deg,var(--ink),var(--ink-2)_52%,var(--ink))]">
@@ -102,43 +121,45 @@ export function MobileTestimonials() {
       </div>
 
       <div className="relative">
-        {/* Subtle edge fades that do not clip card borders */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-ink to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l from-ink to-transparent" />
 
-        {/* Ambient backlight under track so the intense glass blur pops dramatically */}
         <div className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 h-36 w-36 rounded-full bg-neon/20 blur-3xl" />
         <div className="pointer-events-none absolute top-1/2 right-1/4 -translate-y-1/2 h-40 w-40 rounded-full bg-rose/20 blur-3xl" />
 
-        {/* CHANGE 1: Changed `px-5` to `pl-2 pr-5` and added `snap-x snap-mandatory scroll-pl-2` */}
         <div
           ref={sliderRef}
           className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-[50px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {testimonials.map((item, idx) => (
-            /* CHANGE 2: Added `snap-start snap-always`. Card width/height untouched! */
-            <article
-              key={idx}
-              className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 snap-start snap-always ${item.rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
-            >
-              <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
-                "
-              </div>
-              <p className="font-display italic text-foreground text-lg leading-relaxed mb-6">
-                {item.quote}
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-                  <img alt={item.author} className="object-cover w-full h-full" src={item.image} />
+          {randomPoems.map((poem, idx) => {
+            const rotation = rotations[idx % rotations.length];
+            // Get the first stanza, joined by newlines
+            const stanza = poem.stanzas[0]?.join("\n") || "A poem waiting to be read.";
+
+            return (
+              <article
+                key={poem.id}
+                className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 snap-start snap-always ${rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
+              >
+                <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
+                  "
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{item.author}</p>
-                  <p className="text-xs text-muted-foreground">{item.work}</p>
+                <p className="font-display italic text-foreground text-lg leading-relaxed mb-6 whitespace-pre-line line-clamp-6">
+                  {stanza}
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold">
+                    {poem.author.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{poem.author}</p>
+                    <p className="text-xs text-muted-foreground">From "{poem.title}"</p>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
