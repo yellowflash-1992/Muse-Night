@@ -145,11 +145,12 @@ export function MobileTestimonials() {
                 <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
                   "
                 </div>
-                <p className="font-display italic text-foreground text-lg leading-relaxed mb-6 whitespace-pre-line line-clamp-6">
-                  {stanza}
+                {/* Removed whitespace-pre-line and line-clamp-6 to restore the original width/flow */}
+                <p className="font-display italic text-foreground text-lg leading-relaxed mb-6">
+                  {poem.stanzas[0]?.join(" ")}
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold shrink-0">
                     {poem.author.charAt(0)}
                   </div>
                   <div>
