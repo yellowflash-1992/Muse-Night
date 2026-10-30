@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   BookMarked,
@@ -15,10 +15,21 @@ import {
 import { useRef, useState } from "react";
 
 import { MobileLanding } from "@/components/mobile/MobileLanding";
-import { CHAPBOOKS, POEMS } from "@/data/literature";
+import { listPublishedChapbooks } from "@/lib/chapbooks.functions"; // <-- Add
+import { getPublishedPoemsList } from "@/lib/poems.functions"; // <-- Add
+
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
+const routeApi = getRouteApi("/");
+
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [poems, chapbooks] = await Promise.all([
+      getPublishedPoemsList(),
+      listPublishedChapbooks(),
+    ]);
+    return { poems, chapbooks };
+  },
   head: () => ({
     meta: [
       { title: "Muse Books &mdash; A Small Press for Poetry & Literature" },
@@ -41,6 +52,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { poems, chapbooks } = routeApi.useLoaderData();
   const [poemIndex, setPoemIndex] = useState(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -81,15 +93,17 @@ function Index() {
     },
   ];
 
-  const activePoem = (POEMS[poemIndex % POEMS.length] ?? POEMS[0])!;
-  const featuredPoem = (POEMS.find((p) => p.featured) ?? POEMS[0])!;
-  const featuredBook = CHAPBOOKS[0]!;
+  const activePoem = poems.length > 0 ? (poems[poemIndex % poems.length] ?? poems[0]) : null;
+  const featuredPoem = poems.find((p) => p.featured) ?? poems[0] ?? null;
+  const featuredBook = chapbooks[0] ?? null;
 
   const handleShuffleVerse = () => {
-    setPoemIndex((prev) => (prev + 1) % POEMS.length);
+    if (poems.length === 0) return;
+    setPoemIndex((prev) => (prev + 1) % poems.length);
   };
 
   const handleCopyVerse = () => {
+    if (!activePoem) return;
     const lines = activePoem.stanzas[0]?.slice(0, 3) ?? [];
     const text = `"${lines.join("\n")}"\n&mdash; ${activePoem.author}, ${activePoem.title}\n(via Muse Books)`;
     navigator.clipboard.writeText(text);
@@ -102,7 +116,7 @@ function Index() {
       title: "Library Archive",
       desc: "An open archive of poems, prose poetry, epistles, and literary works.",
       to: "/library",
-      count: `${POEMS.length} works`,
+      count: `${poems.length} works`,
       icon: BookOpen,
       action: "Browse archive",
       badge: "Poems & prose",
@@ -120,7 +134,7 @@ function Index() {
       title: "Hand-Bound Chapbooks",
       desc: "Limited letterpress editions printed on mould-made rag paper using metal type.",
       to: "/books",
-      count: "Albion Press",
+      count: `${chapbooks.length} Editions`,
       icon: BookMarked,
       action: "View editions",
       badge: "Numbered printings",
@@ -287,78 +301,81 @@ function Index() {
         </section>
 
         {/* INTERACTIVE "VERSE OF THE HOUR" DISCOVERY MODULE (Engaging for readers & casual visitors) */}
-        <section className="border-b border-neon/10 bg-gradient-to-b from-ink-2/80 to-ink py-10 sm:py-16">
-          <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10">
-            <div className="rounded-2xl border border-neon/20 bg-ink-2/90 p-5 sm:p-10 shadow-xl relative overflow-hidden">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neon/10">
-                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-neon font-medium">
-                  <Quote className="h-4 w-4 text-neon" />
-                  <span>Verse of the Hour · Tap to shuffle</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleCopyVerse}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-neon/20 bg-ink text-xs uppercase tracking-[0.15em] text-paper-dim hover:text-paper active:scale-95 transition-all"
-                  >
-                    {copiedSnippet ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-neon" />
-                        <span className="text-neon">Copied</span>
-                      </>
-                    ) : (
-                      <>
-                        <Share2 className="h-3.5 w-3.5" />
-                        <span>Share</span>
-                      </>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleShuffleVerse}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neon text-ink text-xs uppercase tracking-[0.16em] font-medium hover:bg-neon/90 active:scale-95 transition-all shadow-sm"
-                  >
-                    <RefreshCw className="h-3.5 w-3.5" />
-                    <span>Next Verse</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                <div className="lg:col-span-8">
-                  <h3 className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-2">
-                    From “{activePoem.title}” · {activePoem.readTime}
-                  </h3>
-                  <div className="font-display text-2xl sm:text-3xl text-paper leading-[1.6] space-y-2 italic">
-                    {(activePoem.stanzas[0] ?? []).slice(0, 3).map((line, lIdx) => (
-                      <p key={lIdx}>“{line}”</p>
-                    ))}
+        {/* INTERACTIVE "VERSE OF THE HOUR" DISCOVERY MODULE (Engaging for readers & casual visitors) */}
+        {activePoem && (
+          <section className="border-b border-neon/10 bg-gradient-to-b from-ink-2/80 to-ink py-10 sm:py-16">
+            <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10">
+              <div className="rounded-2xl border border-neon/20 bg-ink-2/90 p-5 sm:p-10 shadow-xl relative overflow-hidden">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neon/10">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-neon font-medium">
+                    <Quote className="h-4 w-4 text-neon" />
+                    <span>Verse of the Hour · Tap to shuffle</span>
                   </div>
-                  <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neon/80 font-medium">
-                    &mdash; {activePoem.author} ({activePoem.year})
-                  </p>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCopyVerse}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-neon/20 bg-ink text-xs uppercase tracking-[0.15em] text-paper-dim hover:text-paper active:scale-95 transition-all"
+                    >
+                      {copiedSnippet ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-neon" />
+                          <span className="text-neon">Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="h-3.5 w-3.5" />
+                          <span>Share</span>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleShuffleVerse}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neon text-ink text-xs uppercase tracking-[0.16em] font-medium hover:bg-neon/90 active:scale-95 transition-all shadow-sm"
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" />
+                      <span>Next Verse</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="lg:col-span-4 lg:border-l lg:border-neon/15 lg:pl-8 flex flex-col justify-between gap-4">
-                  <p className="text-xs sm:text-sm text-paper-dim leading-relaxed">
-                    {activePoem.note ||
-                      "Hand-printed under single lamplight for readers who take time."}
-                  </p>
-                  <Link
-                    to="/library/$id"
-                    params={{ id: activePoem.id }}
-                    className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
-                  >
-                    <span>Read full work in reader</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                <div className="py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                  <div className="lg:col-span-8">
+                    <h3 className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-2">
+                      From “{activePoem.title}” · {activePoem.readTime}
+                    </h3>
+                    <div className="font-display text-2xl sm:text-3xl text-paper leading-[1.6] space-y-2 italic">
+                      {(activePoem.stanzas[0] ?? []).slice(0, 3).map((line, lIdx) => (
+                        <p key={lIdx}>“{line}”</p>
+                      ))}
+                    </div>
+                    <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neon/80 font-medium">
+                      &mdash; {activePoem.author} ({activePoem.year})
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-4 lg:border-l lg:border-neon/15 lg:pl-8 flex flex-col justify-between gap-4">
+                    <p className="text-xs sm:text-sm text-paper-dim leading-relaxed">
+                      {activePoem.note ||
+                        "Hand-printed under single lamplight for readers who take time."}
+                    </p>
+                    <Link
+                      to="/library/$id"
+                      params={{ id: activePoem.id }}
+                      className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
+                    >
+                      <span>Read full work in reader</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* EXPLORE GATEWAY PORTALS */}
         <section className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10 py-16 sm:py-20">
@@ -411,95 +428,101 @@ function Index() {
         </section>
 
         {/* FEATURED POEM SPOTLIGHT */}
-        <section className="bg-ink-2/60 border-y border-neon/10 py-16 sm:py-24">
-          <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
-              <div className="col-span-12 lg:col-span-4 space-y-4">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-neon/80 font-medium">
-                  Poem of the Season
-                </p>
-                <h2 className="font-display text-3xl sm:text-5xl font-medium text-paper leading-tight">
-                  {featuredPoem.title}
-                </h2>
-                <p className="text-xs uppercase tracking-[0.2em] text-paper-faint">
-                  By {featuredPoem.author} · {featuredPoem.linesCount} lines ·{" "}
-                  {featuredPoem.readTime}
-                </p>
-                <p className="text-sm text-paper-dim leading-relaxed pt-2">{featuredPoem.note}</p>
-                <div className="pt-2">
-                  <Link
-                    to="/library/$id"
-                    params={{ id: featuredPoem.id }}
-                    className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all"
-                  >
-                    <BookOpen className="h-3.5 w-3.5" />
-                    <span>Enter Reading Room</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="col-span-12 lg:col-span-8 lg:border-l lg:border-neon/15 lg:pl-10">
-                <div className="font-display text-xl sm:text-2xl text-paper leading-[1.7] space-y-4 bg-ink p-6 sm:p-8 rounded-xl border border-neon/15 shadow-inner">
-                  {featuredPoem.stanzas.slice(0, 2).map((stanza, idx) => (
-                    <div key={idx} className="space-y-1">
-                      {stanza.map((line, lIdx) => (
-                        <p key={lIdx}>{line}</p>
-                      ))}
-                    </div>
-                  ))}
-                  <div className="pt-4 text-right">
+        {/* FEATURED POEM SPOTLIGHT */}
+        {featuredPoem && (
+          <section className="bg-ink-2/60 border-y border-neon/10 py-16 sm:py-24">
+            <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div className="col-span-12 lg:col-span-4 space-y-4">
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-neon/80 font-medium">
+                    Poem of the Season
+                  </p>
+                  <h2 className="font-display text-3xl sm:text-5xl font-medium text-paper leading-tight">
+                    {featuredPoem.title}
+                  </h2>
+                  <p className="text-xs uppercase tracking-[0.2em] text-paper-faint">
+                    By {featuredPoem.author} · {featuredPoem.linesCount} lines ·{" "}
+                    {featuredPoem.readTime}
+                  </p>
+                  <p className="text-sm text-paper-dim leading-relaxed pt-2">{featuredPoem.note}</p>
+                  <div className="pt-2">
                     <Link
                       to="/library/$id"
                       params={{ id: featuredPoem.id }}
-                      className="text-xs uppercase tracking-[0.2em] text-neon hover:underline"
+                      className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all"
                     >
-                      Read complete work with reader controls &rarr;
+                      <BookOpen className="h-3.5 w-3.5" />
+                      <span>Enter Reading Room</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
+                  </div>
+                </div>
+
+                <div className="col-span-12 lg:col-span-8 lg:border-l lg:border-neon/15 lg:pl-10">
+                  <div className="font-display text-xl sm:text-2xl text-paper leading-[1.7] space-y-4 bg-ink p-6 sm:p-8 rounded-xl border border-neon/15 shadow-inner">
+                    {featuredPoem.stanzas.slice(0, 2).map((stanza, idx) => (
+                      <div key={idx} className="space-y-1">
+                        {stanza.map((line, lIdx) => (
+                          <p key={lIdx}>{line}</p>
+                        ))}
+                      </div>
+                    ))}
+                    <div className="pt-4 text-right">
+                      <Link
+                        to="/library/$id"
+                        params={{ id: featuredPoem.id }}
+                        className="text-xs uppercase tracking-[0.2em] text-neon hover:underline"
+                      >
+                        Read complete work with reader controls &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* HIGHLIGHT: PHYSICAL EDITION & ESSAY */}
-        <section className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10 py-16 sm:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Chapbook feature */}
-            <article className="rounded-xl border border-neon/15 bg-ink-2 p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between text-xs text-neon/80 uppercase tracking-[0.2em] mb-4">
-                  <span>Featured Letterpress Edition</span>
-                  <span className="font-mono text-paper font-medium">{featuredBook.price}</span>
+        {/* HIGHLIGHT: PHYSICAL EDITION & ESSAY */}
+        {featuredBook && (
+          <section className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10 py-16 sm:py-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Chapbook feature */}
+              <article className="rounded-xl border border-neon/15 bg-ink-2 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between text-xs text-neon/80 uppercase tracking-[0.2em] mb-4">
+                    <span>Featured Letterpress Edition</span>
+                    <span className="font-mono text-paper font-medium">{featuredBook.price}</span>
+                  </div>
+                  <h3 className="font-display text-3xl font-medium text-paper">
+                    {featuredBook.title}
+                  </h3>
+                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-paper-faint">
+                    By {featuredBook.author} · {featuredBook.year}
+                  </p>
+                  <p className="mt-4 text-sm text-paper-dim leading-relaxed">
+                    {featuredBook.description}
+                  </p>
+                  <p className="mt-4 p-3 rounded bg-ink text-xs italic text-paper-dim border-l-2 border-neon/40">
+                    “{featuredBook.quote}”
+                  </p>
                 </div>
-                <h3 className="font-display text-3xl font-medium text-paper">
-                  {featuredBook.title}
-                </h3>
-                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-paper-faint">
-                  By {featuredBook.author} · {featuredBook.pages} Pages
-                </p>
-                <p className="mt-4 text-sm text-paper-dim leading-relaxed">
-                  {featuredBook.description}
-                </p>
-                <p className="mt-4 p-3 rounded bg-ink text-xs italic text-paper-dim border-l-2 border-neon/40">
-                  “{featuredBook.quote}”
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
-                <span className="text-xs text-paper-faint">Hand-numbered copies</span>
-                <Link
-                  to="/books/$id"
-                  params={{ id: featuredBook.id }}
-                  className="text-xs uppercase tracking-[0.2em] text-neon inkline font-medium inline-flex items-center gap-1.5"
-                >
-                  <span>Book Details &amp; Order</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </article>
-          </div>
-        </section>
+                <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
+                  <span className="text-xs text-paper-faint">Hand-numbered copies</span>
+                  <Link
+                    to="/books/$id"
+                    params={{ id: featuredBook.id }}
+                    className="text-xs uppercase tracking-[0.2em] text-neon inkline font-medium inline-flex items-center gap-1.5"
+                  >
+                    <span>Book Details &amp; Order</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </article>
+            </div>
+          </section>
+        )}
 
         {/* CALL FOR SUBMISSIONS BANNER */}
         <section className="border-t border-neon/10 py-16 bg-gradient-to-b from-ink to-ink-2">
