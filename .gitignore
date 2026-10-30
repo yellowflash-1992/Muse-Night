@@ -41,4 +41,4 @@ dist-ssr
 .env.*
 !.env.example
 
-/src/generated/prisma
+/src/generated/prisma*.tsbuildinfo

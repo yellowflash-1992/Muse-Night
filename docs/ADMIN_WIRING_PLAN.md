@@ -94,7 +94,7 @@ Wire the Muse Night admin dashboard to the dev DB so admins can create/publish/a
 - admin.index.tsx dashboard stats (aggregate counts) — 20 min
 - admin.settings.tsx — decide: keep or drop
 
-### Later session — new schema for Lovable-inherited features
+### Later session — new schema for legacy features
 These are real Muse Night features with NO DB table yet:
 - Chapbooks (src/data/chapbooks.ts)
 - Gallery (src/features/gallery)
