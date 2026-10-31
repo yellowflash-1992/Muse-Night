@@ -81,16 +81,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Muse Books &mdash; A Small Press for Poetry & Literature" },
+      { title: "Muse Night &mdash; A Small Press for Poetry & Literature" },
       {
         name: "description",
         content:
           "Poems, collections and hand-bound chapbooks from two friends writing by lamplight.",
       },
-      { name: "author", content: "Muse Books" },
+      { name: "author", content: "Muse Night" },
       {
         property: "og:title",
-        content: "Muse Books &mdash; A Small Press for Poetry & Literature",
+        content: "Muse Night &mdash; A Small Press for Poetry & Literature",
       },
       {
         property: "og:description",

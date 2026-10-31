@@ -25,7 +25,7 @@ export function Footer() {
                 <Feather className="h-4 w-4" />
               </div>
               <span className="font-display text-2xl font-medium tracking-tight text-paper">
-                Muse Books
+                Muse Night
               </span>
             </div>
             <p className="text-sm leading-relaxed text-paper-dim max-w-[36ch] text-pretty">
@@ -126,7 +126,7 @@ export function Footer() {
 
         {/* Bottom copyright line */}
         <div className="mt-14 pt-8 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs uppercase tracking-[0.22em] text-paper-faint">
-          <span>Muse Books &mdash; Hand-bound &amp; Typeset · MMXXIV</span>
+          <span>{`Muse Night — Hand-bound & Typeset · ${new Date().getFullYear()}`}</span>
           <span>Cormorant &amp; Spectral Typography</span>
         </div>
       </div>

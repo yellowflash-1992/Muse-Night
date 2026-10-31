@@ -38,13 +38,13 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Muse Books &mdash; A Small Press for Poetry & Literature" },
+      { title: "Muse Night &mdash; A Small Press for Poetry & Literature" },
       {
         name: "description",
         content:
           "A small lamplit press for poetry, chapbooks, and literature. Hand-bound editions and verses by Irshand and InkbyNur.",
       },
-      { property: "og:title", content: "Muse Books &mdash; A Small Press for Poetry & Literature" },
+      { property: "og:title", content: "Muse Night &mdash; A Small Press for Poetry & Literature" },
       {
         property: "og:description",
         content:
@@ -111,7 +111,7 @@ function Index() {
   const handleCopyVerse = () => {
     if (!activePoem) return;
     const lines = activePoem.stanzas[0]?.slice(0, 3) ?? [];
-    const text = `"${lines.join("\n")}"\n&mdash; ${activePoem.author}, ${activePoem.title}\n(via Muse Books)`;
+    const text = `"${lines.join("\n")}"\n&mdash; ${activePoem.author}, ${activePoem.title}\n(via Muse Night)`;
     navigator.clipboard.writeText(text);
     setCopiedSnippet(true);
     setTimeout(() => setCopiedSnippet(false), 2000);
@@ -239,7 +239,7 @@ function Index() {
                 </div>
 
                 <h1 className="reveal d1 font-display text-[clamp(4rem,9vw,7.5rem)] leading-[0.92] font-medium tracking-[-0.02em] text-paper text-balance">
-                  Muse Books
+                  Muse Night
                 </h1>
 
                 <p className="reveal d2 mt-6 font-display text-2xl lg:text-3xl text-paper-dim italic max-w-[28ch] leading-snug">
