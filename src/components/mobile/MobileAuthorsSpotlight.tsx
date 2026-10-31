@@ -1,9 +1,13 @@
-import { Link } from "@tanstack/react-router";
+import { Link, getRouteApi } from "@tanstack/react-router";
 import { Feather, Quote } from "lucide-react";
 
-import { POETS } from "@/data/literature";
+const routeApi = getRouteApi("/");
 
 export function MobileAuthorsSpotlight() {
+  const { poetCards } = routeApi.useLoaderData();
+
+  if (poetCards.length === 0) return null;
+
   return (
     <section className="border-t border-neon/15 bg-gradient-to-b from-ink-2 to-ink px-5 py-12 space-y-6">
       <div className="text-center space-y-1">
@@ -16,7 +20,7 @@ export function MobileAuthorsSpotlight() {
       </div>
 
       <div className="space-y-4">
-        {Object.values(POETS).map((poet, i) => (
+        {poetCards.map((poet, i) => (
           <div
             key={poet.id}
             className={`rounded-xl border border-neon/15 bg-gradient-to-br ${
@@ -28,7 +32,9 @@ export function MobileAuthorsSpotlight() {
                 <Feather className="h-4 w-4 text-neon" />
               </div>
               <div>
-                <h3 className="font-display text-xl text-paper font-medium">{poet.penName}</h3>
+                <h3 className="font-display text-xl text-paper font-medium">
+                  {poet.primaryPenName}
+                </h3>
                 <p className="text-[11px] uppercase tracking-[0.15em] text-neon/80 font-medium">
                   {poet.role} · {poet.legalName}
                 </p>
@@ -38,7 +44,13 @@ export function MobileAuthorsSpotlight() {
             <p className="text-xs text-paper-dim leading-relaxed">{poet.bio}</p>
 
             <div className="pt-2 flex justify-between items-center text-[11px] uppercase tracking-[0.14em]">
-              <span className="text-paper-faint">{poet.works[0] ?? ""}</span>
+              {poet.latestPublishedPoemTitle ? (
+                <span className="text-paper-faint">{poet.latestPublishedPoemTitle}</span>
+              ) : (
+                <span className="text-paper-faint" aria-hidden="true">
+                  &nbsp;
+                </span>
+              )}
               <Link to="/about" className="text-neon hover:underline font-medium">
                 Bio &rarr;
               </Link>

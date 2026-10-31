@@ -1,11 +1,10 @@
-import { COLLECTIONS } from "@/data/literature";
 import { Link, getRouteApi } from "@tanstack/react-router";
 
 const routeApi = getRouteApi("/");
 
 export function MobileStatsBar() {
   // Pull the live poems and chapbooks from the route loader
-  const { poems, chapbooks } = routeApi.useLoaderData();
+  const { poems, chapbooks, collections, poets } = routeApi.useLoaderData();
 
   return (
     <section className="border-y border-neon/15 bg-ink-2/90 px-4 py-4">
@@ -16,7 +15,7 @@ export function MobileStatsBar() {
         </Link>
         <Link to="/collections" className="flex flex-col items-center">
           <span className="font-display text-lg font-medium text-amber-300">
-            {COLLECTIONS.length}
+            {collections.length}
           </span>
           <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">Suites</span>
         </Link>
@@ -25,7 +24,7 @@ export function MobileStatsBar() {
           <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">Books</span>
         </Link>
         <Link to="/about" className="flex flex-col items-center">
-          <span className="font-display text-lg font-medium text-paper">2</span>
+          <span className="font-display text-lg font-medium text-paper">{poets.length}</span>
           <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">Poets</span>
         </Link>
       </div>

@@ -15,8 +15,11 @@ import {
 import { useRef, useState } from "react";
 
 import { MobileLanding } from "@/components/mobile/MobileLanding";
-import { listPublishedChapbooks } from "@/lib/chapbooks.functions"; // <-- Add
-import { getPublishedPoemsList } from "@/lib/poems.functions"; // <-- Add
+import { listPublishedChapbooks } from "@/lib/chapbooks.functions";
+import { listPublishedCollections } from "@/lib/collections.functions";
+import { getPublishedPoemsList } from "@/lib/poems.functions";
+import { listPersonsPublic } from "@/lib/people.functions";
+import { listPoetCardsPublic } from "@/lib/poets.functions";
 
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
@@ -24,11 +27,14 @@ const routeApi = getRouteApi("/");
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [poems, chapbooks] = await Promise.all([
+    const [poems, chapbooks, collections, poets, poetCards] = await Promise.all([
       getPublishedPoemsList(),
       listPublishedChapbooks(),
+      listPublishedCollections(),
+      listPersonsPublic(),
+      listPoetCardsPublic(),
     ]);
-    return { poems, chapbooks };
+    return { poems, chapbooks, collections, poets, poetCards };
   },
   head: () => ({
     meta: [
