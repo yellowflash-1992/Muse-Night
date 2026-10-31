@@ -31,7 +31,7 @@ export function MobileStudyHallSection() {
         <div className="flex items-center gap-3 pt-2">
           <Link
             to="/study"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[#10B981] text-[#062419] px-4.5 py-2.5 text-xs font-bold tracking-wider shadow-md hover:bg-emerald-400 active:scale-95 transition-all"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#10B981] text-[#062419] px-3.5 py-2 text-xs font-bold tracking-wider shadow-md hover:bg-emerald-400 active:scale-95 transition-all"
           >
             <span>🎓</span>
             <span>Open Study Room</span>
@@ -39,7 +39,7 @@ export function MobileStudyHallSection() {
           </Link>
           <Link
             to="/request"
-            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 bg-emerald-500/10 text-emerald-200 px-4 py-2.5 text-xs font-semibold tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all"
+            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 bg-emerald-500/10 text-emerald-200 px-3 py-2 text-xs font-semibold tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all"
           >
             <span>Request Guide</span>
           </Link>
