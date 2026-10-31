@@ -114,7 +114,7 @@ export function MoodPage() {
                 {POEM_LINES[mood]?.line ?? "A quiet verse for this hour."}
               </p>
               <p className="text-[10px] text-amber-200/70 mt-3">
-                &mdash; {POEM_LINES[mood]?.poet ?? "Muse Books"}
+                &mdash; {POEM_LINES[mood]?.poet ?? "Muse Night"}
               </p>
             </div>
 

@@ -5,7 +5,7 @@ import { StudyHallPage } from "@/features/study/StudyHallPage";
 export const Route = createFileRoute("/study")({
   head: () => ({
     meta: [
-      { title: "Study Hall &mdash; JAMB & WAEC Literature Room | Muse Books" },
+      { title: "Study Hall &mdash; JAMB & WAEC Literature Room | Muse Night" },
       {
         name: "description",
         content:

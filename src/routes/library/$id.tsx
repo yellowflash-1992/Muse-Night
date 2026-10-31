@@ -21,8 +21,8 @@ export const Route = createFileRoute("/library/$id")({
         {
           name: "description",
           content: poem
-            ? `Read "${poem.title}" by ${poem.author} &mdash; a poem from the Muse Books archive.`
-            : "Read poems from the Muse Books archive.",
+            ? `Read "${poem.title}" by ${poem.author} &mdash; a poem from the Muse Night archive.`
+            : "Read poems from the Muse Night archive.",
         },
       ],
     };

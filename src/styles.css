@@ -193,7 +193,7 @@
   scrollbar-color: oklch(0.3 0.03 265) var(--ink);
 }
 
-/* Muse Books design system — lamplit literary press */
+/* Muse Night design system — lamplit literary press */
 :root,
 html.dark {
   --ink: oklch(0.14 0.022 265);

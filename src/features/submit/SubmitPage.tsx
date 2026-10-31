@@ -140,7 +140,7 @@ export function SubmitPage() {
             <div className="rounded-xl border border-neon/10 bg-ink-2/60 p-6 text-xs text-paper-dim space-y-2">
               <p className="text-neon uppercase tracking-[0.2em] font-medium">Author Rights</p>
               <p className="leading-relaxed">
-                Authors retain all copyrights to their original work. Muse Books requests first
+                Authors retain all copyrights to their original work. Muse Night requests first
                 serial rights and non-exclusive archival rights.
               </p>
             </div>

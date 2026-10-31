@@ -74,7 +74,7 @@ export function DesktopNavbar({
             </div>
             <div>
               <span className="whitespace-nowrap font-display text-xl lg:text-2xl xl:text-3xl font-medium tracking-tight text-paper block leading-none">
-                Muse Books
+                Muse Night
               </span>
               <span className="hidden 2xl:block text-[9px] uppercase tracking-[0.22em] text-neon/70 whitespace-nowrap mt-1">
                 Poetry &amp; Literature

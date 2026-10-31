@@ -20,7 +20,7 @@ export function AboutPage() {
             About the Press
           </h1>
           <p className="mt-4 text-base sm:text-lg text-paper-dim max-w-[56ch] text-pretty">
-            Muse Books gathers letters, small editions, and public memory into a living archive of
+            Muse Night gathers letters, small editions, and public memory into a living archive of
             poetic attention.
           </p>
         </section>

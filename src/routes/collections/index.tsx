@@ -5,7 +5,7 @@ import { CollectionsIndexPage } from "@/features/collections/CollectionsIndexPag
 export const Route = createFileRoute("/collections/")({
   head: () => ({
     meta: [
-      { title: "Poetry Collections &mdash; Muse Books" },
+      { title: "Poetry Collections &mdash; Muse Night" },
       {
         name: "description",
         content: "Explore our published poetry collections, suites, and collaborative anthologies.",

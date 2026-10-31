@@ -10,11 +10,11 @@ export const Route = createFileRoute("/library/")({
   },
   head: () => ({
     meta: [
-      { title: "Library Archive &mdash; Muse Books" },
+      { title: "Library Archive &mdash; Muse Night" },
       {
         name: "description",
         content:
-          "Browse all poems, prose poetry, epistles, and literary works in the Muse Books archive.",
+          "Browse all poems, prose poetry, epistles, and literary works in the Muse Night archive.",
       },
     ],
   }),
