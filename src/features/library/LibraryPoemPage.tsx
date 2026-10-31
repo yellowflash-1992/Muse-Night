@@ -32,7 +32,9 @@ const routeApi = getRouteApi("/library/$id");
 
 export function LibraryPoemPage() {
   const { id } = useParams({ from: "/library/$id" });
-  const { from } = useSearch({ from: "/library/$id" }) as { from?: string };
+  const { from, source, collectionId } = useSearch({
+    from: "/library/$id",
+  }) as { from?: string; source?: string; collectionId?: string };
 
   // Database-backed read (loader in src/routes/library/$id.tsx). The loader
   // returns null for missing/unpublished poems; there is no static fallback.
@@ -43,6 +45,28 @@ export function LibraryPoemPage() {
   const literaryWorld = poem?.literaryWorldName
     ? { id: poem.literaryWorldId, name: poem.literaryWorldName }
     : undefined;
+
+  const backDestination =
+    source === "collection" && collectionId
+      ? { to: "/collections/$id" as const, params: { id: collectionId } }
+      : source === "gallery"
+        ? { to: "/gallery" as const }
+        : source === "study"
+          ? { to: "/study" as const }
+          : source === "home"
+            ? { to: "/" as const }
+            : { to: "/library" as const };
+
+  const backLabel =
+    source === "collection"
+      ? "Back to collection"
+      : source === "gallery"
+        ? "Back to gallery"
+        : source === "study"
+          ? "Back to study hall"
+          : source === "home"
+            ? "Back to home"
+            : "Back to archive";
 
   const [fontSize, setFontSize] = useState<"sm" | "base" | "lg">("base");
   const [warmMode, setWarmMode] = useState<boolean>(false);
@@ -232,13 +256,35 @@ export function LibraryPoemPage() {
         {/* Simple Top Navigation Bar */}
         <div className="flex items-center justify-between py-2">
           <Link
-            to="/library"
+            to={backDestination.to}
+            {...(backDestination.params ? { params: backDestination.params } : {})}
             className="inline-flex items-center gap-2 rounded-full border border-neon/20 bg-ink-2/80 hover:bg-neon/10 hover:border-neon/40 px-3.5 py-1.5 text-xs uppercase tracking-[0.18em] text-paper-dim hover:text-paper transition-all shadow-sm cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-neon" strokeWidth={1.5} />
-            <span>Back to archive</span>
+            <span>{backLabel}</span>
           </Link>
         </div>
+
+{/* Breadcrumb */}
+        <nav className="text-[10px] uppercase tracking-[0.2em] text-paper-faint mb-3 flex items-center gap-1.5 flex-wrap">
+          <Link to="/library" className="hover:text-neon transition-colors">
+            Library
+          </Link>
+          {source === "collection" && poem.collection ? (
+            <>
+              <span>/</span>
+              <Link
+                to="/collections/$id"
+                params={{ id: collectionId ?? "" }}
+                className="hover:text-neon transition-colors truncate max-w-[20ch]"
+              >
+                {poem.collection}
+              </Link>
+            </>
+          ) : null}
+          <span>/</span>
+          <span className="text-paper-dim truncate max-w-[20ch]">{poem.title}</span>
+        </nav>
 
         {/* Title Header */}
         <div className="text-center space-y-3 pt-2 pb-6">
@@ -320,7 +366,7 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: prevPoem.id }}
-                {...(from ? { search: { from } } : {})}
+                {...(from ? { search: { from, source, collectionId } } : {})}
                 className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
               >
                 <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
@@ -340,7 +386,7 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: nextPoem.id }}
-                {...(from ? { search: { from } } : {})}
+                {...(from ? { search: { from, source, collectionId } } : {})}
                 className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
                   !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
                 }`}
