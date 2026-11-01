@@ -1,5 +1,5 @@
 import { Link, getRouteApi } from "@tanstack/react-router";
-import { ArrowLeft, BookMarked, CheckCircle2, Send } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 
 const routeApi = getRouteApi("/books/$id");
@@ -64,14 +64,13 @@ export function BookDetailPage() {
           {/* Info */}
           <div className="col-span-12 lg:col-span-7 space-y-8">
             <div>
-              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-2">
-                <BookMarked className="h-3.5 w-3.5" />
-                <span>Letterpress Chapbook Edition · {book.year}</span>
-              </div>
+              <p className="text-xs uppercase tracking-[0.28em] text-neon/80 mb-3">
+                Muse Night Chapbook
+              </p>
               <h1 className="font-display text-4xl sm:text-5xl font-medium text-paper">
                 {book.title}
               </h1>
-              <p className="mt-2 text-sm uppercase tracking-[0.2em] text-paper-dim">
+              <p className="mt-3 text-sm text-paper-dim">
                 By{" "}
                 <Link to="/about" className="text-paper underline hover:text-neon">
                   {book.author}
@@ -79,72 +78,30 @@ export function BookDetailPage() {
               </p>
             </div>
 
-            <div className="flex items-baseline gap-4 py-3 border-y border-neon/10">
-              <span className="font-mono text-3xl font-medium text-paper">{book.price}</span>
-              <span className="text-xs uppercase tracking-[0.2em] text-neon flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4" />
-                <span>Available for order</span>
-              </span>
-            </div>
+            <p className="font-mono text-2xl text-neon">{book.price}</p>
 
-            <p className="text-base sm:text-lg leading-relaxed text-paper-dim">
-              {book.description}
-            </p>
-
-            <div className="p-5 rounded-lg bg-ink-2 border-l-2 border-neon text-paper italic font-display text-xl leading-relaxed">
+            <blockquote className="border-l border-neon/40 pl-5 text-paper italic font-display text-xl leading-relaxed">
               &ldquo;{book.quote}&rdquo;
+            </blockquote>
+
+            <p className="text-base leading-relaxed text-paper-dim">{book.description}</p>
+
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <button
+                type="button"
+                onClick={() => setOrderModalOpen(true)}
+                className="inline-flex items-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md"
+              >
+                <span>Order Edition</span>
+              </button>
+              <Link
+                to="/library"
+                className="text-xs uppercase tracking-[0.2em] text-paper-dim hover:text-neon transition-colors"
+              >
+                Read the Library
+              </Link>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setOrderModalOpen(true)}
-              className="inline-flex items-center gap-2 rounded bg-neon px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all shadow-md"
-            >
-              <Send className="h-3.5 w-3.5" />
-              <span>Reserve a copy</span>
-            </button>
-
-            {/* Shared Press Specifications */}
-            <div className="pt-8 border-t border-neon/10 space-y-4">
-              <p className="text-xs uppercase tracking-[0.28em] text-neon/80">
-                Press Specifications
-              </p>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
-                <div>
-                  <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
-                    Edition
-                  </dt>
-                  <dd className="text-paper-dim">First Edition — 150 Hand-Numbered Copies</dd>
-                </div>
-                <div>
-                  <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
-                    Binding
-                  </dt>
-                  <dd className="text-paper-dim">Hand-sewn with archival linen or silk cord</dd>
-                </div>
-                <div>
-                  <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
-                    Paper
-                  </dt>
-                  <dd className="text-paper-dim">Cotton mould-made, deckle edge</dd>
-                </div>
-                <div>
-                  <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
-                    Dimensions
-                  </dt>
-                  <dd className="text-paper-dim">148 &times; 210 mm (A5)</dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-xs uppercase tracking-[0.2em] text-paper-faint mb-1">
-                    Printing
-                  </dt>
-                  <dd className="text-paper-dim">
-                    Set by hand in metal type, impression pulled leaf by leaf on an 1890s Albion
-                    press
-                  </dd>
-                </div>
-              </dl>
-            </div>
           </div>
         </div>
       </div>
