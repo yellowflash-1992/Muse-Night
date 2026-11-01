@@ -203,8 +203,16 @@ export function DesktopNavbar({
                   className="group inline-flex items-center gap-2 rounded-full border border-neon/35 bg-ink-2/80 hover:bg-neon/10 hover:border-neon py-1 pl-1 pr-2.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
                   aria-expanded={userMenuOpen}
                 >
-                  <div className="flex h-6.5 w-6.5 xl:h-7 xl:w-7 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-xs shadow-inner">
-                    {initial}
+                  <div className="flex h-6.5 w-6.5 xl:h-7 xl:w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neon text-ink font-bold text-xs shadow-inner">
+                    {profile?.avatarUrl ? (
+                      <img
+                        src={profile.avatarUrl}
+                        alt=""
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      initial
+                    )}
                   </div>
                   <span className="font-karla text-[10.5px] xl:text-[11px] font-semibold text-paper group-hover:text-neon transition-colors max-w-[90px] xl:max-w-[110px] truncate">
                     {displayName}

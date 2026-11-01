@@ -132,6 +132,11 @@ export function MobileTestimonials() {
         >
           {randomQuotes.map((quote, idx) => {
             const rotation = rotations[idx % rotations.length];
+            const memberAvatarUrl =
+              quote.penName && "user" in quote.penName.person
+                ? quote.penName.person.user?.avatarUrl
+                : null;
+            const avatarUrl = memberAvatarUrl || quote.penName?.person?.imageUrl;
 
             return (
               <article
@@ -146,9 +151,9 @@ export function MobileTestimonials() {
                   {quote.text}
                 </p>
                 <div className="flex items-center gap-3">
-                  {quote.penName?.person?.imageUrl ? (
+                  {avatarUrl ? (
                     <img
-                      src={quote.penName.person.imageUrl}
+                      src={avatarUrl}
                       alt=""
                       className="w-10 h-10 rounded-full object-cover shrink-0"
                     />

@@ -156,8 +156,16 @@ export function MobileNavDrawer({
             <div className="relative -mt-2" ref={drawerUserMenuRef}>
               <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 flex items-center justify-between shadow-inner">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neon text-ink font-bold text-sm shadow-md">
-                    {initial}
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neon text-ink font-bold text-sm shadow-md">
+                    {profile?.avatarUrl ? (
+                      <img
+                        src={profile.avatarUrl}
+                        alt=""
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      initial
+                    )}
                   </div>
                   <div className="min-w-0">
                     <p className="font-karla text-xs font-bold text-paper truncate">

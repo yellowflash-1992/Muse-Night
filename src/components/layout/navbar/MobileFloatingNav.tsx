@@ -147,10 +147,18 @@ export function MobileFloatingNav({
               }
               aria-expanded={mobileUserMenuOpen}
               aria-haspopup="menu"
-              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
+              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center overflow-hidden rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
             >
               {isAuthenticated && user ? (
-                <span className="font-bold text-xs">{initial}</span>
+                profile?.avatarUrl ? (
+                  <img
+                    src={profile.avatarUrl}
+                    alt=""
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="font-bold text-xs">{initial}</span>
+                )
               ) : (
                 <User className="h-4 w-4" />
               )}
