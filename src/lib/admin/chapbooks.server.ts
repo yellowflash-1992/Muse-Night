@@ -6,6 +6,11 @@ export async function listChapbooksAdmin() {
   return prisma.chapbook.findMany({ orderBy: [{ sortOrder: "asc" }, { year: "desc" }] });
 }
 
+export async function getAdminChapbook(id: string) {
+  await requireAdmin();
+  return prisma.chapbook.findUnique({ where: { id } });
+}
+
 export interface AdminChapbookInput {
   title: string;
   authorId: string;

@@ -45,6 +45,7 @@ export function MobileCuratedCovers() {
               key={poem.id}
               to="/library/$id"
               params={{ id: poem.id }}
+              search={{ source: "home" }}
               className="group relative flex flex-col text-left active:scale-[0.98] transition-transform"
             >
               {/* Book Cover */}

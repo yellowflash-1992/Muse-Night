@@ -1018,6 +1018,7 @@ export function GalleryPage() {
                               <Link
                                 to="/library/$id"
                                 params={{ id: item.poemId }}
+                                search={{ source: "gallery" }}
                                 className="inline-flex min-h-8 items-center gap-1.5 font-karla text-xs text-paper-faint transition hover:text-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
                               >
                                 <span className="text-neon/80" aria-hidden="true">

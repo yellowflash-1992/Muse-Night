@@ -265,7 +265,7 @@ export function LibraryPoemPage() {
           </Link>
         </div>
 
-{/* Breadcrumb */}
+        {/* Breadcrumb */}
         <nav className="text-[10px] uppercase tracking-[0.2em] text-paper-faint mb-3 flex items-center gap-1.5 flex-wrap">
           <Link to="/library" className="hover:text-neon transition-colors">
             Library
@@ -366,7 +366,7 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: prevPoem.id }}
-                {...(from ? { search: { from, source, collectionId } } : {})}
+                {...(from || source || collectionId ? { search: { ...(from ? { from } : {}), ...(source ? { source } : {}), ...(collectionId ? { collectionId } : {}) } } : {})}
                 className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
               >
                 <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
@@ -386,7 +386,7 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: nextPoem.id }}
-                {...(from ? { search: { from, source, collectionId } } : {})}
+                {...(from || source || collectionId ? { search: { ...(from ? { from } : {}), ...(source ? { source } : {}), ...(collectionId ? { collectionId } : {}) } } : {})}
                 className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
                   !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
                 }`}

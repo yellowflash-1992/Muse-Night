@@ -6,12 +6,15 @@ import { getPublishedPoem, getPublishedPoemsList } from "@/lib/poems.functions";
 export const Route = createFileRoute("/library/$id")({
   validateSearch: (
     search: Record<string, unknown>,
-  ): { from?: string; source?: string; collectionId?: string } => {
+  ): {
+    from?: string | undefined;
+    source?: string | undefined;
+    collectionId?: string | undefined;
+  } => {
     return {
-      from: typeof search.from === "string" ? search.from : undefined,
-      source: typeof search.source === "string" ? search.source : undefined,
-      collectionId:
-        typeof search.collectionId === "string" ? search.collectionId : undefined,
+      from: typeof search["from"] === "string" ? search["from"] : undefined,
+      source: typeof search["source"] === "string" ? search["source"] : undefined,
+      collectionId: typeof search["collectionId"] === "string" ? search["collectionId"] : undefined,
     };
   },
   loader: async ({ params }) => {

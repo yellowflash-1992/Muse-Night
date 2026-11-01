@@ -382,6 +382,7 @@ export function StudyHallPage() {
                 <Link
                   to="/library/$id"
                   params={{ id: poem.id }}
+                  search={{ source: "study" }}
                   className="mt-5 inline-flex min-h-11 items-center gap-2 self-start font-karla text-sm font-semibold text-neon hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon"
                 >
                   Read this poem

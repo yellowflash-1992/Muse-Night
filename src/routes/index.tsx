@@ -371,6 +371,7 @@ function Index() {
                     <Link
                       to="/library/$id"
                       params={{ id: activePoem.id }}
+                      search={{ source: "home" }}
                       className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
                     >
                       <span>Read full work in reader</span>
@@ -455,6 +456,7 @@ function Index() {
                     <Link
                       to="/library/$id"
                       params={{ id: featuredPoem.id }}
+                      search={{ source: "home" }}
                       className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-neon/90 transition-all"
                     >
                       <BookOpen className="h-3.5 w-3.5" />
@@ -477,6 +479,7 @@ function Index() {
                       <Link
                         to="/library/$id"
                         params={{ id: featuredPoem.id }}
+                        search={{ source: "home" }}
                         className="text-xs uppercase tracking-[0.2em] text-neon hover:underline"
                       >
                         Read complete work with reader controls &rarr;

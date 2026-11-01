@@ -4,6 +4,7 @@ import {
   archiveChapbook,
   createChapbook,
   deleteChapbook,
+  getAdminChapbook,
   listChapbooksAdmin,
   publishChapbook,
   updateChapbook,
@@ -13,6 +14,12 @@ import {
 export const listChapbooksAdminFn = createServerFn({ method: "GET" }).handler(async () =>
   listChapbooksAdmin(),
 );
+export const getAdminChapbookFn = createServerFn({ method: "GET" })
+  .validator((id: unknown) => {
+    if (typeof id !== "string" || !id) throw new Error("id required");
+    return id;
+  })
+  .handler(async ({ data }) => getAdminChapbook(data));
 export const createChapbookFn = createServerFn({ method: "POST" })
   .validator((input: unknown) => input as AdminChapbookInput)
   .handler(async ({ data }) => createChapbook(data));

@@ -117,7 +117,7 @@ export function CollectionDetailPage() {
                   </span>
                   <div>
                     <h3 className="font-display text-2xl text-paper group-hover:text-neon transition-colors">
-                      <Link to="/library/$id" params={{ id: poem.id }}>
+                      <Link to="/library/$id" params={{ id: poem.id }} search={{ from: collection.poems?.map((p) => p.id).join(","), source: "collection", collectionId: collection.id }}>
                         {poem.title}
                       </Link>
                     </h3>
