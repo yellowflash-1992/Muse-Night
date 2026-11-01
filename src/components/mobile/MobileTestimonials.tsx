@@ -7,21 +7,20 @@ const routeApi = getRouteApi("/");
 const rotations = ["rotate-1", "-rotate-1", "rotate-2", "-rotate-2", "rotate-0"];
 
 export function MobileTestimonials() {
-  const { poems } = routeApi.useLoaderData();
+  const { quotes } = routeApi.useLoaderData();
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // 1. Pick 4 random poems on load
-  const [randomPoems, setRandomPoems] = useState<any[]>([]);
+  const [randomQuotes, setRandomQuotes] = useState<typeof quotes>([]);
 
   useEffect(() => {
-    if (poems.length > 0) {
+    if (quotes.length > 0) {
       // Shuffle array and pick up to 4
-      const shuffled = [...poems].sort(() => 0.5 - Math.random());
-      setRandomPoems(shuffled.slice(0, 4));
+      const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+      setRandomQuotes(shuffled.slice(0, 4));
     }
-  }, [poems]);
+  }, [quotes]);
 
   const scrollAmount = 460;
 
@@ -34,7 +33,7 @@ export function MobileTestimonials() {
 
   useEffect(() => {
     const el = sliderRef.current;
-    if (!el || randomPoems.length === 0) return;
+    if (!el || randomQuotes.length === 0) return;
 
     // Scroll to Card 2 so Card 1 is partially sunk off the left screen
     const firstCard = el.children[0] as HTMLElement;
@@ -53,10 +52,9 @@ export function MobileTestimonials() {
       el.removeEventListener("scroll", updateSliderButtons);
       window.removeEventListener("resize", updateSliderButtons);
     };
-  }, [randomPoems.length]);
+  }, [randomQuotes.length]);
 
-  // Hide section if there are no poems yet
-  if (poems.length === 0) return null;
+  if (quotes.length === 0) return null;
 
   return (
     <section className="relative overflow-hidden border-y border-white/10 bg-[linear-gradient(145deg,var(--ink),var(--ink-2)_52%,var(--ink))]">
@@ -132,14 +130,12 @@ export function MobileTestimonials() {
           className="flex gap-5 overflow-x-auto pl-2 pr-5 pt-8 pb-12 -my-4 snap-x snap-mandatory scroll-pl-[50px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {randomPoems.map((poem, idx) => {
+          {randomQuotes.map((quote, idx) => {
             const rotation = rotations[idx % rotations.length];
-            // Get the first stanza, joined by newlines
-            const stanza = poem.stanzas[0]?.join("\n") || "A poem waiting to be read.";
 
             return (
               <article
-                key={poem.id}
+                key={quote.id}
                 className={`glass-card min-w-[calc(100vw-88px)] sm:min-w-[380px] max-w-[380px] p-4 shrink-0 snap-start snap-always ${rotation} transition-all duration-300 hover:scale-[1.02] hover:rotate-0 hover:z-10`}
               >
                 <div className="font-display text-5xl text-accent/30 leading-none mb-2 select-none">
@@ -147,15 +143,14 @@ export function MobileTestimonials() {
                 </div>
                 {/* Removed whitespace-pre-line and line-clamp-6 to restore the original width/flow */}
                 <p className="font-display italic text-foreground text-lg leading-relaxed mb-6">
-                  {poem.stanzas[0]?.join(" ")}
+                  {quote.text}
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold shrink-0">
-                    {poem.author.charAt(0)}
+                    {quote.author.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{poem.author}</p>
-                    <p className="text-xs text-muted-foreground">From "{poem.title}"</p>
+                    <p className="text-sm font-semibold text-foreground">{quote.author}</p>
                   </div>
                 </div>
               </article>

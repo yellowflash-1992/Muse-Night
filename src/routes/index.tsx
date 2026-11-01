@@ -17,9 +17,10 @@ import { useRef, useState } from "react";
 import { MobileLanding } from "@/components/mobile/MobileLanding";
 import { listPublishedChapbooks } from "@/lib/chapbooks.functions";
 import { listPublishedCollections } from "@/lib/collections.functions";
-import { getPublishedPoemsList } from "@/lib/poems.functions";
 import { listPersonsPublic } from "@/lib/people.functions";
+import { getPublishedPoemsList } from "@/lib/poems.functions";
 import { listPoetCardsPublic } from "@/lib/poets.functions";
+import { getPublishedQuotes } from "@/lib/quotes.functions";
 
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
@@ -27,14 +28,15 @@ const routeApi = getRouteApi("/");
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [poems, chapbooks, collections, poets, poetCards] = await Promise.all([
+    const [poems, chapbooks, collections, poets, poetCards, quotes] = await Promise.all([
       getPublishedPoemsList(),
       listPublishedChapbooks(),
       listPublishedCollections(),
       listPersonsPublic(),
       listPoetCardsPublic(),
+      getPublishedQuotes(),
     ]);
-    return { poems, chapbooks, collections, poets, poetCards };
+    return { poems, chapbooks, collections, poets, poetCards, quotes };
   },
   head: () => ({
     meta: [
