@@ -146,9 +146,17 @@ export function MobileTestimonials() {
                   {quote.text}
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold shrink-0">
-                    {quote.author.charAt(0)}
-                  </div>
+                  {quote.penName?.person?.imageUrl ? (
+                    <img
+                      src={quote.penName.person.imageUrl}
+                      alt=""
+                      className="w-10 h-10 rounded-full object-cover shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold shrink-0">
+                      {quote.author.charAt(0)}
+                    </div>
+                  )}
                   <div>
                     <p className="text-sm font-semibold text-foreground">{quote.author}</p>
                   </div>
