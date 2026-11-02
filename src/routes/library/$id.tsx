@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { LibraryPoemPage } from "@/features/library/LibraryPoemPage";
 import { getPublishedPoem, getPublishedPoemsList } from "@/lib/poems.functions";
+import { isPoemSavedFn } from "@/lib/vault.functions";
 
 export const Route = createFileRoute("/library/$id")({
   validateSearch: (
@@ -18,11 +19,12 @@ export const Route = createFileRoute("/library/$id")({
     };
   },
   loader: async ({ params }) => {
-    const [poem, poems] = await Promise.all([
+    const [poem, poems, isSaved] = await Promise.all([
       getPublishedPoem({ data: params.id }),
       getPublishedPoemsList(),
+      isPoemSavedFn({ data: params.id }),
     ]);
-    return { poem, poems };
+    return { poem, poems, isSaved };
   },
   head: ({ match }) => {
     const poem = match?.loaderData?.poem;

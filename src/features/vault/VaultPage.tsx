@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Bookmark, Plus } from "lucide-react";
+import { Bookmark, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { MemberGate } from "@/lib/auth/MemberGate";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+import { getSavedPoemsFn, toggleSavePoemFn, type SavedPoemData } from "@/lib/vault.functions";
 
 export function VaultPage() {
   return (
@@ -13,27 +15,53 @@ export function VaultPage() {
 }
 
 function VaultContent() {
-  const saved = (() => {
+  const [savedPoems, setSavedPoems] = useState<SavedPoemData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getSavedPoemsFn()
+      .then(setSavedPoems)
+      .catch((loadError: unknown) => {
+        console.error("Failed to load saved poems", loadError);
+        setError("Your vault could not be loaded. Please try again.");
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const removePoem = async (poemId: string) => {
     try {
-      const raw = localStorage.getItem("muse-vault-poems");
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
+      await toggleSavePoemFn({ data: poemId });
+      setSavedPoems((current) => current.filter((saved) => saved.poemId !== poemId));
+    } catch (removeError) {
+      console.error("Failed to remove saved poem", removeError);
+      setError("That poem could not be removed. Please try again.");
     }
-  })();
+  };
 
   return (
     <div className="min-h-screen bg-ink text-paper px-6 py-14">
-      <div className="mx-auto max-w-md">
+      <div className="mx-auto max-w-3xl">
         <h1 className="font-display text-3xl text-paper mb-1">Your vault</h1>
 
         <p className="text-sm text-paper-dim mb-10">
-          {saved.length === 0
-            ? "Nothing saved yet."
-            : `${saved.length} poem${saved.length === 1 ? "" : "s"} you've kept`}
+          {loading
+            ? "Opening your vault..."
+            : savedPoems.length === 0
+              ? "Nothing saved yet."
+              : `${savedPoems.length} poem${savedPoems.length === 1 ? "" : "s"} you've kept`}
         </p>
 
-        {saved.length === 0 ? (
+        {error && (
+          <p
+            role="alert"
+            className="mb-6 rounded border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300"
+          >
+            {error}
+          </p>
+        )}
+
+        {!loading && savedPoems.length === 0 ? (
           <div className="text-center py-20 border border-dashed border-neon/20 rounded-2xl">
             <Bookmark className="w-8 h-8 text-paper-faint mx-auto mb-4" strokeWidth={1.5} />
 
@@ -50,33 +78,39 @@ function VaultContent() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            {saved.map(
-              (p: { id: string; title: string; author: string; mood?: string; line?: string }) => (
-                <div
-                  key={p.id}
-                  className="rounded-xl border border-neon/15 bg-ink-2 p-5 hover:border-neon/40 transition"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-display text-lg text-paper">{p.title}</span>
-
-                    {p.mood && (
-                      <span className="text-[10px] uppercase tracking-wide text-neon bg-neon/10 px-2 py-0.5 rounded-full">
-                        {p.mood}
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="text-xs text-paper-dim mb-3">by {p.author}</p>
-
-                  {p.line && (
-                    <p className="font-display italic text-sm text-paper-dim leading-relaxed">
-                      &ldquo;{p.line}&rdquo;
-                    </p>
-                  )}
+          <div className="grid gap-4 sm:grid-cols-2">
+            {savedPoems.map((poem) => (
+              <article
+                key={poem.id}
+                className="rounded-xl border border-neon/15 bg-ink-2 p-5 hover:border-neon/40 transition"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <Link
+                    to="/library/$id"
+                    params={{ id: poem.poemId }}
+                    className="font-display text-lg text-paper hover:text-neon"
+                  >
+                    {poem.title}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => void removePoem(poem.poemId)}
+                    aria-label={`Remove ${poem.title} from Vault`}
+                    className="shrink-0 rounded p-1 text-paper-faint transition hover:bg-red-500/10 hover:text-red-300"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
                 </div>
-              ),
-            )}
+                <p className="mt-1 text-xs text-paper-dim">
+                  by {poem.author} · {poem.year}
+                </p>
+                {poem.excerpt && (
+                  <p className="mt-3 line-clamp-3 font-display text-sm italic leading-relaxed text-paper-dim">
+                    &ldquo;{poem.excerpt}&rdquo;
+                  </p>
+                )}
+              </article>
+            ))}
           </div>
         )}
       </div>

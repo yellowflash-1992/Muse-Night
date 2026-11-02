@@ -5,7 +5,7 @@ import {
   toggleReflectionLikeFn,
 } from "@/lib/interactions.functions";
 import { getRouteApi, Link, useParams, useSearch } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, Feather } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bookmark, Check, Feather } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { AuthModal } from "@/components/auth/AuthModal";
@@ -14,6 +14,7 @@ import { getReaderDataForPoem } from "@/data/library-reader";
 import { useAuth } from "@/hooks/useAuth";
 import { useDisplayName } from "@/hooks/useDisplayName";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
+import { toggleSavePoemFn } from "@/lib/vault.functions";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
 import { formatPoemCitation } from "./lib/share";
 import { useToast } from "./lib/useToast";
@@ -74,7 +75,8 @@ export function LibraryPoemPage() {
   const [copied, setCopied] = useState<boolean>(false);
   const [openLine, setOpenLine] = useState<number | null>(null);
   const [selectedFrame, setSelectedFrame] = useState<FrameStyle>(null);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(loaderData.isSaved);
+  const [saving, setSaving] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [selectedMood, setSelectedMood] = useState<CardMood>("reflective");
   const [cardFormat, setCardFormat] = useState<CardFormat>("Square");
@@ -88,6 +90,10 @@ export function LibraryPoemPage() {
   const { profile } = useMemberProfile();
   const displayName = useDisplayName(profile, "you");
   const isAuthenticated = Boolean(user);
+
+  useEffect(() => {
+    setSaved(loaderData.isSaved);
+  }, [id, loaderData.isSaved]);
 
   const handleRequireAuthentication = () => {
     setAuthModalOpen(true);
@@ -170,6 +176,23 @@ export function LibraryPoemPage() {
     } else {
       handleCopy();
       showToast("Poem text copied to clipboard!");
+    }
+  };
+
+  const toggleSavedPoem = async () => {
+    if (!isAuthenticated) return handleRequireAuthentication();
+    if (saving) return;
+
+    setSaving(true);
+    try {
+      const isSaved = await toggleSavePoemFn({ data: poem.id });
+      setSaved(isSaved);
+      showToast(isSaved ? "Saved to your reading vault" : "Removed from your reading vault");
+    } catch (error) {
+      console.error("Failed to update saved poem", error);
+      showToast("Failed to update your reading vault");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -265,6 +288,21 @@ export function LibraryPoemPage() {
             <ArrowLeft className="w-4 h-4 text-neon" strokeWidth={1.5} />
             <span>{backLabel}</span>
           </Link>
+          <button
+            type="button"
+            onClick={() => void toggleSavedPoem()}
+            disabled={saving}
+            aria-label={saved ? "Remove from Vault" : "Save to Vault"}
+            aria-pressed={saved}
+            className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs uppercase tracking-[0.18em] transition-all disabled:opacity-50 ${
+              saved
+                ? "border-neon/50 bg-neon/10 text-neon"
+                : "border-neon/20 bg-ink-2/80 text-paper-dim hover:border-neon/40 hover:text-neon"
+            }`}
+          >
+            <Bookmark className="h-4 w-4" fill={saved ? "currentColor" : "none"} />
+            <span>{saved ? "Saved" : "Save to Vault"}</span>
+          </button>
         </div>
 
         {/* Breadcrumb */}
@@ -368,7 +406,15 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: prevPoem.id }}
-                {...(from || source || collectionId ? { search: { ...(from ? { from } : {}), ...(source ? { source } : {}), ...(collectionId ? { collectionId } : {}) } } : {})}
+                {...(from || source || collectionId
+                  ? {
+                      search: {
+                        ...(from ? { from } : {}),
+                        ...(source ? { source } : {}),
+                        ...(collectionId ? { collectionId } : {}),
+                      },
+                    }
+                  : {})}
                 className="group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left"
               >
                 <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-paper-faint group-hover:text-neon transition-colors">
@@ -388,7 +434,15 @@ export function LibraryPoemPage() {
               <Link
                 to="/library/$id"
                 params={{ id: nextPoem.id }}
-                {...(from || source || collectionId ? { search: { ...(from ? { from } : {}), ...(source ? { source } : {}), ...(collectionId ? { collectionId } : {}) } } : {})}
+                {...(from || source || collectionId
+                  ? {
+                      search: {
+                        ...(from ? { from } : {}),
+                        ...(source ? { source } : {}),
+                        ...(collectionId ? { collectionId } : {}),
+                      },
+                    }
+                  : {})}
                 className={`group flex flex-col justify-between p-4 rounded-2xl border border-neon/15 bg-ink-2/60 hover:bg-neon/10 hover:border-neon/35 transition-all shadow-sm active:scale-[0.99] text-left ${
                   !prevPoem ? "sm:col-start-2 sm:text-right" : "sm:text-right"
                 }`}
@@ -427,10 +481,7 @@ export function LibraryPoemPage() {
         }
         onWarmModeToggle={() => setWarmMode(!warmMode)}
         onShareOpen={() => setShareOpen(true)}
-        onSavedToggle={() => {
-          setSaved(!saved);
-          showToast(saved ? "Removed from your reading vault" : "Saved to your reading vault");
-        }}
+        onSavedToggle={() => void toggleSavedPoem()}
       />
 
       {/* SHARE CARD BOTTOM SHEET */}

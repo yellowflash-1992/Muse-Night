@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Check, Clock, Feather, Mail, MessageCircle, Quote } from "lucide-react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+import { createPoemRequestFn } from "@/lib/requests.functions";
 
 const OCCASIONS = ["Birthday", "Anniversary", "Wedding", "Sympathy", "Just because", "Other"];
 const TONES = ["Romantic", "Nostalgic", "Playful", "Reflective", "Spiritual"];
@@ -12,7 +14,35 @@ export function RequestPage() {
   const [occasion, setOccasion] = useState("Birthday");
   const [tone, setTone] = useState("Romantic");
   const [delivery, setDelivery] = useState("WhatsApp");
+  const [recipientName, setRecipientName] = useState("");
+  const [contactValue, setContactValue] = useState("");
+  const [story, setStory] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setSubmitting(true);
+
+    try {
+      await createPoemRequestFn({
+        data: { occasion, tone, delivery, recipientName, contactValue, story },
+      });
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (submitError) {
+      console.error("Failed to submit poem request", submitError);
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Your request could not be submitted. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (submitted) {
     return (
@@ -23,8 +53,8 @@ export function RequestPage() {
           </div>
           <h1 className="font-display text-2xl text-paper mb-3">Your request is in the queue</h1>
           <p className="text-paper-dim text-sm leading-relaxed">
-            We'll email you a draft within 3–5 days. Every commissioned poem is handwritten by one
-            of our poets &mdash; no templates, no AI.
+            Your request has been received. We&apos;ll review your story and reach out to you
+            shortly.
           </p>
           <Link
             to="/"
@@ -51,8 +81,8 @@ export function RequestPage() {
           written just for them.
         </h1>
         <p className="text-paper-dim text-sm mt-5 max-w-md mx-auto">
-          Tell us who it&apos;s for and why. A poet crafts something original &mdash; delivered to your
-          inbox, ready to give.
+          Tell us who it&apos;s for and why. A poet crafts something original &mdash; delivered to
+          your inbox, ready to give.
         </p>
       </div>
 
@@ -60,14 +90,7 @@ export function RequestPage() {
         {/* Form / Member-only Action Area */}
         <div className="md:col-span-2">
           <MemberGate feature={MEMBER_FEATURES.poemRequests}>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitted(true);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="space-y-7"
-            >
+            <form onSubmit={(event) => void handleSubmit(event)} className="space-y-7">
               <div>
                 <label className="block text-xs uppercase tracking-wide text-paper-dim mb-3">
                   Occasion
@@ -147,6 +170,8 @@ export function RequestPage() {
                   <input
                     required
                     type="text"
+                    value={recipientName}
+                    onChange={(event) => setRecipientName(event.target.value)}
                     placeholder="e.g. My mother, Aisha"
                     className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60"
                   />
@@ -158,6 +183,8 @@ export function RequestPage() {
                   <input
                     required
                     type={delivery === "WhatsApp" ? "tel" : "email"}
+                    value={contactValue}
+                    onChange={(event) => setContactValue(event.target.value)}
                     placeholder={
                       delivery === "WhatsApp" ? "e.g. +234 801 234 5678" : "you@email.com"
                     }
@@ -173,16 +200,28 @@ export function RequestPage() {
                 <textarea
                   required
                   rows={5}
+                  value={story}
+                  onChange={(event) => setStory(event.target.value)}
                   placeholder="What should the poet know? Memories, inside jokes, what makes this person who they are..."
                   className="w-full bg-ink-2 border border-neon/20 rounded-lg px-3.5 py-2.5 text-sm text-paper placeholder:text-paper-faint focus:outline-none focus:border-neon/60 resize-none"
                 />
               </div>
 
+              {error && (
+                <p
+                  role="alert"
+                  className="rounded border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300"
+                >
+                  {error}
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-neon text-ink text-sm font-medium hover:bg-neon/90 transition shadow-md"
+                disabled={submitting}
+                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-neon text-ink text-sm font-medium hover:bg-neon/90 transition shadow-md disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Request your poem &mdash; $5
+                {submitting ? "Sending request..." : "Request your poem — $5"}
               </button>
             </form>
           </MemberGate>
@@ -198,8 +237,8 @@ export function RequestPage() {
                 Share the story and occasion
               </li>
               <li className="flex gap-3">
-                <span className="text-neon font-display italic">2</span>A poet writes it &mdash; never
-                AI-generated
+                <span className="text-neon font-display italic">2</span>A poet writes it &mdash;
+                never AI-generated
               </li>
               <li className="flex gap-3">
                 <span className="text-neon font-display italic">3</span>
@@ -231,10 +270,12 @@ export function RequestPage() {
           <div className="border-l-2 border-neon/15 pl-4">
             <Quote className="w-4 h-4 text-paper-faint mb-2" strokeWidth={1.5} />
             <p className="font-display italic text-sm text-paper-dim leading-relaxed">
-              &ldquo;I didn&apos;t know what to write in her card. They did &mdash; and it made her cry,
-              the good kind.&rdquo;
+              &ldquo;I didn&apos;t know what to write in her card. They did &mdash; and it made her
+              cry, the good kind.&rdquo;
             </p>
-            <p className="text-xs text-paper-faint mt-2">&mdash; a reader, on an anniversary poem</p>
+            <p className="text-xs text-paper-faint mt-2">
+              &mdash; a reader, on an anniversary poem
+            </p>
           </div>
         </div>
       </div>

@@ -183,6 +183,7 @@ model Poem {
 
   literaryWorldId String?
   literaryWorld   LiteraryWorld? @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
+  savedPoems      SavedPoem[]
 
   tags       String[]
   year       String
@@ -205,6 +206,29 @@ model Poem {
   @@index([featured])
   @@index([sortOrder])
   @@index([publishedAt])
+}
+
+model SavedPoem {
+  id        String   @id @default(uuid())
+  userId    String
+  poemId    String
+  poem      Poem     @relation(fields: [poemId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, poemId])
+}
+
+model PoemRequest {
+  id            String   @id @default(uuid())
+  userId        String
+  occasion      String
+  tone          String
+  delivery      String
+  recipientName String
+  contactValue  String
+  story         String
+  status        String   @default("NEW")
+  createdAt     DateTime @default(now())
 }
 
 model Chapbook {
