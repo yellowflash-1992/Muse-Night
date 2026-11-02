@@ -27,6 +27,11 @@ export function SubmitPage() {
       return;
     }
 
+    if (manuscript.length < 20) {
+      setError("Your manuscript must be at least 20 characters.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       await submitPoem({
