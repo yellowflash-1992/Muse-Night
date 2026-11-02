@@ -102,7 +102,7 @@ function Index() {
   ];
 
   const activePoem = poems.length > 0 ? (poems[poemIndex % poems.length] ?? poems[0]) : null;
-  const featuredPoem = poems.find((p) => p.featured) ?? poems[0] ?? null;
+  const featuredPoem = poems.filter((p) => p.featured)[0] ?? null;
   const featuredBook = chapbooks[0] ?? null;
 
   const handleShuffleVerse = () => {

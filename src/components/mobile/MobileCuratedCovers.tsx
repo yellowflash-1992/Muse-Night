@@ -5,18 +5,9 @@ const routeApi = getRouteApi("/");
 
 export function MobileCuratedCovers() {
   const { poems } = routeApi.useLoaderData();
+  const curatedPoems = poems.filter((p) => p.featured).slice(0, 4);
 
-  // Hide the entire section if the database has no published poems yet
-  if (poems.length === 0) return null;
-
-  // 1. Get up to 2 poems from the primary founder (You)
-  const founderPoems = poems.filter((p) => p.author !== "InkbyNur").slice(0, 2);
-
-  // 2. Get up to 2 poems from the co-founder (InkbyNur)
-  const coFounderPoems = poems.filter((p) => p.author === "InkbyNur").slice(0, 2);
-
-  // 3. Combine them. (If InkbyNur has 0 poems, it just shows your 2 for now).
-  const curatedPoems = [...founderPoems, ...coFounderPoems];
+  if (curatedPoems.length === 0) return null;
 
   return (
     <section id="library" className="px-5 py-12 space-y-6 scroll-mt-20">
