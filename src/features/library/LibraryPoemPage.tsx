@@ -12,6 +12,7 @@ import { AuthModal } from "@/components/auth/AuthModal";
 import { getReaderDataForPoem } from "@/data/library-reader";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useDisplayName } from "@/hooks/useDisplayName";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
 import { formatPoemCitation } from "./lib/share";
@@ -85,6 +86,7 @@ export function LibraryPoemPage() {
 
   const { user } = useAuth();
   const { profile } = useMemberProfile();
+  const displayName = useDisplayName(profile, "you");
   const isAuthenticated = Boolean(user);
 
   const handleRequireAuthentication = () => {
@@ -350,7 +352,7 @@ export function LibraryPoemPage() {
           reflections={reflections}
           note={note}
           anonymous={anonymous}
-          userDisplayName={profile?.penName || profile?.displayName || "you"}
+          userDisplayName={displayName}
           isAuthenticated={isAuthenticated}
           onNoteChange={setNote}
           onAnonymousChange={setAnonymous}

@@ -119,22 +119,23 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
           id: "a" as const,
           line: game.lineA,
           poet: game.poetA,
-          votes: game.voteTotals.a,
+          votes: game.totalVotesA,
         },
         b: {
           id: "b" as const,
           line: game.lineB,
           poet: game.poetB,
-          votes: game.voteTotals.b,
+          votes: game.totalVotesB,
         },
       }
     : null;
   const votedSide = game?.votedSide ?? null;
   const hasVoted = votedSide !== null;
-  const voteTotals = game?.voteTotals ?? { a: 0, b: 0 };
-  const totalVotes = voteTotals.a + voteTotals.b;
-  const percentA = totalVotes > 0 ? Math.round((voteTotals.a / totalVotes) * 100) : 50;
-  const percentB = totalVotes > 0 ? Math.round((voteTotals.b / totalVotes) * 100) : 50;
+  const totalVotesA = game?.totalVotesA ?? 0;
+  const totalVotesB = game?.totalVotesB ?? 0;
+  const totalVotes = game?.totalVotes ?? 0;
+  const percentA = totalVotes > 0 ? Math.round((totalVotesA / totalVotes) * 100) : 50;
+  const percentB = totalVotes > 0 ? Math.round((totalVotesB / totalVotes) * 100) : 50;
 
   const handleSubmitStory = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -278,13 +279,10 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
                           : "border-neon/15 bg-ink-2 hover:border-neon/40 hover:bg-ink-2/90"
                     }`}
                   >
-                    {/* Background Progress Bar shown only after voting */}
-                    {hasVoted && (
-                      <div
-                        className="absolute inset-y-0 left-0 bg-neon/10 transition-all duration-700 pointer-events-none"
-                        style={{ width: `${percent}%` }}
-                      />
-                    )}
+                    <div
+                      className="absolute inset-y-0 left-0 bg-neon/10 transition-all duration-700 pointer-events-none"
+                      style={{ width: `${percent}%` }}
+                    />
 
                     <div className="relative z-10 space-y-2">
                       <p className="font-display italic text-base sm:text-lg text-paper leading-snug">
@@ -329,6 +327,7 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
               );
             })}
           </div>
+          <p className="text-xs text-paper-dim mt-2">{totalVotes} total votes</p>
         </div>
 
         {/* Challenge 2: Six-Word Story */}

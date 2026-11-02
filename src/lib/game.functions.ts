@@ -22,7 +22,9 @@ export interface DailyGameData {
   poetA: string;
   lineB: string;
   poetB: string;
-  voteTotals: { a: number; b: number };
+  totalVotesA: number;
+  totalVotesB: number;
+  totalVotes: number;
   votedSide: "a" | "b" | null;
   stories: {
     id: string;
@@ -64,10 +66,8 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
       where: { gameId: today },
       _count: { side: true },
     });
-    const voteTotals = {
-      a: voteCounts.find((vote) => vote.side === "a")?._count.side ?? 0,
-      b: voteCounts.find((vote) => vote.side === "b")?._count.side ?? 0,
-    };
+    const totalVotesA = voteCounts.find((vote) => vote.side === "a")?._count.side ?? 0;
+    const totalVotesB = voteCounts.find((vote) => vote.side === "b")?._count.side ?? 0;
 
     return {
       id: game.id,
@@ -76,7 +76,9 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
       poetA: game.poetA,
       lineB: game.lineB,
       poetB: game.poetB,
-      voteTotals,
+      totalVotesA,
+      totalVotesB,
+      totalVotes: totalVotesA + totalVotesB,
       votedSide: game.votes[0]?.side === "a" || game.votes[0]?.side === "b"
         ? game.votes[0].side
         : null,

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { resolveDisplayName } from "@/lib/display-name";
 
 export async function getInteractionsRaw(poemId: string, userId: string | null) {
   const DEFAULT_EMOJIS = ["❤️", "🔥", "😢", "👍"];
@@ -30,6 +31,22 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
     select: { id: true, displayName: true, penName: true },
   });
   const profileMap = Object.fromEntries(profiles.map((p) => [p.id, p]));
+  const people = await prisma.person.findMany({
+    where: { userId: { in: userIds } },
+    select: {
+      userId: true,
+      penNames: {
+        where: { isPrimary: true },
+        select: { name: true },
+        take: 1,
+      },
+    },
+  });
+  const primaryPenNameMap = new Map(
+    people
+      .filter((person) => person.userId)
+      .map((person) => [person.userId!, person.penNames[0]?.name]),
+  );
 
   return {
     reactions,
@@ -37,7 +54,15 @@ export async function getInteractionsRaw(poemId: string, userId: string | null) 
       const profile = profileMap[r.userId];
       return {
         id: r.id,
-        name: r.isAnonymous ? "Anonymous" : profile?.penName || profile?.displayName || "A Reader",
+        name: r.isAnonymous
+          ? "Anonymous"
+          : resolveDisplayName(
+              {
+                penName: primaryPenNameMap.get(r.userId),
+                displayName: profile?.displayName,
+              },
+              "A Reader",
+            ),
         text: r.text,
         hearts: r.likes.length,
         isHearted: userId ? r.likes.some((l) => l.userId === userId) : false,

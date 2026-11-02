@@ -7,6 +7,7 @@ export interface MemberProfileData {
   id: string;
   displayName: string;
   penName: string | null;
+  primaryPenName: string | null;
   profileTitle: string;
   bio: string | null;
   avatarUrl: string | null;

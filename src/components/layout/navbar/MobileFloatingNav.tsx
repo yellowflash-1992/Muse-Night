@@ -3,8 +3,8 @@ import { Feather, Flame, LogOut, Settings, Swords, User } from "lucide-react";
 import { useEffect, useRef, useState, type RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
+import { useDisplayName } from "@/hooks/useDisplayName";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
-import { resolveDisplayName } from "@/lib/display-name";
 import { NotificationBell } from "../NotificationBell";
 
 const isRealAvatar = (url?: string | null): url is string =>
@@ -41,7 +41,7 @@ export function MobileFloatingNav({
   setAuthModalMode,
   mobileUserMenuRef,
 }: MobileFloatingNavProps) {
-  const displayName = resolveDisplayName(profile ?? {}, "Patron");
+  const displayName = useDisplayName(profile, "Patron");
   const profileTitle = profile?.profileTitle || "Reader & Patron";
   const initial = (displayName.charAt(0) || "P").toUpperCase();
 

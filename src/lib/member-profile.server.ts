@@ -93,17 +93,31 @@ export async function getCurrentMemberProfile() {
         profile = await prisma.memberProfile.findUnique({
           where: { id: userId },
         });
-
-        if (profile) {
-          return profile;
-        }
+      } else {
+        throw error;
       }
-
-      throw error;
     }
   }
 
-  return profile;
+  if (!profile) {
+    throw new Error("Unable to load the current member profile.");
+  }
+
+  const person = await prisma.person.findFirst({
+    where: { userId },
+    select: {
+      penNames: {
+        where: { isPrimary: true },
+        select: { name: true },
+        take: 1,
+      },
+    },
+  });
+
+  return {
+    ...profile,
+    primaryPenName: person?.penNames[0]?.name ?? null,
+  };
 }
 
 export async function updateCurrentMemberProfile(input: UpdateMemberProfileInput) {
