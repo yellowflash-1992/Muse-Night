@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
+import { resolveDisplayName } from "@/lib/display-name";
 import { NotificationBell } from "../NotificationBell";
 
 const isRealAvatar = (url?: string | null): url is string =>
@@ -40,13 +41,9 @@ export function MobileFloatingNav({
   setAuthModalMode,
   mobileUserMenuRef,
 }: MobileFloatingNavProps) {
-  const displayName = profile?.displayName || "Patron";
+  const displayName = resolveDisplayName(profile ?? {}, "Patron");
   const profileTitle = profile?.profileTitle || "Reader & Patron";
-  const initial = (
-    profile?.penName?.trim()?.charAt(0) ||
-    profile?.displayName?.trim()?.charAt(0) ||
-    "P"
-  ).toUpperCase();
+  const initial = (displayName.charAt(0) || "P").toUpperCase();
 
   const [flameMenuOpen, setFlameMenuOpen] = useState(false);
   const flameMenuRef = useRef<HTMLDivElement>(null);

@@ -16,6 +16,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
+import { resolveDisplayName } from "@/lib/display-name";
 
 const isRealAvatar = (url?: string | null): url is string =>
   Boolean(url && !url.includes("googleusercontent.com"));
@@ -70,12 +71,8 @@ export function MobileNavDrawer({
 
   const isHubActive = hubItems.some((item) => isActive(item.to));
 
-  const displayName = profile?.displayName || "Patron";
-  const initial = (
-    profile?.penName?.trim()?.charAt(0) ||
-    profile?.displayName?.trim()?.charAt(0) ||
-    "P"
-  ).toUpperCase();
+  const displayName = resolveDisplayName(profile ?? {}, "Patron");
+  const initial = (displayName.charAt(0) || "P").toUpperCase();
 
   const filteredHubItems = searchQuery
     ? hubItems.filter((item) => item.label.toLowerCase().includes(searchQuery.toLowerCase()))

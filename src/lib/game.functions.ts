@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { getCurrentUser, requireUser } from "@/lib/auth/server";
 import { prisma } from "@/lib/prisma";
+import { getDisplayName } from "@/lib/user-utils";
 
 const gameIdSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid game date");
 const voteSchema = z.object({
@@ -21,7 +22,7 @@ export interface DailyGameData {
   poetA: string;
   lineB: string;
   poetB: string;
-  votes: { side: string }[];
+  voteTotals: { a: number; b: number };
   votedSide: "a" | "b" | null;
   stories: {
     id: string;
@@ -40,7 +41,10 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
     const game = await prisma.dailyGame.findUnique({
       where: { id: today },
       include: {
-        votes: { select: { userId: true, side: true } },
+        votes: {
+          where: { userId: user?.id ?? "" },
+          select: { side: true },
+        },
         stories: {
           orderBy: [{ createdAt: "desc" }],
           include: {
@@ -55,6 +59,16 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
 
     if (!game) return null;
 
+    const voteCounts = await prisma.duelVote.groupBy({
+      by: ["side"],
+      where: { gameId: today },
+      _count: { side: true },
+    });
+    const voteTotals = {
+      a: voteCounts.find((vote) => vote.side === "a")?._count.side ?? 0,
+      b: voteCounts.find((vote) => vote.side === "b")?._count.side ?? 0,
+    };
+
     return {
       id: game.id,
       prompt: game.prompt,
@@ -62,13 +76,10 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
       poetA: game.poetA,
       lineB: game.lineB,
       poetB: game.poetB,
-      votes: game.votes.map(({ side }) => ({ side })),
-      votedSide:
-        game.votes.find((vote) => vote.userId === user?.id)?.side === "a"
-          ? "a"
-          : game.votes.find((vote) => vote.userId === user?.id)?.side === "b"
-            ? "b"
-            : null,
+      voteTotals,
+      votedSide: game.votes[0]?.side === "a" || game.votes[0]?.side === "b"
+        ? game.votes[0].side
+        : null,
       stories: game.stories.map((story) => ({
         id: story.id,
         text: story.text,
@@ -103,16 +114,12 @@ export const submitStoryFn = createServerFn({ method: "POST" })
     }
 
     const user = await requireUser();
-    const profile = await prisma.memberProfile.findUnique({
-      where: { id: user.id },
-      select: { displayName: true },
-    });
     return prisma.sixWordStory.create({
       data: {
         gameId: data.gameId,
         userId: user.id,
         text: data.text,
-        authorName: profile?.displayName || "Anonymous",
+        authorName: await getDisplayName(user.id),
       },
     });
   });

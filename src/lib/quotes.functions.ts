@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { prisma } from "@/lib/prisma";
+import { getDisplayName } from "@/lib/user-utils";
 
 export const getPublishedQuotes = createServerFn({ method: "GET" }).handler(async () => {
   const quotes = await prisma.quote.findMany({
@@ -35,20 +36,23 @@ export const getPublishedQuotes = createServerFn({ method: "GET" }).handler(asyn
       : [];
   const profilesByUserId = new Map(memberProfiles.map((profile) => [profile.id, profile]));
 
-  return quotes.map((quote) => {
-    if (!quote.penName) return quote;
+  return Promise.all(
+    quotes.map(async (quote) => {
+      if (!quote.penName) return quote;
 
-    const person = quote.penName.person;
-    const profile = person.userId ? profilesByUserId.get(person.userId) : undefined;
-    return {
-      ...quote,
-      penName: {
-        ...quote.penName,
-        person: {
-          ...person,
-          memberProfile: profile ? { avatarUrl: profile.avatarUrl } : null,
+      const person = quote.penName.person;
+      const profile = person.userId ? profilesByUserId.get(person.userId) : undefined;
+      return {
+        ...quote,
+        author: person.userId ? await getDisplayName(person.userId) : quote.penName.name,
+        penName: {
+          ...quote.penName,
+          person: {
+            ...person,
+            memberProfile: profile ? { avatarUrl: profile.avatarUrl } : null,
+          },
         },
-      },
-    };
-  });
+      };
+    }),
+  );
 });

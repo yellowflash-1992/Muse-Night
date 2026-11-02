@@ -24,9 +24,10 @@ function msUntilMidnight(now: Date): number {
 }
 
 function CountdownTimer() {
-  const [remaining, setRemaining] = useState(() => msUntilMidnight(new Date()));
+  const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
+    setRemaining(msUntilMidnight(new Date()));
     const timer = setInterval(() => setRemaining(msUntilMidnight(new Date())), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -82,15 +83,17 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
 
   const isValidStory = wordCount === 6;
 
-  const todayLabel = useMemo(
-    () =>
+  const [todayLabel, setTodayLabel] = useState("");
+
+  useEffect(() => {
+    setTodayLabel(
       new Date().toLocaleDateString("en-US", {
         weekday: "long",
         month: "long",
         day: "numeric",
       }),
-    [],
-  );
+    );
+  }, []);
 
   const scrollToChallenge = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -116,21 +119,22 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
           id: "a" as const,
           line: game.lineA,
           poet: game.poetA,
-          votes: game.votes.filter((vote) => vote.side === "a").length,
+          votes: game.voteTotals.a,
         },
         b: {
           id: "b" as const,
           line: game.lineB,
           poet: game.poetB,
-          votes: game.votes.filter((vote) => vote.side === "b").length,
+          votes: game.voteTotals.b,
         },
       }
     : null;
   const votedSide = game?.votedSide ?? null;
   const hasVoted = votedSide !== null;
-  const totalVotes = battle ? battle.a.votes + battle.b.votes : 0;
-  const percentA = totalVotes ? Math.round(((battle?.a.votes ?? 0) / totalVotes) * 100) : 0;
-  const percentB = totalVotes ? 100 - percentA : 0;
+  const voteTotals = game?.voteTotals ?? { a: 0, b: 0 };
+  const totalVotes = voteTotals.a + voteTotals.b;
+  const percentA = totalVotes > 0 ? Math.round((voteTotals.a / totalVotes) * 100) : 50;
+  const percentB = totalVotes > 0 ? Math.round((voteTotals.b / totalVotes) * 100) : 50;
 
   const handleSubmitStory = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,7 +191,7 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
           </div>
           <div className="rounded-2xl border border-neon/20 bg-ink-2/80 p-8 text-center shadow-sm">
             <Sparkles className="mx-auto mb-4 h-8 w-8 text-neon" />
-            <h2 className="font-display text-xl text-paper">The next arena opens at midnight.</h2>
+            <h2 className="font-display text-xl text-paper">Poetry Game Coming Soon.</h2>
           </div>
         </div>
       </div>
@@ -328,7 +332,10 @@ export function DailyPage({ game }: { game: DailyGameData | null }) {
         </div>
 
         {/* Challenge 2: Six-Word Story */}
-        <div id="challenge-story" className="space-y-4 pt-4 border-t border-neon/15 scroll-mt-28">
+        <div
+          id="challenge-story"
+          className="mt-32 space-y-4 pt-4 border-t border-neon/15 scroll-mt-28"
+        >
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon">
