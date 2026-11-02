@@ -6,7 +6,11 @@ export const getPublishedQuotes = createServerFn({ method: "GET" }).handler(asyn
   const quotes = await prisma.quote.findMany({
     where: { status: "PUBLISHED" },
     take: 10,
-    include: {
+    select: {
+      id: true,
+      text: true,
+      author: true,
+      avatarUrl: true,
       penName: {
         select: {
           name: true,
@@ -42,7 +46,7 @@ export const getPublishedQuotes = createServerFn({ method: "GET" }).handler(asyn
         ...quote.penName,
         person: {
           ...person,
-          user: profile ? { avatarUrl: profile.avatarUrl } : null,
+          memberProfile: profile ? { avatarUrl: profile.avatarUrl } : null,
         },
       },
     };

@@ -324,6 +324,7 @@ model Quote {
   id        String   @id @default(cuid())
   text      String
   author    String   @default("Muse Night")
+  avatarUrl String?
   penNameId String?
   penName   PenName? @relation(fields: [penNameId], references: [id], onDelete: SetNull)
   status    String   @default("PUBLISHED") // PUBLISHED or HIDDEN

@@ -132,11 +132,11 @@ export function MobileTestimonials() {
         >
           {randomQuotes.map((quote, idx) => {
             const rotation = rotations[idx % rotations.length];
+            const person = quote.penName?.person;
             const memberAvatarUrl =
-              quote.penName && "user" in quote.penName.person
-                ? quote.penName.person.user?.avatarUrl
-                : null;
-            const avatarUrl = memberAvatarUrl || quote.penName?.person?.imageUrl;
+              person && "memberProfile" in person ? person.memberProfile?.avatarUrl : null;
+            const avatarUrl =
+              memberAvatarUrl || person?.imageUrl || quote.avatarUrl;
 
             return (
               <article
