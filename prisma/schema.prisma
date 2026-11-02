@@ -219,16 +219,20 @@ model SavedPoem {
 }
 
 model PoemRequest {
-  id            String   @id @default(uuid())
-  userId        String
-  occasion      String
-  tone          String
-  delivery      String
-  recipientName String
-  contactValue  String
-  story         String
-  status        String   @default("NEW")
-  createdAt     DateTime @default(now())
+  id              String   @id @default(uuid())
+  userId          String
+  occasion        String
+  tone            String
+  delivery        String
+  recipientName   String
+  contactValue    String
+  story           String
+  status          String   @default("NEW")
+  adminResponse   String?
+  deliveredPoemId String?
+  createdAt       DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model Chapbook {
@@ -370,14 +374,14 @@ model Quote {
 }
 
 model DailyGame {
-  id        String   @id // "YYYY-MM-DD"
+  id        String         @id // "YYYY-MM-DD"
   prompt    String
   lineA     String
   poetA     String
   lineB     String
   poetB     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
   votes     DuelVote[]
   stories   SixWordStory[]
 }

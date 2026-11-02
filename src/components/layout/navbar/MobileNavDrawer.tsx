@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import {
   BookOpen,
+  Bookmark,
   ChevronDown,
   Feather,
   LogOut,
@@ -212,6 +213,35 @@ export function MobileNavDrawer({
                       Profile
                     </span>
                     <span className="text-[9px] text-paper-faint">Settings</span>
+                  </Link>
+
+                  <Link
+                    to="/vault"
+                    onClick={() => {
+                      setDrawerUserMenuOpen(false);
+                      setMobileOpen(false);
+                    }}
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2 font-medium">
+                      <Bookmark className="h-3.5 w-3.5 text-amber-400" />
+                      Your Vault
+                    </span>
+                    <span className="text-[9px] text-paper-faint">Saved</span>
+                  </Link>
+                  <Link
+                    to="/my-requests"
+                    onClick={() => {
+                      setDrawerUserMenuOpen(false);
+                      setMobileOpen(false);
+                    }}
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2 font-medium">
+                      <Feather className="h-3.5 w-3.5 text-neon" />
+                      My Requests
+                    </span>
+                    <span className="text-[9px] text-paper-faint">Commissions</span>
                   </Link>
 
                   <div className="my-1 border-t border-neon/10" />

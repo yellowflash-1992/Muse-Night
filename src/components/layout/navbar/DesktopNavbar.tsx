@@ -264,6 +264,17 @@ export function DesktopNavbar({
                         <span className="text-[10px] text-paper-faint">Saved</span>
                       </Link>
                       <Link
+                        to="/my-requests"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Feather className="h-3.5 w-3.5 text-neon" />
+                          My Requests
+                        </span>
+                        <span className="text-[10px] text-paper-faint">Commissions</span>
+                      </Link>
+                      <Link
                         to="/streak"
                         onClick={() => setUserMenuOpen(false)}
                         className="flex items-center justify-between px-2.5 py-2 rounded-xl text-xs text-paper-dim hover:text-paper hover:bg-neon/10 transition-colors"

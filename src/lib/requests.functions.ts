@@ -30,3 +30,32 @@ export const createPoemRequestFn = createServerFn({ method: "POST" })
       select: { id: true },
     });
   });
+
+export interface MyPoemRequest {
+  id: string;
+  occasion: string;
+  tone: string;
+  status: string;
+  adminResponse: string | null;
+  deliveredPoemId: string | null;
+  createdAt: Date;
+}
+
+export const getMyRequestsFn = createServerFn({ method: "GET" }).handler(
+  async (): Promise<MyPoemRequest[]> => {
+    const user = await requireUser();
+    return prisma.poemRequest.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        occasion: true,
+        tone: true,
+        status: true,
+        adminResponse: true,
+        deliveredPoemId: true,
+        createdAt: true,
+      },
+    });
+  },
+);
