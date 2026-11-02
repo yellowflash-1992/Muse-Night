@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { SubmitPage } from "@/features/submit/SubmitPage";
+import { getSiteSettingsFn } from "@/lib/settings.functions";
 
 export const Route = createFileRoute("/submit")({
+  loader: async () => ({ settings: await getSiteSettingsFn() }),
   head: () => ({
     meta: [
       { title: "Submissions & Call for Poetry &mdash; Muse Night" },
@@ -13,5 +15,10 @@ export const Route = createFileRoute("/submit")({
       },
     ],
   }),
-  component: SubmitPage,
+  component: SubmitRoute,
 });
+
+function SubmitRoute() {
+  const { settings } = Route.useLoaderData();
+  return <SubmitPage settings={settings} />;
+}

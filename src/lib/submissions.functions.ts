@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
 import { createSubmission } from "./submissions.server";
 
 const createSubmissionSchema = z.object({
@@ -24,5 +25,14 @@ export const submitPoem = createServerFn({ method: "POST" })
     if (error || !user) {
       throw new Error("You must be signed in to submit");
     }
+
+    const settings = await prisma.siteSettings.findUnique({
+      where: { id: "global" },
+      select: { submissionsOpen: true },
+    });
+    if (!settings?.submissionsOpen) {
+      throw new Error("Submissions are currently closed.");
+    }
+
     return createSubmission(data, user.id);
   });

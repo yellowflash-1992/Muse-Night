@@ -1,13 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { Calendar, CheckCircle2, Feather, FileText, Send, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  CheckCircle2,
+  DoorClosed,
+  Feather,
+  FileText,
+  Send,
+  Sparkles,
+} from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
+import type { SiteSettings } from "@/lib/settings.functions";
 import { submitPoem } from "@/lib/submissions.functions";
 import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
 
-export function SubmitPage() {
+interface SubmitPageProps {
+  settings: SiteSettings | null;
+}
+
+export function SubmitPage({ settings }: SubmitPageProps) {
+  const submissionsOpen = settings?.submissionsOpen === true;
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -78,10 +93,13 @@ export function SubmitPage() {
               <Calendar className="h-4 w-4" />
               <span>Reading Schedule</span>
             </div>
-            <h3 className="font-display text-xl text-paper">Year-Round Reading</h3>
+            <h3 className="font-display text-xl text-paper">
+              {submissionsOpen ? "Currently Open" : "Currently Closed"}
+            </h3>
             <p className="text-xs text-paper-dim leading-relaxed">
-              We review submissions on a rolling basis. Expect a thoughtful personal response within
-              4 to 6 weeks.
+              {submissionsOpen
+                ? "We review submissions on a rolling basis. Expect a thoughtful personal response within 4 to 6 weeks."
+                : "Our reading window is closed for now. Please check back for future submission periods."}
             </p>
           </div>
 
@@ -153,7 +171,27 @@ export function SubmitPage() {
 
           {/* Form Column */}
           <div className="col-span-12 lg:col-span-7">
-            {submitted ? (
+            {!submissionsOpen ? (
+              <div className="rounded-xl border border-neon/20 bg-ink-2 p-8 text-center sm:p-12">
+                <div className="inline-flex rounded-full border border-neon/25 bg-neon/10 p-4 text-neon">
+                  <DoorClosed className="h-8 w-8" />
+                </div>
+                <h2 className="mt-6 font-display text-3xl text-paper sm:text-4xl">
+                  Submissions are currently closed
+                </h2>
+                <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-paper-dim">
+                  Thank you for your interest in sharing your work with Muse Night. Our reading
+                  window is closed for now; please visit the archive and check back another time.
+                </p>
+                <Link
+                  to="/library"
+                  className="mt-8 inline-flex items-center gap-2 rounded bg-neon px-5 py-3 text-xs font-medium uppercase tracking-[0.18em] text-ink transition hover:bg-neon/90"
+                >
+                  <span>Explore the Library</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            ) : submitted ? (
               <div className="rounded-xl border border-neon/40 bg-ink-2 p-8 sm:p-12 text-center space-y-6 animate-in fade-in">
                 <div className="inline-flex p-4 rounded-full bg-neon/15 text-neon">
                   <CheckCircle2 className="h-12 w-12" />
