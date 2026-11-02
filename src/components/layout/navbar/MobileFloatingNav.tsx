@@ -6,6 +6,9 @@ import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
 import { NotificationBell } from "../NotificationBell";
 
+const isRealAvatar = (url?: string | null): url is string =>
+  Boolean(url && !url.includes("googleusercontent.com"));
+
 interface MobileFloatingNavProps {
   user: AuthUser | null;
   profile?: MemberProfileData | null;
@@ -150,9 +153,9 @@ export function MobileFloatingNav({
               className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center overflow-hidden rounded-full border border-neon/35 bg-neon/15 text-neon hover:bg-neon/25 transition-all active:scale-95 shrink-0 cursor-pointer shadow-inner"
             >
               {isAuthenticated && user ? (
-                profile?.avatarUrl ? (
+                isRealAvatar(profile?.avatarUrl) ? (
                   <img
-                    src={profile.avatarUrl}
+                    src={profile?.avatarUrl ?? undefined}
                     alt=""
                     className="w-full h-full rounded-full object-cover"
                   />

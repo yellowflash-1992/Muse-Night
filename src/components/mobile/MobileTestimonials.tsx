@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 
 const routeApi = getRouteApi("/");
 
+const isRealAvatar = (url?: string | null): url is string =>
+  Boolean(url && !url.includes("googleusercontent.com"));
+
 // Rotations for the hand-placed aesthetic
 const rotations = ["rotate-1", "-rotate-1", "rotate-2", "-rotate-2", "rotate-0"];
 
@@ -135,8 +138,9 @@ export function MobileTestimonials() {
             const person = quote.penName?.person;
             const memberAvatarUrl =
               person && "memberProfile" in person ? person.memberProfile?.avatarUrl : null;
-            const avatarUrl =
-              memberAvatarUrl || person?.imageUrl || quote.avatarUrl;
+            const avatarUrl = [memberAvatarUrl, person?.imageUrl, quote.avatarUrl].find(
+              isRealAvatar,
+            );
 
             return (
               <article

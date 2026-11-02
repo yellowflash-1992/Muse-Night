@@ -17,6 +17,9 @@ import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
 
+const isRealAvatar = (url?: string | null): url is string =>
+  Boolean(url && !url.includes("googleusercontent.com"));
+
 interface MobileNavDrawerProps {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
@@ -157,9 +160,9 @@ export function MobileNavDrawer({
               <div className="rounded-xl border border-neon/30 bg-ink/70 p-3 flex items-center justify-between shadow-inner">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neon text-ink font-bold text-sm shadow-md">
-                    {profile?.avatarUrl ? (
+                    {isRealAvatar(profile?.avatarUrl) ? (
                       <img
-                        src={profile.avatarUrl}
+                        src={profile?.avatarUrl ?? undefined}
                         alt=""
                         className="w-full h-full rounded-full object-cover"
                       />

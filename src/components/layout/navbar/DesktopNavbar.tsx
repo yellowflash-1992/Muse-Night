@@ -7,6 +7,9 @@ import { hubItems, topLinks } from "@/data/navItemsData";
 import type { User as AuthUser } from "@/hooks/useAuth";
 import type { MemberProfileData } from "@/hooks/useMemberProfile";
 
+const isRealAvatar = (url?: string | null): url is string =>
+  Boolean(url && !url.includes("googleusercontent.com"));
+
 interface DesktopNavbarProps {
   currentPath: string;
   user: AuthUser | null;
@@ -204,9 +207,9 @@ export function DesktopNavbar({
                   aria-expanded={userMenuOpen}
                 >
                   <div className="flex h-6.5 w-6.5 xl:h-7 xl:w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neon text-ink font-bold text-xs shadow-inner">
-                    {profile?.avatarUrl ? (
+                    {isRealAvatar(profile?.avatarUrl) ? (
                       <img
-                        src={profile.avatarUrl}
+                        src={profile?.avatarUrl ?? undefined}
                         alt=""
                         className="w-full h-full rounded-full object-cover"
                       />

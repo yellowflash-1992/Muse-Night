@@ -9,6 +9,9 @@ import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
 import { updateCurrentMemberProfileFn } from "@/lib/member-profile.functions";
 import { createClient } from "@/lib/supabase/client";
 
+const isRealAvatar = (url?: string | null): url is string =>
+  Boolean(url && !url.includes("googleusercontent.com"));
+
 export function SettingsPage() {
   return (
     <MemberGate feature={MEMBER_FEATURES.profile}>
@@ -38,7 +41,7 @@ function SettingsContent() {
       setName(profile.displayName || "");
       setPenName(profile.penName || "");
       setBio(profile.bio || "");
-      setAvatarUrl(profile.avatarUrl ?? null);
+      setAvatarUrl(isRealAvatar(profile.avatarUrl) ? profile.avatarUrl : null);
       setIsInitialized(true);
     }
   }, [profile, isInitialized]);
@@ -152,7 +155,7 @@ function SettingsContent() {
 
               <div className="flex items-center gap-4">
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-neon/30 via-neon/15 to-transparent border border-neon/40 text-neon font-display text-2xl font-bold shadow-md">
-                  {avatarUrl ? (
+                  {isRealAvatar(avatarUrl) ? (
                     <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center">
