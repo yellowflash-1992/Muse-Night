@@ -43,6 +43,16 @@ model Person {
   updatedAt      DateTime        @updatedAt
 }
 
+model SiteSettings {
+  id              String   @id
+  name            String
+  tagline         String
+  about           String
+  contact         String
+  submissionsOpen Boolean
+  updatedAt       DateTime @updatedAt
+}
+
 model MemberProfile {
   id                      String               @id
   displayName             String
