@@ -335,6 +335,54 @@ model Quote {
   @@index([penNameId])
 }
 
+model DailyGame {
+  id        String   @id // "YYYY-MM-DD"
+  prompt    String
+  lineA     String
+  poetA     String
+  lineB     String
+  poetB     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  votes     DuelVote[]
+  stories   SixWordStory[]
+}
+
+model DuelVote {
+  id        String    @id @default(uuid())
+  gameId    String
+  game      DailyGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userId    String
+  side      String
+  createdAt DateTime  @default(now())
+
+  @@unique([gameId, userId])
+}
+
+model SixWordStory {
+  id         String      @id @default(uuid())
+  gameId     String
+  game       DailyGame   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userId     String?
+  text       String
+  authorName String
+  votes      Int         @default(0)
+  createdAt  DateTime    @default(now())
+  userVotes  StoryVote[]
+
+  @@index([gameId])
+}
+
+model StoryVote {
+  id        String       @id @default(uuid())
+  storyId   String
+  story     SixWordStory @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime     @default(now())
+
+  @@unique([storyId, userId])
+}
+
 enum SubmissionStatus {
   NEW
   UNDER_REVIEW

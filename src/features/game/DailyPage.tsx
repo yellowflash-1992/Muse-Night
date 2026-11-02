@@ -1,49 +1,79 @@
-import { Link } from "@tanstack/react-router";
-import { Check, Flame, Heart, Send, Sparkles, Trophy } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Link, useRouter } from "@tanstack/react-router";
+import { Check, Flame, Heart, Send, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-interface BattleOption {
-  id: "a" | "b";
-  line: string;
-  poet: string;
-  votes: number;
+import {
+  submitDuelVoteFn,
+  submitStoryFn,
+  upvoteStoryFn,
+  type DailyGameData,
+} from "@/lib/game.functions";
+
+function formatCountdown(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const s = String(totalSeconds % 60).padStart(2, "0");
+  return `${h}:${m}:${s}`;
 }
 
-interface Story {
-  id: string;
-  text: string;
-  votes: number;
-  hasUpvoted?: boolean;
-  author: string;
+function msUntilMidnight(now: Date): number {
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  return midnight.getTime() - now.getTime();
 }
 
-const INITIAL_BATTLE: Record<"a" | "b", BattleOption> = {
-  a: {
-    id: "a",
-    line: "Grief is just love with nowhere left to go.",
-    poet: "River Adeyemi",
-    votes: 342,
-  },
-  b: {
-    id: "b",
-    line: "I keep setting two cups down out of habit.",
-    poet: "Tomi Fashola",
-    votes: 268,
-  },
-};
+function CountdownTimer() {
+  const [remaining, setRemaining] = useState(() => msUntilMidnight(new Date()));
 
-const INITIAL_STORIES: Story[] = [
-  { id: "1", text: "She kept his side of bed.", votes: 84, author: "Aisha" },
-  { id: "2", text: "Divorce papers, still in the drawer.", votes: 51, author: "Anon" },
-  { id: "3", text: "I finally deleted your last voicemail.", votes: 39, author: "Soren" },
-];
+  useEffect(() => {
+    const timer = setInterval(() => setRemaining(msUntilMidnight(new Date())), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-export function DailyPage() {
-  const [votedSide, setVotedSide] = useState<"a" | "b" | null>(null);
-  const [battle, setBattle] = useState(INITIAL_BATTLE);
+  return (
+    <p className="text-[11px] font-mono text-paper-faint">
+      New arena in <span className="text-amber-200">{formatCountdown(remaining)}</span>
+    </p>
+  );
+}
 
+interface QuestChipProps {
+  label: string;
+  done: boolean;
+  onClick: () => void;
+}
+
+function QuestChip({ label, done, onClick }: QuestChipProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex flex-1 items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium transition-all cursor-pointer ${
+        done
+          ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-300"
+          : "border-neon/20 bg-ink text-paper-dim hover:border-neon/40 hover:text-paper"
+      }`}
+    >
+      <span
+        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
+          done ? "border-emerald-400/60 bg-emerald-400/30" : "border-paper-faint/50 bg-ink"
+        }`}
+      >
+        {done && <Check className="h-2.5 w-2.5" strokeWidth={3} />}
+      </span>
+      <span className={done ? "line-through opacity-75" : ""}>{label}</span>
+    </button>
+  );
+}
+
+export function DailyPage({ game }: { game: DailyGameData | null }) {
+  const router = useRouter();
   const [entry, setEntry] = useState("");
-  const [stories, setStories] = useState<Story[]>(INITIAL_STORIES);
+  const [pendingVote, setPendingVote] = useState(false);
+  const [submittingStory, setSubmittingStory] = useState(false);
+  const [upvotingStoryId, setUpvotingStoryId] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   // Calculate word count
   const wordCount = useMemo(() => {
@@ -52,68 +82,124 @@ export function DailyPage() {
 
   const isValidStory = wordCount === 6;
 
-  // Handle voting in the verse battle
-  const handleVote = (side: "a" | "b") => {
-    if (votedSide === side) return;
-
-    setBattle((prev) => {
-      const updated = { ...prev };
-      // If switching vote, decrement old and increment new
-      if (votedSide) {
-        updated[votedSide] = { ...updated[votedSide], votes: updated[votedSide].votes - 1 };
-      }
-      updated[side] = { ...updated[side], votes: updated[side].votes + 1 };
-      return updated;
-    });
-
-    setVotedSide(side);
-  };
-
-  // Vote percentages
-  const totalVotes = battle.a.votes + battle.b.votes;
-  const percentA = Math.round((battle.a.votes / totalVotes) * 100);
-  const percentB = 100 - percentA;
-
-  // Handle submitting a 6-word story
-  const handleSubmitStory = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isValidStory) return;
-
-    const newStory: Story = {
-      id: `story-${Date.now()}`,
-      text: entry.trim(),
-      votes: 1,
-      hasUpvoted: true,
-      author: "You",
-    };
-
-    setStories([newStory, ...stories]);
-    setEntry("");
-  };
-
-  // Handle upvoting a story
-  const handleToggleUpvote = (id: string) => {
-    setStories((prev) =>
-      prev.map((s) => {
-        if (s.id === id) {
-          const hasUpvoted = !s.hasUpvoted;
-          return {
-            ...s,
-            hasUpvoted,
-            votes: hasUpvoted ? s.votes + 1 : s.votes - 1,
-          };
-        }
-        return s;
+  const todayLabel = useMemo(
+    () =>
+      new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
       }),
-    );
+    [],
+  );
+
+  const scrollToChallenge = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  // Completion counter
-  const tasksCompleted = (votedSide ? 1 : 0) + (stories.some((s) => s.author === "You") ? 1 : 0);
+  const handleVote = async (side: "a" | "b") => {
+    if (!game || pendingVote || game.votedSide === side) return;
+    setPendingVote(true);
+    setActionError(null);
+    try {
+      await submitDuelVoteFn({ data: { gameId: game.id, side } });
+      await router.invalidate();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Could not submit your vote.");
+    } finally {
+      setPendingVote(false);
+    }
+  };
+
+  const battle = game
+    ? {
+        a: {
+          id: "a" as const,
+          line: game.lineA,
+          poet: game.poetA,
+          votes: game.votes.filter((vote) => vote.side === "a").length,
+        },
+        b: {
+          id: "b" as const,
+          line: game.lineB,
+          poet: game.poetB,
+          votes: game.votes.filter((vote) => vote.side === "b").length,
+        },
+      }
+    : null;
+  const votedSide = game?.votedSide ?? null;
+  const hasVoted = votedSide !== null;
+  const totalVotes = battle ? battle.a.votes + battle.b.votes : 0;
+  const percentA = totalVotes ? Math.round(((battle?.a.votes ?? 0) / totalVotes) * 100) : 0;
+  const percentB = totalVotes ? 100 - percentA : 0;
+
+  const handleSubmitStory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!game || !isValidStory || submittingStory) return;
+
+    setSubmittingStory(true);
+    setActionError(null);
+    try {
+      await submitStoryFn({ data: { gameId: game.id, text: entry.trim() } });
+      setEntry("");
+      await router.invalidate();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Could not submit your story.");
+    } finally {
+      setSubmittingStory(false);
+    }
+  };
+
+  const handleUpvoteStory = async (storyId: string) => {
+    if (upvotingStoryId) return;
+    setUpvotingStoryId(storyId);
+    setActionError(null);
+    try {
+      await upvoteStoryFn({ data: storyId });
+      await router.invalidate();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Could not applaud this story.");
+    } finally {
+      setUpvotingStoryId(null);
+    }
+  };
+
+  if (!game) {
+    return (
+      <div className="min-h-screen bg-ink text-paper px-4 sm:px-6 pt-24 pb-20">
+        <div className="mx-auto max-w-lg space-y-10">
+          <div className="flex items-center justify-between border-b border-neon/15 pb-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-neon font-semibold mb-1">
+                <Sparkles className="h-3 w-3" />
+                <span>Daily Arena</span>
+              </div>
+              <h1 className="font-display text-3xl sm:text-4xl font-medium text-paper">
+                Muse Night Arena
+              </h1>
+            </div>
+            <Link
+              to="/streak"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-3.5 py-1.5 text-xs text-amber-200 hover:bg-amber-400/20 transition-all font-medium"
+            >
+              <Flame className="h-3.5 w-3.5 text-amber-400" />
+              <span>Streak</span>
+            </Link>
+          </div>
+          <div className="rounded-2xl border border-neon/20 bg-ink-2/80 p-8 text-center shadow-sm">
+            <Sparkles className="mx-auto mb-4 h-8 w-8 text-neon" />
+            <h2 className="font-display text-xl text-paper">The next arena opens at midnight.</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const votedDuel = hasVoted;
+  const submittedStory = game.stories.some((story) => story.isMine);
 
   return (
     <div className="min-h-screen bg-ink text-paper px-4 sm:px-6 pt-24 pb-20">
-      <div className="mx-auto max-w-lg space-y-10">
+      <div className="mx-auto max-w-lg space-y-8">
         {/* Masthead Header */}
         <div className="flex items-center justify-between border-b border-neon/15 pb-4">
           <div>
@@ -122,8 +208,9 @@ export function DailyPage() {
               <span>Daily Arena</span>
             </div>
             <h1 className="font-display text-3xl sm:text-4xl font-medium text-paper">
-              Poetry Game
+              Muse Night Arena
             </h1>
+            <p className="mt-1 text-xs text-paper-dim">{todayLabel}</p>
           </div>
 
           <Link
@@ -135,34 +222,25 @@ export function DailyPage() {
           </Link>
         </div>
 
-        {/* Daily Progress Tracker */}
-        <div className="rounded-2xl border border-neon/20 bg-ink-2/80 p-4 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-neon/15 text-neon border border-neon/30">
-              <Trophy className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-paper">Today's Challenges</p>
-              <p className="text-[11px] text-paper-dim">
-                {tasksCompleted === 2
-                  ? "All challenges finished &mdash; streak bonus ready! ✨"
-                  : `${tasksCompleted} of 2 completed`}
-              </p>
-            </div>
+        {/* Quest Strip */}
+        <div className="space-y-2">
+          <div className="flex gap-2">
+            <QuestChip
+              label="Verse Duel"
+              done={votedDuel}
+              onClick={() => scrollToChallenge("challenge-duel")}
+            />
+            <QuestChip
+              label="Six-Word Story"
+              done={submittedStory}
+              onClick={() => scrollToChallenge("challenge-story")}
+            />
           </div>
-          <span
-            className={`rounded-full px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider ${
-              tasksCompleted === 2
-                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
-                : "bg-ink border border-neon/20 text-paper-dim"
-            }`}
-          >
-            {tasksCompleted}/2 Done
-          </span>
+          <CountdownTimer />
         </div>
 
         {/* Challenge 1: Verse Duel */}
-        <div className="space-y-4">
+        <div id="challenge-duel" className="space-y-4 scroll-mt-28">
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon">
@@ -172,65 +250,85 @@ export function DailyPage() {
             </div>
             <span className="text-xs text-paper-dim font-medium">Vote for the stronger line</span>
           </div>
+          <p className="text-[11px] text-paper-faint">Votes are final &mdash; choose wisely.</p>
+
+          {actionError && <p className="text-sm text-rose-400">{actionError}</p>}
 
           <div className="space-y-3">
             {(["a", "b"] as const).map((side) => {
-              const item = battle[side];
+              const item = battle![side];
               const isSelected = votedSide === side;
               const percent = side === "a" ? percentA : percentB;
 
               return (
-                <button
-                  key={side}
-                  type="button"
-                  onClick={() => handleVote(side)}
-                  className={`w-full text-left rounded-2xl border p-4 sm:p-5 transition-all relative overflow-hidden active:scale-[0.99] cursor-pointer shadow-sm ${
-                    isSelected
-                      ? "border-neon/60 bg-gradient-to-r from-neon/15 via-ink-2 to-ink shadow-[0_0_20px_rgba(45,212,191,0.15)]"
-                      : "border-neon/15 bg-ink-2 hover:border-neon/40 hover:bg-ink-2/90"
-                  }`}
-                >
-                  {/* Background Progress Bar when voted */}
-                  {votedSide && (
-                    <div
-                      className="absolute inset-y-0 left-0 bg-neon/10 transition-all duration-700 pointer-events-none"
-                      style={{ width: `${percent}%` }}
-                    />
-                  )}
+                <div key={side} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => void handleVote(side)}
+                    disabled={pendingVote || isSelected}
+                    className={`w-full text-left rounded-2xl border p-4 sm:p-5 transition-all relative overflow-hidden active:scale-[0.99] cursor-pointer shadow-sm ${
+                      isSelected
+                        ? "border-neon/60 bg-gradient-to-r from-neon/15 via-ink-2 to-ink shadow-[0_0_20px_rgba(45,212,191,0.15)]"
+                        : hasVoted
+                          ? "border-neon/10 bg-ink-2/60"
+                          : "border-neon/15 bg-ink-2 hover:border-neon/40 hover:bg-ink-2/90"
+                    }`}
+                  >
+                    {/* Background Progress Bar shown only after voting */}
+                    {hasVoted && (
+                      <div
+                        className="absolute inset-y-0 left-0 bg-neon/10 transition-all duration-700 pointer-events-none"
+                        style={{ width: `${percent}%` }}
+                      />
+                    )}
 
-                  <div className="relative z-10 space-y-2">
-                    <p className="font-display italic text-base sm:text-lg text-paper leading-snug">
-                      “{item.line}”
-                    </p>
+                    <div className="relative z-10 space-y-2">
+                      <p className="font-display italic text-base sm:text-lg text-paper leading-snug">
+                        &ldquo;{item.line}&rdquo;
+                      </p>
 
-                    <div className="flex items-center justify-between text-xs pt-1">
-                      <span className="text-paper-dim font-medium">&mdash; {item.poet}</span>
+                      <div className="flex items-center justify-between text-xs pt-1">
+                        <span className="text-paper-dim font-medium">&mdash; {item.poet}</span>
 
-                      {votedSide ? (
-                        <div className="flex items-center gap-2">
-                          {isSelected && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-neon bg-neon/15 px-2 py-0.5 rounded-full border border-neon/30">
-                              <Check className="h-3 w-3" />
-                              Your Pick
+                        {hasVoted ? (
+                          <div className="flex items-center gap-2">
+                            {isSelected && (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-neon bg-neon/15 px-2 py-0.5 rounded-full border border-neon/30">
+                                <Check className="h-3 w-3" />
+                                Your Pick
+                              </span>
+                            )}
+                            <span className="font-mono font-bold text-paper text-xs">
+                              {percent}%
                             </span>
-                          )}
-                          <span className="font-mono font-bold text-paper text-xs">{percent}%</span>
-                        </div>
-                      ) : (
-                        <span className="text-[10px] text-paper-faint uppercase tracking-wider font-semibold group-hover:text-neon">
-                          Tap to vote
-                        </span>
-                      )}
+                          </div>
+                        ) : (
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-neon">
+                            Cast Vote
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
+
+                  {/* VS divider between the two duel cards */}
+                  {side === "a" && (
+                    <div className="flex items-center justify-center py-1" aria-hidden="true">
+                      <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon/40" />
+                      <span className="mx-3 font-display text-sm font-bold text-amber-300/90 drop-shadow-[0_0_6px_rgba(252,211,77,0.4)]">
+                        VS
+                      </span>
+                      <div className="h-px w-16 bg-gradient-to-l from-transparent to-neon/40" />
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
         </div>
 
         {/* Challenge 2: Six-Word Story */}
-        <div className="space-y-4 pt-4 border-t border-neon/15">
+        <div id="challenge-story" className="space-y-4 pt-4 border-t border-neon/15 scroll-mt-28">
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon">
@@ -245,60 +343,66 @@ export function DailyPage() {
           <div className="rounded-xl border border-amber-400/30 bg-gradient-to-r from-amber-400/10 via-ink-2 to-ink p-3.5 flex items-center justify-between">
             <span className="text-xs text-paper-dim font-medium">Today's Prompt:</span>
             <span className="font-display italic text-sm sm:text-base text-amber-200 font-medium">
-              “what grief doesn’t say”
+              &ldquo;{game.prompt}&rdquo;
             </span>
           </div>
 
           {/* Submission Form with Word Counter Badge */}
-          <form onSubmit={handleSubmitStory} className="space-y-2">
-            <div className="relative flex items-center">
-              <input
-                type="text"
-                value={entry}
-                onChange={(e) => setEntry(e.target.value)}
-                placeholder="Type your story (e.g. She kept his side of bed)..."
-                className="w-full rounded-2xl border border-neon/25 bg-ink-2 pl-4 pr-12 py-3 text-sm text-paper placeholder:text-paper-faint/60 focus:outline-none focus:border-neon transition-colors"
-              />
+          {!submittedStory ? (
+            <form onSubmit={handleSubmitStory} className="space-y-2">
+              <div className="relative">
+                <textarea
+                  rows={2}
+                  value={entry}
+                  onChange={(e) => setEntry(e.target.value)}
+                  placeholder="Type your story (e.g. She kept his side of bed)..."
+                  className="w-full rounded-2xl border border-neon/25 bg-ink-2 pl-4 pr-12 py-3 text-sm text-paper placeholder:text-paper-faint/60 focus:outline-none focus:border-neon transition-colors resize-none"
+                />
 
-              <button
-                type="submit"
-                disabled={!isValidStory}
-                className={`absolute right-2 flex h-8 w-8 items-center justify-center rounded-xl transition-all cursor-pointer ${
-                  isValidStory
-                    ? "bg-neon text-ink shadow-md active:scale-95 hover:bg-neon/90"
-                    : "bg-ink border border-neon/15 text-paper-faint opacity-50 cursor-not-allowed"
-                }`}
-                title={isValidStory ? "Submit story" : "Must be exactly 6 words"}
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </div>
+                <button
+                  type="submit"
+                  disabled={!isValidStory || submittingStory}
+                  className={`absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl transition-all cursor-pointer ${
+                    isValidStory
+                      ? "bg-neon text-ink shadow-md active:scale-95 hover:bg-neon/90"
+                      : "bg-ink border border-neon/15 text-paper-faint opacity-50 cursor-not-allowed"
+                  }`}
+                  title={isValidStory ? "Submit story" : "Must be exactly 6 words"}
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
 
-            {/* Word Count Indicator Badge */}
-            <div className="flex items-center justify-between px-1 text-xs">
-              <span className="text-[11px] text-paper-faint">
-                {wordCount === 0
-                  ? "Write a mini-story using exactly six words"
-                  : wordCount === 6
-                    ? "Perfect length! Ready to submit"
-                    : wordCount < 6
-                      ? `Add ${6 - wordCount} more ${6 - wordCount === 1 ? "word" : "words"}`
-                      : `Remove ${wordCount - 6} ${wordCount - 6 === 1 ? "word" : "words"}`}
-              </span>
+              {/* Word Count Indicator Badge */}
+              <div className="flex items-center justify-between px-1 text-xs">
+                <span className="text-[11px] text-paper-faint">
+                  {wordCount === 0
+                    ? "Write a mini-story using exactly six words"
+                    : wordCount === 6
+                      ? "Perfect length! Ready to submit"
+                      : wordCount < 6
+                        ? `Add ${6 - wordCount} more ${6 - wordCount === 1 ? "word" : "words"}`
+                        : `Remove ${wordCount - 6} ${wordCount - 6 === 1 ? "word" : "words"}`}
+                </span>
 
-              <span
-                className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded-full border ${
-                  isValidStory
-                    ? "bg-emerald-500/15 border-emerald-400/40 text-emerald-300"
-                    : wordCount > 6
-                      ? "bg-rose-500/15 border-rose-400/40 text-rose-300"
-                      : "bg-ink border border-neon/15 text-paper-dim"
-                }`}
-              >
-                {wordCount} / 6 words
-              </span>
-            </div>
-          </form>
+                <span
+                  className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded-full border ${
+                    isValidStory
+                      ? "bg-emerald-500/15 border-emerald-400/40 text-emerald-300"
+                      : wordCount > 6
+                        ? "bg-rose-500/15 border-rose-400/40 text-rose-300"
+                        : "bg-ink border border-neon/15 text-paper-dim"
+                  }`}
+                >
+                  {wordCount} / 6 words
+                </span>
+              </div>
+            </form>
+          ) : (
+            <p className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-xs text-emerald-300">
+              Your story is in for today. Come back tomorrow for a new prompt.
+            </p>
+          )}
 
           {/* Community Stories List with Live Upvotes */}
           <div className="space-y-2.5 pt-2">
@@ -306,25 +410,26 @@ export function DailyPage() {
               Today's Submissions
             </span>
 
-            {stories.map((story) => (
+            {game.stories.map((story) => (
               <div
                 key={story.id}
                 className="flex items-center justify-between rounded-xl border border-neon/15 bg-ink-2/70 px-4 py-3 shadow-sm hover:border-neon/30 transition-all"
               >
                 <div className="min-w-0 pr-3">
                   <p className="font-display italic text-sm text-paper leading-snug">
-                    “{story.text}”
+                    &ldquo;{story.text}&rdquo;
                   </p>
                   <span className="text-[10px] text-paper-faint font-sans mt-0.5 block">
-                    by {story.author}
+                    by {story.authorName}
                   </span>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => handleToggleUpvote(story.id)}
+                  onClick={() => void handleUpvoteStory(story.id)}
+                  disabled={story.hasUpvoted || upvotingStoryId === story.id}
                   className={`flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-mono transition-all cursor-pointer active:scale-95 ${
-                    story.hasUpvoted
+                    story.hasUpvoted || upvotingStoryId === story.id
                       ? "bg-rose-500/15 border-rose-400/40 text-rose-300 shadow-sm"
                       : "bg-ink border-neon/15 text-paper-faint hover:text-paper"
                   }`}
