@@ -1,6 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { RotateCcw, Share2, Sparkles } from "lucide-react";
 import { useState } from "react";
+
+const routeApi = getRouteApi("/mood");
 
 const MOODS = [
   { label: "Missing someone", emoji: "🕊️" },
@@ -13,22 +15,17 @@ const MOODS = [
   { label: "Numb", emoji: "🕯️" },
 ];
 
-const POEM_LINES: Record<string, { line: string; poet: string }> = {
-  "Missing someone": { line: "the kettle still set for two.", poet: "River Adeyemi" },
-  Heartbroken: { line: "I keep the door unlocked, just in case.", poet: "Tomi Fashola" },
-  Hopeful: { line: "even the tide leaves for a reason to return.", poet: "Ada Nwosu" },
-  Lonely: { line: "some nights the moon is the only one awake with me.", poet: "Femi Okoro" },
-  "In love": { line: "you are the poem I didn't know I was writing.", poet: "Foluke Bello" },
-  Overwhelmed: { line: "I am learning to float instead of fight the water.", poet: "Zara Idris" },
-  Grateful: { line: "some mornings the light just wants to be noticed.", poet: "Tamsin Reyes" },
-  Numb: { line: "I am here. that has to count for something today.", poet: "River Adeyemi" },
-};
-
-const MOOD_LIST = Object.keys(POEM_LINES);
-
 export function MoodPage() {
+  const { curatedMoods } = routeApi.useLoaderData();
   const [stage, setStage] = useState<"pick" | "flipping" | "result">("pick");
   const [mood, setMood] = useState<string | null>(null);
+
+  const curated = curatedMoods.find((entry) => entry.mood === mood);
+  const poem = curated?.poem;
+  const firstStanza =
+    poem && Array.isArray(poem.stanzas) && Array.isArray(poem.stanzas[0])
+      ? poem.stanzas[0].filter((line): line is string => typeof line === "string")
+      : [];
 
   const reveal = (chosenMood: string) => {
     setMood(chosenMood);
@@ -37,7 +34,12 @@ export function MoodPage() {
   };
 
   const flipPenny = () => {
-    const random = MOOD_LIST[Math.floor(Math.random() * MOOD_LIST.length)] ?? MOOD_LIST[0] ?? "";
+    const moodOptions =
+      curatedMoods.length > 0
+        ? curatedMoods.map((entry) => entry.mood)
+        : MOODS.map((entry) => entry.label);
+    const random =
+      moodOptions[Math.floor(Math.random() * moodOptions.length)] ?? MOODS[0]?.label ?? "";
     reveal(random);
   };
 
@@ -110,12 +112,26 @@ export function MoodPage() {
             </p>
 
             <div className="rounded-2xl bg-gradient-to-br from-ink-2 via-purple-950 to-ink p-6 mb-5 border border-neon/10 max-w-xs">
-              <p className="font-display italic text-base text-amber-100 leading-relaxed">
-                {POEM_LINES[mood]?.line ?? "A quiet verse for this hour."}
-              </p>
-              <p className="text-[10px] text-amber-200/70 mt-3">
-                &mdash; {POEM_LINES[mood]?.poet ?? "Muse Night"}
-              </p>
+              {poem ? (
+                <>
+                  <p className="font-display italic text-base text-amber-100 leading-relaxed">
+                    {firstStanza.join(" ")}
+                  </p>
+                  <p className="text-[10px] text-amber-200/70 mt-3">&mdash; {poem.penName.name}</p>
+                  <Link
+                    to="/library/$id"
+                    params={{ id: poem.id }}
+                    search={{ source: "home" }}
+                    className="mt-4 inline-block text-[10px] uppercase tracking-[0.16em] text-neon hover:underline"
+                  >
+                    Read the full poem
+                  </Link>
+                </>
+              ) : (
+                <p className="font-display italic text-base text-paper-dim leading-relaxed">
+                  We are still curating a poem for this mood.
+                </p>
+              )}
             </div>
 
             <div className="flex gap-2 justify-center mb-5">
