@@ -1,17 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { StudyHallPage } from "@/features/study/StudyHallPage";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/study")({
-  head: () => ({
-    meta: [
-      { title: "Study Hall &mdash; JAMB & WAEC Literature Room | Muse Night" },
-      {
-        name: "description",
-        content:
-          "A calm Literature-in-English preparation space for JAMB and WAEC, with study-room placeholders and a path into the Muse Night Library.",
-      },
-    ],
-  }),
-  component: StudyHallPage,
+  component: () => <Outlet />,
 });
