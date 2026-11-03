@@ -32,6 +32,7 @@ type GalleryItem = {
   status: "curated" | "built-in";
   visual: "mystery" | "portrait" | "frame" | "relic" | "myth" | "poetry";
   frameStyle?: "minimal" | "romantic" | "melancholic" | "mystical" | "vintage" | "manuscript";
+  aspectRatio?: "AUTO" | "PORTRAIT" | "LANDSCAPE" | "SQUARE";
   bookId?: string;
   poemId?: string;
 };
@@ -149,6 +150,13 @@ const FRAME_STYLES: Record<
 
 function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }) {
   const frameStyles = FRAME_STYLES[item.frameStyle ?? "minimal"];
+  const aspectRatioClasses = {
+    AUTO: "h-auto",
+    PORTRAIT: "aspect-[4/5]",
+    LANDSCAPE: "aspect-[16/9]",
+    SQUARE: "aspect-square",
+  } as const;
+  const aspectRatioClass = aspectRatioClasses[item.aspectRatio ?? "AUTO"];
 
   if (item.image) {
     return (
@@ -159,11 +167,17 @@ function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }
         aria-label={`View larger image: ${item.title}`}
       >
         <div className={`w-full p-2.5 sm:p-3 ${frameStyles.paper}`}>
-          <div className="overflow-hidden rounded-xl">
+          <div
+            className={`overflow-hidden rounded-xl ${
+              item.aspectRatio && item.aspectRatio !== "AUTO" ? aspectRatioClass : ""
+            }`}
+          >
             <img
               src={item.image}
               alt={item.title}
-              className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover/art:scale-[1.03]"
+              className={`w-full object-cover rounded-xl transition-transform duration-500 group-hover/art:scale-[1.03] ${
+                item.aspectRatio && item.aspectRatio !== "AUTO" ? "h-full" : aspectRatioClass
+              }`}
               loading="lazy"
             />
           </div>

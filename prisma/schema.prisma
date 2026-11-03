@@ -312,6 +312,7 @@ model GalleryItem {
   status       GalleryStatus   @default(COMING_SOON)
   visual       GalleryVisual
   frameStyle   FrameStyle?
+  aspectRatio  String          @default("AUTO")
   imageUrl     String?
   bookId       String?
   poemId       String?

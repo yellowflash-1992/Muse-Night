@@ -16,6 +16,7 @@ export interface GalleryItemUI {
   status: "curated" | "built-in";
   visual: "mystery" | "portrait" | "frame" | "relic" | "myth" | "poetry";
   frameStyle?: "minimal" | "romantic" | "melancholic" | "mystical" | "vintage" | "manuscript";
+  aspectRatio: "AUTO" | "PORTRAIT" | "LANDSCAPE" | "SQUARE";
   bookId?: string;
   poemId?: string;
 }
@@ -70,6 +71,12 @@ export async function getGalleryItemsRaw(): Promise<Record<GalleryCategoryId, Ga
       VINTAGE: "vintage",
       MANUSCRIPT: "manuscript",
     };
+    const aspectRatioMap: Record<string, GalleryItemUI["aspectRatio"]> = {
+      AUTO: "AUTO",
+      PORTRAIT: "PORTRAIT",
+      LANDSCAPE: "LANDSCAPE",
+      SQUARE: "SQUARE",
+    };
 
     const catId = categoryMap[row.category]!;
 
@@ -80,6 +87,7 @@ export async function getGalleryItemsRaw(): Promise<Record<GalleryCategoryId, Ga
       description: row.description,
       status: statusMap[row.status]!,
       visual: visualMap[row.visual]!,
+      aspectRatio: aspectRatioMap[row.aspectRatio] ?? "AUTO",
       ...(row.imageUrl ? { image: row.imageUrl } : {}),
       ...(row.artist ? { artist: row.artist } : {}),
       ...(row.era ? { era: row.era } : {}),
