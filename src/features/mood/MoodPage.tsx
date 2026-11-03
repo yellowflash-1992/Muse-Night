@@ -26,6 +26,8 @@ export function MoodPage() {
     poem && Array.isArray(poem.stanzas) && Array.isArray(poem.stanzas[0])
       ? poem.stanzas[0].filter((line): line is string => typeof line === "string")
       : [];
+  const displayText = curated?.customText || (poem ? firstStanza.join("\n") : null);
+  const displayAuthor = curated?.customAuthor || poem?.penName.name || "Muse Night";
 
   const reveal = (chosenMood: string) => {
     setMood(chosenMood);
@@ -112,20 +114,22 @@ export function MoodPage() {
             </p>
 
             <div className="rounded-2xl bg-gradient-to-br from-ink-2 via-purple-950 to-ink p-6 mb-5 border border-neon/10 max-w-xs">
-              {poem ? (
+              {displayText ? (
                 <>
-                  <p className="font-display italic text-base text-amber-100 leading-relaxed">
-                    {firstStanza.join(" ")}
+                  <p className="whitespace-pre-wrap font-display italic text-base text-amber-100 leading-relaxed">
+                    {displayText}
                   </p>
-                  <p className="text-[10px] text-amber-200/70 mt-3">&mdash; {poem.penName.name}</p>
-                  <Link
-                    to="/library/$id"
-                    params={{ id: poem.id }}
-                    search={{ source: "home" }}
-                    className="mt-4 inline-block text-[10px] uppercase tracking-[0.16em] text-neon hover:underline"
-                  >
-                    Read the full poem
-                  </Link>
+                  <p className="text-[10px] text-amber-200/70 mt-3">&mdash; {displayAuthor}</p>
+                  {curated?.poemId && (
+                    <Link
+                      to="/library/$id"
+                      params={{ id: curated.poemId }}
+                      search={{ source: "home" }}
+                      className="mt-4 inline-block text-[10px] uppercase tracking-[0.16em] text-neon hover:underline"
+                    >
+                      Read the full poem
+                    </Link>
+                  )}
                 </>
               ) : (
                 <p className="font-display italic text-base text-paper-dim leading-relaxed">
