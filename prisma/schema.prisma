@@ -184,6 +184,7 @@ model Poem {
   literaryWorldId String?
   literaryWorld   LiteraryWorld? @relation(fields: [literaryWorldId], references: [id], onDelete: SetNull)
   savedPoems      SavedPoem[]
+  moodCurations   MoodCurator[]
 
   tags       String[]
   year       String
@@ -216,6 +217,15 @@ model SavedPoem {
   createdAt DateTime @default(now())
 
   @@unique([userId, poemId])
+}
+
+model MoodCurator {
+  id        String   @id @default(uuid())
+  mood      String   @unique
+  poemId    String
+  poem      Poem     @relation(fields: [poemId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PoemRequest {
