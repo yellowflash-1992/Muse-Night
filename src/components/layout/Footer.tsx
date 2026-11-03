@@ -127,7 +127,15 @@ export function Footer() {
         {/* Bottom copyright line */}
         <div className="mt-14 pt-8 border-t border-neon/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs uppercase tracking-[0.22em] text-paper-faint">
           <span>{`Muse Night — Hand-bound & Typeset · ${new Date().getFullYear()}`}</span>
-          <span>Cormorant &amp; Spectral Typography</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link to="/privacy" className="hover:text-paper transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-paper transition-colors">
+              Terms of Service
+            </Link>
+            <span>Cormorant &amp; Spectral Typography</span>
+          </div>
         </div>
       </div>
     </footer>
