@@ -13,7 +13,7 @@ export interface GalleryItemUI {
   era?: string;
   source?: string;
   learnMoreUrl?: string;
-  status: "curated" | "built-in" | "coming-soon";
+  status: "curated" | "built-in";
   visual: "mystery" | "portrait" | "frame" | "relic" | "myth" | "poetry";
   frameStyle?: "minimal" | "romantic" | "melancholic" | "mystical" | "vintage" | "manuscript";
   bookId?: string;
@@ -44,10 +44,9 @@ export async function getGalleryItemsRaw(): Promise<Record<GalleryCategoryId, Ga
       MYTH: "myth",
       VISUAL_POETRY: "visual-poetry",
     };
-    const statusMap: Record<string, "curated" | "built-in" | "coming-soon"> = {
+    const statusMap: Record<string, "curated" | "built-in"> = {
       CURATED: "curated",
       BUILT_IN: "built-in",
-      COMING_SOON: "coming-soon",
     };
     const visualMap: Record<
       string,

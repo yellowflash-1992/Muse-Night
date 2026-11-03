@@ -29,7 +29,7 @@ type GalleryItem = {
   era?: string;
   source?: string;
   learnMoreUrl?: string;
-  status: "curated" | "built-in" | "coming-soon";
+  status: "curated" | "built-in";
   visual: "mystery" | "portrait" | "frame" | "relic" | "myth" | "poetry";
   frameStyle?: "minimal" | "romantic" | "melancholic" | "mystical" | "vintage" | "manuscript";
   bookId?: string;
@@ -101,67 +101,86 @@ const categories: {
   },
 ];
 
+const FRAME_STYLES: Record<
+  NonNullable<GalleryItem["frameStyle"]>,
+  { surface: string; paper: string; accent: string; halo: string }
+> = {
+  minimal: {
+    surface: "bg-ink-3",
+    paper: "border border-paper/30 bg-ink/70",
+    accent: "border-paper/15",
+    halo: "bg-paper/15",
+  },
+  romantic: {
+    surface: "bg-gradient-to-br from-rose-950 via-ink-3 to-rose-950",
+    paper:
+      "border border-rose-200/40 bg-rose-950/35 shadow-[inset_0_0_0_5px_rgba(251,113,133,0.08)]",
+    accent: "border-rose-200/30",
+    halo: "bg-rose-300/20",
+  },
+  melancholic: {
+    surface: "bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900",
+    paper:
+      "border border-slate-300/30 bg-slate-950/35 shadow-[inset_0_0_0_4px_rgba(148,163,184,0.08)]",
+    accent: "border-slate-300/25",
+    halo: "bg-slate-300/20",
+  },
+  mystical: {
+    surface: "bg-gradient-to-br from-violet-950 via-ink-3 to-emerald-950",
+    paper:
+      "border border-violet-300/30 bg-violet-950/25 shadow-[inset_0_0_0_5px_rgba(196,181,253,0.08)]",
+    accent: "border-violet-300/25",
+    halo: "bg-violet-300/20",
+  },
+  vintage: {
+    surface: "bg-gradient-to-br from-amber-950 via-stone-900 to-amber-950",
+    paper:
+      "border-2 border-double border-amber-200/35 bg-amber-950/25 shadow-[inset_0_0_0_5px_rgba(217,119,6,0.08)]",
+    accent: "border-amber-200/30",
+    halo: "bg-amber-200/20",
+  },
+  manuscript: {
+    surface: "bg-gradient-to-br from-stone-800 via-amber-950 to-stone-900",
+    paper: "border border-dashed border-amber-100/40 bg-stone-900/40",
+    accent: "border-amber-100/30",
+    halo: "bg-amber-100/20",
+  },
+};
+
 function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }) {
+  const frameStyles = FRAME_STYLES[item.frameStyle ?? "minimal"];
+
   if (item.image) {
     return (
       <button
         type="button"
         onClick={onExpand}
-        className="group/art relative block aspect-[4/3] w-full overflow-hidden bg-ink-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neon"
+        className="group/art relative block w-full break-inside-avoid overflow-hidden bg-ink-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neon"
         aria-label={`View larger image: ${item.title}`}
       >
-        <img
-          src={item.image}
-          alt={item.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover/art:scale-[1.03]"
-          loading="lazy"
-        />
-        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 to-transparent px-4 pb-4 pt-10 font-karla text-xs text-paper/90">
-          View image
-        </span>
+        <div className={`w-full p-2.5 sm:p-3 ${frameStyles.paper}`}>
+          <div className="overflow-hidden rounded-xl">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover/art:scale-[1.03]"
+              loading="lazy"
+            />
+          </div>
+          <span className="mt-2 block px-1 font-karla text-xs text-paper/90">View image</span>
+        </div>
       </button>
     );
   }
 
   if (item.visual === "frame") {
-    const frameStyles = {
-      minimal: {
-        surface: "bg-ink-3",
-        paper: "border border-paper/30 bg-ink/70",
-      },
-      romantic: {
-        surface: "bg-gradient-to-br from-rose-950 via-ink-3 to-rose-950",
-        paper:
-          "border border-rose-200/40 bg-rose-950/35 shadow-[inset_0_0_0_5px_rgba(251,113,133,0.08)]",
-      },
-      melancholic: {
-        surface: "bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900",
-        paper:
-          "border border-slate-300/30 bg-slate-950/35 shadow-[inset_0_0_0_4px_rgba(148,163,184,0.08)]",
-      },
-      mystical: {
-        surface: "bg-gradient-to-br from-violet-950 via-ink-3 to-emerald-950",
-        paper:
-          "border border-violet-300/30 bg-violet-950/25 shadow-[inset_0_0_0_5px_rgba(196,181,253,0.08)]",
-      },
-      vintage: {
-        surface: "bg-gradient-to-br from-amber-950 via-stone-900 to-amber-950",
-        paper:
-          "border-2 border-double border-amber-200/35 bg-amber-950/25 shadow-[inset_0_0_0_5px_rgba(217,119,6,0.08)]",
-      },
-      manuscript: {
-        surface: "bg-gradient-to-br from-stone-800 via-amber-950 to-stone-900",
-        paper: "border border-dashed border-amber-100/40 bg-stone-900/40",
-      },
-    }[item.frameStyle ?? "minimal"];
-
     return (
       <div
-        className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden p-6 ${frameStyles.surface}`}
+        className={`relative flex min-h-56 items-center justify-center overflow-hidden p-6 break-inside-avoid ${frameStyles.surface}`}
         aria-label={`${item.title} built-in frame style sample`}
         role="img"
       >
-        <div className={`flex h-full w-full items-center justify-center p-3 ${frameStyles.paper}`}>
+        <div className={`flex w-full items-center justify-center p-3 ${frameStyles.paper}`}>
           <div className="max-w-[15ch] text-center font-display text-xl italic leading-snug text-paper/75 sm:text-2xl">
             words find
             <br />a quiet place
@@ -181,44 +200,38 @@ function Artwork({ item, onExpand }: { item: GalleryItem; onExpand: () => void }
   const placeholderStyle = {
     mystery: {
       surface: "bg-gradient-to-br from-indigo-950 via-slate-950 to-ink-3",
-      halo: "bg-indigo-300/15",
     },
     portrait: {
       surface: "bg-gradient-to-br from-amber-950 via-stone-900 to-ink-3",
-      halo: "bg-amber-200/15",
     },
     relic: {
       surface: "bg-gradient-to-br from-amber-950 via-ink-3 to-stone-900",
-      halo: "bg-amber-100/10",
     },
     myth: {
       surface: "bg-gradient-to-br from-violet-950 via-ink-3 to-emerald-950",
-      halo: "bg-violet-300/15",
     },
     poetry: {
       surface: "bg-gradient-to-br from-emerald-950 via-slate-950 to-indigo-950",
-      halo: "bg-emerald-200/15",
     },
   }[item.visual];
 
   return (
     <div
-      className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden p-6 ${placeholderStyle.surface}`}
+      className={`relative flex min-h-56 items-center justify-center overflow-hidden p-6 break-inside-avoid ${placeholderStyle.surface}`}
       role="img"
-      aria-label={`Artwork coming soon for ${item.title}`}
+      aria-label={`Artwork for ${item.title} in the ${item.frameStyle ?? "minimal"} frame style`}
     >
       <div
-        className={`pointer-events-none absolute h-40 w-40 rounded-full blur-3xl ${placeholderStyle.halo}`}
+        className={`absolute inset-3 border ${frameStyles.accent} sm:inset-4`}
+        aria-hidden="true"
+      />
+      <div
+        className={`pointer-events-none absolute h-40 w-40 rounded-full blur-3xl ${frameStyles.halo}`}
       />
       <VisualIcon className="relative h-10 w-10 text-paper/65" strokeWidth={1} aria-hidden="true" />
       {item.visual === "poetry" && (
         <span className="absolute bottom-5 left-6 right-6 text-center font-display text-sm italic text-paper/75">
           a visual interpretation is coming
-        </span>
-      )}
-      {item.status === "coming-soon" && (
-        <span className="absolute bottom-4 rounded-full border border-paper/15 bg-ink/55 px-3 py-1 font-karla text-[11px] text-paper/80">
-          Artwork coming soon
         </span>
       )}
     </div>
@@ -957,11 +970,11 @@ export function GalleryPage() {
 
             <section aria-label={`${activeCategory.title} collection`}>
               {selectedItems.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+                <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3">
                   {paginatedItems.map((item) => (
                     <article
                       key={item.id}
-                      className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-neon/15 bg-ink-2/70 transition-colors hover:border-neon/35"
+                      className="group flex min-w-0 break-inside-avoid flex-col overflow-hidden rounded-2xl border border-neon/15 bg-ink-2/70 transition-colors hover:border-neon/35"
                     >
                       <Artwork item={item} onExpand={() => setSelectedImage(item)} />
                       <div className="flex flex-1 flex-col p-4 sm:p-5">
