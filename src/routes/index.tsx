@@ -22,6 +22,7 @@ import { getPublishedPoemsList } from "@/lib/poems.functions";
 import { listPoetCardsPublic } from "@/lib/poets.functions";
 import { getPublishedQuotes } from "@/lib/quotes.functions";
 
+import { coverThemes } from "@/data/mobileLandingData";
 import { useSwipeSlider } from "@/hooks/useSwipeSlider";
 
 const routeApi = getRouteApi("/");
@@ -60,7 +61,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { poems, chapbooks } = routeApi.useLoaderData();
+  const { poems, chapbooks, collections, poets, poetCards, quotes } = routeApi.useLoaderData();
   const [poemIndex, setPoemIndex] = useState(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -103,6 +104,7 @@ function Index() {
 
   const activePoem = poems.length > 0 ? (poems[poemIndex % poems.length] ?? poems[0]) : null;
   const featuredPoem = poems.filter((p) => p.featured)[0] ?? null;
+  const curatedPoems = poems.filter((p) => p.featured).slice(0, 4);
   const featuredBook = chapbooks[0] ?? null;
 
   const handleShuffleVerse = () => {
@@ -133,7 +135,7 @@ function Index() {
       title: "Collections",
       desc: "Curated suites and seasonal anthologies charting inner and outer weather.",
       to: "/collections",
-      count: "4 Volumes",
+      count: `${collections.length} Volumes`,
       icon: Layers,
       action: "Explore suites",
       badge: "Curated suites",
@@ -151,7 +153,7 @@ function Index() {
       title: "The Press & Poets",
       desc: "The story of Irshand and InkbyNur, the voices behind our shared lamp and literary studio.",
       to: "/about",
-      count: "Edinburgh & Stockholm",
+      count: `${poets.length} Poets`,
       icon: Users,
       action: "Meet the poets",
       badge: "Biographies",
@@ -308,6 +310,42 @@ function Index() {
           </div>
         </section>
 
+        {/* LITERARY STATS BAR */}
+        <section className="border-y border-neon/15 bg-ink-2/90 py-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+            <div className="grid grid-cols-4 gap-4 text-center">
+              <Link to="/library" className="flex flex-col items-center">
+                <span className="font-display text-2xl font-medium text-neon">{poems.length}</span>
+                <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">
+                  Works
+                </span>
+              </Link>
+              <Link to="/collections" className="flex flex-col items-center">
+                <span className="font-display text-2xl font-medium text-amber-300">
+                  {collections.length}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">
+                  Suites
+                </span>
+              </Link>
+              <Link to="/books" className="flex flex-col items-center">
+                <span className="font-display text-2xl font-medium text-rose-300">
+                  {chapbooks.length}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">
+                  Books
+                </span>
+              </Link>
+              <Link to="/about" className="flex flex-col items-center">
+                <span className="font-display text-2xl font-medium text-paper">{poets.length}</span>
+                <span className="text-[10px] uppercase tracking-[0.12em] text-paper-dim">
+                  Poets
+                </span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* INTERACTIVE "VERSE OF THE HOUR" DISCOVERY MODULE (Engaging for readers & casual visitors) */}
         {/* INTERACTIVE "VERSE OF THE HOUR" DISCOVERY MODULE (Engaging for readers & casual visitors) */}
         {activePoem && (
@@ -436,6 +474,72 @@ function Index() {
           </div>
         </section>
 
+        {/* VERSES BY LAMPLIGHT (Curated Covers) */}
+        {curatedPoems.length > 0 && (
+          <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-16 sm:py-20">
+            <div className="flex items-baseline justify-between border-b border-neon/10 pb-3 mb-6">
+              <div>
+                <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-neon">
+                  Selected Works
+                </span>
+                <h2 className="font-display text-2xl text-paper font-medium mt-0.5">
+                  Verses by Lamplight
+                </h2>
+              </div>
+              <Link
+                to="/library"
+                className="text-[11px] uppercase tracking-[0.16em] text-neon font-medium"
+              >
+                All {poems.length} &rarr;
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {curatedPoems.map((poem, index) => {
+                const theme = (coverThemes[index % coverThemes.length] ?? coverThemes[0])!;
+                return (
+                  <Link
+                    key={poem.id}
+                    to="/library/$id"
+                    params={{ id: poem.id }}
+                    search={{ source: "home" }}
+                    className="group relative flex flex-col text-left"
+                  >
+                    <div
+                      className={`relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br ${theme.gradient} border ${theme.border} p-4 flex flex-col justify-between shadow-lg ${theme.glow}`}
+                    >
+                      <div className="absolute left-0 top-0 h-full w-1.5 bg-black/40" />
+                      <div className="flex items-center gap-1.5">
+                        <div className={`h-1.5 w-1.5 rounded-full ${theme.dot}`} />
+                        <span
+                          className={`text-[9px] font-medium uppercase tracking-[0.18em] ${theme.accent}`}
+                        >
+                          {poem.year.split(" ")[0]}
+                        </span>
+                      </div>
+                      <div>
+                        <h3 className="font-display text-lg font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2">
+                          {poem.title}
+                        </h3>
+                        <p className="mt-1 text-[10px] text-paper-dim/80 truncate">
+                          {poem.author.split(" ")[0]} · {poem.readTime}
+                        </p>
+                      </div>
+                      <div className="pt-1 flex justify-end">
+                        <span className="text-[9px] uppercase tracking-[0.14em] text-neon font-medium bg-black/40 px-2 py-0.5 rounded-full border border-white/10">
+                          Read
+                        </span>
+                      </div>
+                    </div>
+                    <p className="mt-2 text-[11px] text-paper-dim/90 font-serif italic line-clamp-2 leading-snug px-0.5">
+                      “{poem.stanzas[0]?.[0]}”
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* FEATURED POEM SPOTLIGHT */}
         {/* FEATURED POEM SPOTLIGHT */}
         {featuredPoem && (
@@ -494,6 +598,55 @@ function Index() {
           </section>
         )}
 
+        {/* IN THEIR WORDS (Testimonials) */}
+        {quotes.length > 0 && (
+          <section className="border-y border-neon/10 bg-ink-2/60 py-16 sm:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+              <div className="mb-8">
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neon block mb-3">
+                  // In Their Words
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-medium text-paper leading-tight">
+                  Voices from <span className="italic font-light text-paper-dim">the page</span>
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {quotes.slice(0, 4).map((quote) => {
+                  const person = quote.penName?.person;
+                  const avatarUrl = [person?.imageUrl, quote.avatarUrl].find(Boolean);
+                  return (
+                    <article
+                      key={quote.id}
+                      className="glass-card rounded-xl border border-neon/15 bg-ink-2/60 p-6 space-y-4"
+                    >
+                      <div className="font-display text-4xl text-neon/30 leading-none select-none">
+                        “
+                      </div>
+                      <p className="font-display italic text-paper text-lg leading-relaxed">
+                        {quote.text}
+                      </p>
+                      <div className="flex items-center gap-3 pt-2 border-t border-neon/10">
+                        {avatarUrl ? (
+                          <img
+                            src={avatarUrl}
+                            alt=""
+                            className="w-9 h-9 rounded-full object-cover shrink-0"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-xl bg-neon/20 flex items-center justify-center text-neon font-bold shrink-0">
+                            {quote.author.charAt(0)}
+                          </div>
+                        )}
+                        <p className="text-sm font-semibold text-paper">{quote.author}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* HIGHLIGHT: PHYSICAL EDITION & ESSAY */}
         {/* HIGHLIGHT: PHYSICAL EDITION & ESSAY */}
         {featuredBook && (
@@ -534,6 +687,95 @@ function Index() {
             </div>
           </section>
         )}
+
+        {/* TWO VOICES, ONE LAMP (Authors Spotlight) */}
+        {poetCards.length > 0 && (
+          <section className="border-t border-neon/15 bg-gradient-to-b from-ink-2 to-ink py-16 sm:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+              <div className="text-center mb-8 space-y-1">
+                <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-neon">
+                  The Writers
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-medium text-paper">
+                  Two Voices, One Lamp
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {poetCards.map((poet, i) => (
+                  <div
+                    key={poet.id}
+                    className={`rounded-xl border border-neon/15 bg-gradient-to-br ${
+                      i === 0 ? "from-amber-950/40 to-ink-2" : "from-teal-950/40 to-ink-2"
+                    } p-6 space-y-3 shadow-md`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-neon/10 border border-neon/30 flex items-center justify-center shrink-0">
+                        <Feather className="h-4 w-4 text-neon" />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-xl text-paper font-medium">
+                          {poet.primaryPenName}
+                        </h3>
+                        <p className="text-[11px] uppercase tracking-[0.15em] text-neon/80 font-medium">
+                          {poet.role} · {poet.legalName}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-paper-dim leading-relaxed">{poet.bio}</p>
+                    <div className="pt-2 flex justify-between items-center text-[11px] uppercase tracking-[0.14em]">
+                      {poet.latestPublishedPoemTitle ? (
+                        <span className="text-paper-faint">{poet.latestPublishedPoemTitle}</span>
+                      ) : (
+                        <span className="text-paper-faint" aria-hidden="true">
+                          &nbsp;
+                        </span>
+                      )}
+                      <Link to="/about" className="text-neon hover:underline font-medium">
+                        Bio &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* JAMB & WAEC STUDY HALL */}
+        <section className="border-t border-emerald-500/20 bg-gradient-to-b from-ink via-emerald-950/20 to-ink py-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+                <span>🎓</span>
+                <span>JAMB &amp; WAEC Study Hall</span>
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-paper">
+                Literature-in-English{" "}
+                <span className="italic font-light text-emerald-300">Companion</span>
+              </h2>
+              <p className="text-sm text-paper-dim leading-relaxed max-w-xl">
+                Curated syllabus poetry breakdowns, drama summaries, and exam-tested literary device
+                guides.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/study"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#10B981] text-[#062419] px-5 py-2.5 text-xs font-bold tracking-wider shadow-md hover:bg-emerald-400 transition-all"
+              >
+                <span>🎓</span>
+                <span>Open Study Room</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                to="/request"
+                className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 bg-emerald-500/10 text-emerald-200 px-4 py-2.5 text-xs font-semibold tracking-wider hover:bg-emerald-500/20 transition-all"
+              >
+                <span>Request Guide</span>
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* CALL FOR SUBMISSIONS BANNER */}
         <section className="border-t border-neon/10 py-16 bg-gradient-to-b from-ink to-ink-2">

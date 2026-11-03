@@ -9,7 +9,7 @@ export function StudyGuideDetailPage() {
   if (!guide) {
     return (
       <main className="min-h-screen bg-ink px-4 pb-20 pt-24 text-paper selection:bg-neon selection:text-ink sm:px-6">
-        <div className="mx-auto max-w-2xl py-16 text-center">
+        <div className="mx-auto max-w-4xl py-16 text-center">
           <BookOpen className="mx-auto h-10 w-10 text-paper-faint" aria-hidden="true" />
           <h1 className="mt-4 font-display text-4xl text-paper">Guide not found</h1>
           <p className="mt-3 font-karla text-paper-dim">
@@ -29,7 +29,7 @@ export function StudyGuideDetailPage() {
 
   return (
     <main className="min-h-screen bg-ink px-4 pb-20 pt-24 text-paper selection:bg-neon selection:text-ink sm:px-6">
-      <article className="mx-auto max-w-3xl space-y-10 sm:space-y-12">
+      <article className="mx-auto max-w-4xl space-y-10 sm:space-y-12">
         <header className="space-y-6">
           <Link
             to="/study"

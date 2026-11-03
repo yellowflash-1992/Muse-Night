@@ -42,7 +42,7 @@ export function BookDetailPage() {
 
   return (
     <div className="py-12 sm:py-20">
-      <div className="mx-auto max-w-[1140px] px-6 sm:px-10">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="mb-8">
           <Link
             to="/books"

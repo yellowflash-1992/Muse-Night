@@ -115,7 +115,7 @@ function SettingsContent() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-ink text-paper selection:bg-neon selection:text-ink pt-24 pb-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neon" />
           </div>
@@ -128,7 +128,7 @@ function SettingsContent() {
 
   return (
     <div className="min-h-screen bg-ink text-paper selection:bg-neon selection:text-ink pt-24 pb-20">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="border-b border-neon/15 pb-6">
           <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-2 font-medium">
@@ -145,7 +145,7 @@ function SettingsContent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Profile Preview & Avatar Upload */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-4 space-y-4">
             <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neon/80 block">
               // Profile Preview
             </span>
@@ -206,7 +206,7 @@ function SettingsContent() {
           </div>
 
           {/* Editing Form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-8">
             <form
               onSubmit={handleSave}
               className="rounded-2xl border border-neon/20 bg-ink-2/80 p-6 sm:p-8 space-y-6 shadow-xl"

@@ -51,7 +51,7 @@ export function LibraryPoemReader({
             : fontSize === "lg"
               ? "text-xl sm:text-2xl leading-[2.5rem]"
               : "text-lg sm:text-xl leading-[2.2rem]"
-        }`}
+        } md:text-xl`}
       >
         {poem.stanzas.map((stanza, sIdx) => (
           <div key={sIdx} className="space-y-1">

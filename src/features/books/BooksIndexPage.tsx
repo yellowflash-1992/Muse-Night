@@ -46,7 +46,7 @@ export function BooksIndexPage() {
         </div>
 
         {/* Chapbooks Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {chapbooks.length === 0 ? (
             <div className="col-span-full rounded-xl border border-dashed border-neon/20 bg-ink-2/40 p-12 text-center">
               <BookMarked className="mx-auto h-8 w-8 text-paper-faint mb-3" />

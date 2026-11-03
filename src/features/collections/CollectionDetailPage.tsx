@@ -25,7 +25,7 @@ export function CollectionDetailPage() {
 
   return (
     <div className="py-12 sm:py-20">
-      <div className="mx-auto max-w-[1040px] px-6 sm:px-10">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="mb-8">
           <Link
             to="/collections"
@@ -117,7 +117,15 @@ export function CollectionDetailPage() {
                   </span>
                   <div>
                     <h3 className="font-display text-2xl text-paper group-hover:text-neon transition-colors">
-                      <Link to="/library/$id" params={{ id: poem.id }} search={{ from: collection.poems?.map((p) => p.id).join(","), source: "collection", collectionId: collection.id }}>
+                      <Link
+                        to="/library/$id"
+                        params={{ id: poem.id }}
+                        search={{
+                          from: collection.poems?.map((p) => p.id).join(","),
+                          source: "collection",
+                          collectionId: collection.id,
+                        }}
+                      >
                         {poem.title}
                       </Link>
                     </h3>

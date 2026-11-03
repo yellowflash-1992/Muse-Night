@@ -277,7 +277,7 @@ export function LibraryPoemPage() {
 
   return (
     <div className="min-h-screen bg-ink text-paper">
-      <div className="mx-auto max-w-xl px-5 sm:px-6 pt-12 pb-20 space-y-8">
+      <div className="mx-auto w-full max-w-xl md:max-w-4xl px-5 sm:px-6 pt-12 pb-20 space-y-8">
         {/* Simple Top Navigation Bar */}
         <div className="flex items-center justify-between py-2">
           <Link

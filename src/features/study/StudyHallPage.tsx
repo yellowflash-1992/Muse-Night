@@ -24,7 +24,7 @@ export function StudyHallPage() {
 
   return (
     <main className="min-h-screen bg-ink px-4 pb-20 pt-24 text-paper selection:bg-neon selection:text-ink sm:px-6">
-      <div className="mx-auto max-w-6xl space-y-10 sm:space-y-14">
+      <div className="mx-auto max-w-7xl space-y-10 sm:space-y-14">
         <header className="relative overflow-hidden rounded-3xl border border-neon/20 bg-gradient-to-br from-emerald-950/50 via-ink-2 to-ink p-7 shadow-2xl sm:p-12">
           <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-emerald-500/15 blur-3xl" />
           <div className="relative max-w-3xl space-y-5">
@@ -81,7 +81,7 @@ export function StudyHallPage() {
               </p>
             </div>
           ) : (
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
               {filteredGuides.map((guide) => (
                 <article
                   key={guide.id}

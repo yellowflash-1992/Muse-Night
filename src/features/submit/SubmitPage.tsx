@@ -70,7 +70,7 @@ export function SubmitPage({ settings }: SubmitPageProps) {
 
   return (
     <div className="py-12 sm:py-20">
-      <div className="mx-auto max-w-[1140px] px-6 sm:px-10">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
         {/* Header */}
         <div className="border-b border-neon/10 pb-12">
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-neon/80 mb-3">
