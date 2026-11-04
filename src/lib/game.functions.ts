@@ -79,9 +79,8 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
       totalVotesA,
       totalVotesB,
       totalVotes: totalVotesA + totalVotesB,
-      votedSide: game.votes[0]?.side === "a" || game.votes[0]?.side === "b"
-        ? game.votes[0].side
-        : null,
+      votedSide:
+        game.votes[0]?.side === "a" || game.votes[0]?.side === "b" ? game.votes[0].side : null,
       stories: game.stories.map((story) => ({
         id: story.id,
         text: story.text,
@@ -145,5 +144,124 @@ export const upvoteStoryFn = createServerFn({ method: "POST" })
         where: { id: storyId },
         data: inserted.count === 1 ? { votes: { increment: 1 } } : {},
       });
+    });
+  });
+
+export interface StreakData {
+  currentStreak: number;
+  tasksDoneToday: number;
+  readToday: boolean;
+  playedToday: boolean;
+  bonusPoem: {
+    id: string;
+    title: string;
+    excerpt: string;
+    authorName: string;
+  } | null;
+}
+
+export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
+  async (): Promise<StreakData | null> => {
+    const user = await getCurrentUser();
+    if (!user) return null;
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const [duelVotes, stories, readingLogs] = await Promise.all([
+      prisma.duelVote.findMany({
+        where: { userId: user.id },
+        select: { createdAt: true },
+      }),
+      prisma.sixWordStory.findMany({
+        where: { userId: user.id },
+        select: { createdAt: true },
+      }),
+      prisma.readingLog.findMany({
+        where: { userId: user.id },
+        select: { createdAt: true },
+      }),
+    ]);
+
+    // Combine every activity into a set of UTC day keys ("YYYY-MM-DD").
+    const activeDays = new Set<string>();
+    for (const row of [...duelVotes, ...stories, ...readingLogs]) {
+      activeDays.add(row.createdAt.toISOString().slice(0, 10));
+    }
+
+    // Count consecutive days backwards, starting today (or yesterday if the
+    // user hasn't been active yet today — the streak shouldn't reset until
+    // the day actually passes).
+    const today = new Date().toISOString().slice(0, 10);
+    let currentStreak = 0;
+    const cursor = new Date();
+    if (!activeDays.has(today)) {
+      cursor.setUTCDate(cursor.getUTCDate() - 1);
+    }
+    while (activeDays.has(cursor.toISOString().slice(0, 10))) {
+      currentStreak += 1;
+      cursor.setUTCDate(cursor.getUTCDate() - 1);
+    }
+
+    // Two tasks per day: read a poem, play the daily game.
+    const todayPrefix = `${today}T`;
+    const readToday = readingLogs.some((log) => log.createdAt.toISOString().startsWith(todayPrefix));
+    const playedToday =
+      duelVotes.some((vote) => vote.createdAt.toISOString().startsWith(todayPrefix)) ||
+      stories.some((story) => story.createdAt.toISOString().startsWith(todayPrefix));
+    const tasksDoneToday = (readToday ? 1 : 0) + (playedToday ? 1 : 0);
+
+    // Unlock reward: a random published poem once both tasks are complete.
+    let bonusPoem: StreakData["bonusPoem"] = null;
+    if (tasksDoneToday >= 2) {
+      const count = await prisma.poem.count({ where: { status: "PUBLISHED" } });
+      if (count > 0) {
+        const poem = await prisma.poem.findFirst({
+          where: { status: "PUBLISHED" },
+          skip: Math.floor(Math.random() * count),
+          select: {
+            id: true,
+            title: true,
+            excerpt: true,
+            penName: { select: { name: true } },
+          },
+        });
+        if (poem) {
+          bonusPoem = {
+            id: poem.id,
+            title: poem.title,
+            excerpt: poem.excerpt ?? "",
+            authorName: poem.penName.name,
+          };
+        }
+      }
+    }
+
+    return { currentStreak, tasksDoneToday, readToday, playedToday, bonusPoem };
+  },
+);
+
+export const logPoemReadFn = createServerFn({ method: "POST" })
+  .validator((input: unknown) => z.string().trim().min(1).parse(input))
+  .handler(async ({ data: poemId }) => {
+    const user = await getCurrentUser();
+    if (!user) return null;
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const existing = await prisma.readingLog.findFirst({
+      where: {
+        userId: user.id,
+        poemId,
+        createdAt: { gte: startOfDay },
+      },
+      select: { id: true },
+    });
+
+    if (existing) return existing;
+
+    return prisma.readingLog.create({
+      data: { userId: user.id, poemId },
     });
   });

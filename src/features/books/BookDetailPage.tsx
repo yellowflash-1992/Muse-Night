@@ -101,7 +101,6 @@ export function BookDetailPage() {
                 Read the Library
               </Link>
             </div>
-
           </div>
         </div>
       </div>

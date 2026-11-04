@@ -14,6 +14,7 @@ import { getReaderDataForPoem } from "@/data/library-reader";
 import { useAuth } from "@/hooks/useAuth";
 import { useDisplayName } from "@/hooks/useDisplayName";
 import { useMemberProfile } from "@/hooks/useMemberProfile";
+import { logPoemReadFn } from "@/lib/game.functions";
 import { toggleSavePoemFn } from "@/lib/vault.functions";
 import { getPoemNavigation, resolveNavigationPoems } from "./lib/library-navigation";
 import { formatPoemCitation } from "./lib/share";
@@ -104,6 +105,12 @@ export function LibraryPoemPage() {
   const [reactions, setReactions] = useState<any[]>([]);
   const [reflections, setReflections] = useState<any[]>([]);
   const [loadingInteractions, setLoadingInteractions] = useState(true);
+
+  useEffect(() => {
+    if (poem?.id) {
+      logPoemReadFn({ data: poem.id }).catch(() => {});
+    }
+  }, [poem?.id]);
 
   useEffect(() => {
     getInteractions({ data: { poemId: id } })

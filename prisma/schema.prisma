@@ -488,3 +488,14 @@ model Submission {
   @@index([submitterUserId])
   @@index([createdAt])
 }
+model ReadingLog {
+  id        String   @id @default(uuid())
+  userId    String
+  poemId    String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([poemId])
+  @@index([createdAt])
+}
+
