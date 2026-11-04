@@ -410,6 +410,7 @@ model DailyGame {
   poetA     String
   lineB     String
   poetB     String
+  status    String         @default("DRAFT")
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   votes     DuelVote[]

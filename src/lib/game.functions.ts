@@ -40,8 +40,8 @@ export const getDailyGameFn = createServerFn({ method: "GET" }).handler(
   async (): Promise<DailyGameData | null> => {
     const today = new Date().toISOString().slice(0, 10);
     const user = await getCurrentUser();
-    const game = await prisma.dailyGame.findUnique({
-      where: { id: today },
+    const game = await prisma.dailyGame.findFirst({
+      where: { id: today, status: "PUBLISHED" },
       include: {
         votes: {
           where: { userId: user?.id ?? "" },
