@@ -38,6 +38,8 @@ function StreakContent() {
   const readToday = streak?.readToday ?? false;
   const playedToday = streak?.playedToday ?? false;
   const unlocked = tasksDoneToday >= 2;
+  const nextBadgeAt =
+    currentStreak < 3 ? 3 : currentStreak < 7 ? 7 : currentStreak < 30 ? 30 : null;
 
   const tasks = [
     {
@@ -70,12 +72,26 @@ function StreakContent() {
           </Link>
         </div>
 
-        <div className="flex items-center justify-between border border-neon/20 rounded-2xl px-5 py-4">
-          <div className="flex items-center gap-2">
-            <Flame className="h-5 w-5 text-amber-400" strokeWidth={1.5} />
-            <span className="text-sm text-paper">{currentStreak}-day streak</span>
+        <div className="border border-neon/20 rounded-2xl px-5 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Flame className="h-5 w-5 text-amber-400" strokeWidth={1.5} />
+              <span className="text-sm text-paper">{currentStreak}-day streak</span>
+            </div>
+            {streak?.badge && (
+              <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-amber-300">
+                {streak.badge}
+              </span>
+            )}
           </div>
-          <span className="text-xs text-paper-dim">come back tomorrow to keep it going</span>
+          <div className="mt-2 flex items-center justify-between">
+            <span className="text-xs text-paper-dim">
+              {nextBadgeAt === null
+                ? "All streak badges earned"
+                : `Next Badge at ${nextBadgeAt} Days`}
+            </span>
+            <span className="text-xs text-paper-dim">come back tomorrow to keep it going</span>
+          </div>
         </div>
 
         {loading ? (
@@ -148,7 +164,7 @@ function StreakContent() {
                 className="block rounded-2xl bg-gradient-to-br from-ink-2 via-purple-950 to-ink p-6 text-center hover:from-ink-2/80 hover:via-purple-900 transition-all"
               >
                 <p className="mb-3 text-[10px] uppercase tracking-wide text-amber-400/80">
-                  bonus poem &mdash; unlocked today only
+                  exclusive bonus poem &mdash; unlocked today only
                 </p>
                 <p className="font-display italic leading-relaxed text-paper whitespace-pre-line">
                   {streak.bonusPoem.excerpt || streak.bonusPoem.title}

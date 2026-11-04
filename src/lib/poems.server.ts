@@ -119,7 +119,7 @@ export async function getPublishedPoemRaw(id: string): Promise<UiPoem | null> {
 
 export async function getPublishedPoemsListRaw(): Promise<UiPoem[]> {
   const rows = await prisma.poem.findMany({
-    where: { status: "PUBLISHED" },
+    where: { status: "PUBLISHED", isExclusive: false },
     select: poemSelectShape,
     orderBy: [{ publishedAt: { sort: "desc", nulls: "last" } }, { updatedAt: "desc" }],
   });

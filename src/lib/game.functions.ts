@@ -149,6 +149,7 @@ export const upvoteStoryFn = createServerFn({ method: "POST" })
 
 export interface StreakData {
   currentStreak: number;
+  badge: string | null;
   tasksDoneToday: number;
   readToday: boolean;
   playedToday: boolean;
@@ -205,39 +206,47 @@ export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
 
     // Two tasks per day: read a poem, play the daily game.
     const todayPrefix = `${today}T`;
-    const readToday = readingLogs.some((log) => log.createdAt.toISOString().startsWith(todayPrefix));
+    const readToday = readingLogs.some((log) =>
+      log.createdAt.toISOString().startsWith(todayPrefix),
+    );
     const playedToday =
       duelVotes.some((vote) => vote.createdAt.toISOString().startsWith(todayPrefix)) ||
       stories.some((story) => story.createdAt.toISOString().startsWith(todayPrefix));
     const tasksDoneToday = (readToday ? 1 : 0) + (playedToday ? 1 : 0);
 
-    // Unlock reward: a random published poem once both tasks are complete.
+    // Unlock reward: a random exclusive poem once both tasks are complete.
     let bonusPoem: StreakData["bonusPoem"] = null;
     if (tasksDoneToday >= 2) {
-      const count = await prisma.poem.count({ where: { status: "PUBLISHED" } });
-      if (count > 0) {
-        const poem = await prisma.poem.findFirst({
-          where: { status: "PUBLISHED" },
-          skip: Math.floor(Math.random() * count),
-          select: {
-            id: true,
-            title: true,
-            excerpt: true,
-            penName: { select: { name: true } },
-          },
-        });
-        if (poem) {
-          bonusPoem = {
-            id: poem.id,
-            title: poem.title,
-            excerpt: poem.excerpt ?? "",
-            authorName: poem.penName.name,
-          };
-        }
+      const exclusivePoems = await prisma.poem.findMany({
+        where: { status: "PUBLISHED", isExclusive: true },
+        select: {
+          id: true,
+          title: true,
+          excerpt: true,
+          penName: { select: { name: true } },
+        },
+      });
+      const poem = exclusivePoems[Math.floor(Math.random() * exclusivePoems.length)];
+      if (poem) {
+        bonusPoem = {
+          id: poem.id,
+          title: poem.title,
+          excerpt: poem.excerpt ?? "",
+          authorName: poem.penName.name,
+        };
       }
     }
 
-    return { currentStreak, tasksDoneToday, readToday, playedToday, bonusPoem };
+    const badge =
+      currentStreak >= 30
+        ? "Lamplighter"
+        : currentStreak >= 7
+          ? "Dedicated Reader"
+          : currentStreak >= 3
+            ? "Novice Reader"
+            : null;
+
+    return { currentStreak, badge, tasksDoneToday, readToday, playedToday, bonusPoem };
   },
 );
 

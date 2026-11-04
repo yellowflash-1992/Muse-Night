@@ -167,13 +167,14 @@ model Collection {
 }
 
 model Poem {
-  id       String            @id
-  title    String
-  stanzas  Json // string[][]
-  body     String? // Derived: stanzas â†’ text (stanza=\n\n, line=\n)
-  excerpt  String? // Derived: first 3 lines of stanza 0
-  status   PublicationStatus @default(DRAFT)
-  featured Boolean           @default(false)
+  id          String            @id
+  title       String
+  stanzas     Json // string[][]
+  body        String? // Derived: stanzas â†’ text (stanza=\n\n, line=\n)
+  excerpt     String? // Derived: first 3 lines of stanza 0
+  status      PublicationStatus @default(DRAFT)
+  featured    Boolean           @default(false)
+  isExclusive Boolean           @default(false)
 
   penNameId String
   penName   PenName @relation(fields: [penNameId], references: [id])
@@ -488,6 +489,7 @@ model Submission {
   @@index([submitterUserId])
   @@index([createdAt])
 }
+
 model ReadingLog {
   id        String   @id @default(uuid())
   userId    String
@@ -498,4 +500,3 @@ model ReadingLog {
   @@index([poemId])
   @@index([createdAt])
 }
-
