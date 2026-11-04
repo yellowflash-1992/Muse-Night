@@ -108,7 +108,14 @@ export function LibraryPoemPage() {
 
   useEffect(() => {
     if (poem?.id) {
-      logPoemReadFn({ data: poem.id }).catch(() => {});
+      const logRead = async () => {
+        try {
+          await logPoemReadFn({ data: poem.id });
+        } catch (error) {
+          console.warn("Could not log read:", error);
+        }
+      };
+      void logRead();
     }
   }, [poem?.id]);
 

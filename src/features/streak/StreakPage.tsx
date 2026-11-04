@@ -2,24 +2,38 @@ import { Link } from "@tanstack/react-router";
 import { BookOpen, CheckCircle2, Circle, Flame, Lock, Sparkles, Unlock } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { MemberGate } from "@/components/auth/MemberGate";
-import { MEMBER_FEATURES } from "@/lib/auth/memberFeatures";
+import { AuthModal } from "@/components/auth/AuthModal";
+import { useAuth } from "@/hooks/useAuth";
 import { getUserStreakFn, type StreakData } from "@/lib/game.functions";
 
 export function StreakPage() {
-  return (
-    <MemberGate feature={MEMBER_FEATURES.streak}>
-      <StreakContent />
-    </MemberGate>
-  );
+  return <StreakContent />;
 }
 
 function StreakContent() {
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [streak, setStreak] = useState<StreakData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
+    if (authLoading) {
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    if (!isAuthenticated) {
+      setStreak(null);
+      setLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setLoading(true);
     getUserStreakFn()
       .then((data) => {
         if (!cancelled) setStreak(data);
@@ -31,7 +45,48 @@ function StreakContent() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [authLoading, isAuthenticated]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center px-6">
+        <p className="text-xs uppercase tracking-[0.2em] text-paper-faint">
+          Opening the reading room...
+        </p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <div className="min-h-[60vh] flex items-center justify-center bg-ink px-6 py-16 text-paper">
+          <div className="w-full max-w-md rounded-2xl border border-neon/20 bg-ink-2 p-8 text-center shadow-2xl">
+            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-amber-400/30 bg-amber-400/10">
+              <Flame className="h-5 w-5 text-amber-400" strokeWidth={1.5} />
+            </div>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-neon">Daily Practice</p>
+            <h1 className="mt-2 font-display text-3xl text-paper">Your Streak</h1>
+            <p className="mt-3 text-sm leading-relaxed text-paper-dim">
+              Sign in to start your daily reading streak and unlock exclusive poems.
+            </p>
+            <button
+              type="button"
+              onClick={() => setAuthModalOpen(true)}
+              className="mt-7 rounded-xl bg-neon px-6 py-3 text-xs font-bold uppercase tracking-[0.2em] text-ink transition hover:bg-neon/90"
+            >
+              Sign In or Create Account
+            </button>
+          </div>
+        </div>
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          initialMode="signin"
+        />
+      </>
+    );
+  }
 
   const currentStreak = streak?.currentStreak ?? 0;
   const tasksDoneToday = streak?.tasksDoneToday ?? 0;

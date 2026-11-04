@@ -263,24 +263,29 @@ export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
 export const logPoemReadFn = createServerFn({ method: "POST" })
   .validator((input: unknown) => z.string().trim().min(1).parse(input))
   .handler(async ({ data: poemId }) => {
-    const user = await getCurrentUser();
-    if (!user) return null;
+    try {
+      const user = await getCurrentUser();
+      if (!user) return { success: false };
 
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
 
-    const existing = await prisma.readingLog.findFirst({
-      where: {
-        userId: user.id,
-        poemId,
-        createdAt: { gte: startOfDay },
-      },
-      select: { id: true },
-    });
+      const existing = await prisma.readingLog.findFirst({
+        where: {
+          userId: user.id,
+          poemId,
+          createdAt: { gte: startOfDay },
+        },
+        select: { id: true },
+      });
 
-    if (existing) return existing;
+      if (existing) return existing;
 
-    return prisma.readingLog.create({
-      data: { userId: user.id, poemId },
-    });
+      return await prisma.readingLog.create({
+        data: { userId: user.id, poemId },
+      });
+    } catch (error) {
+      console.error("Could not log poem read:", error);
+      return { success: false };
+    }
   });
