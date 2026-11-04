@@ -153,6 +153,7 @@ export interface StreakData {
   tasksDoneToday: number;
   readToday: boolean;
   playedToday: boolean;
+  totalExclusiveCount: number;
   bonusPoem: {
     id: string;
     title: string;
@@ -169,7 +170,7 @@ export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
 
-    const [duelVotes, stories, readingLogs] = await Promise.all([
+    const [duelVotes, stories, readingLogs, totalExclusiveCount] = await Promise.all([
       prisma.duelVote.findMany({
         where: { userId: user.id },
         select: { createdAt: true },
@@ -182,6 +183,7 @@ export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
         where: { userId: user.id },
         select: { createdAt: true },
       }),
+      prisma.poem.count({ where: { isExclusive: true, status: "PUBLISHED" } }),
     ]);
 
     // Combine every activity into a set of UTC day keys ("YYYY-MM-DD").
@@ -246,7 +248,15 @@ export const getUserStreakFn = createServerFn({ method: "GET" }).handler(
             ? "Novice Reader"
             : null;
 
-    return { currentStreak, badge, tasksDoneToday, readToday, playedToday, bonusPoem };
+    return {
+      currentStreak,
+      badge,
+      tasksDoneToday,
+      readToday,
+      playedToday,
+      totalExclusiveCount,
+      bonusPoem,
+    };
   },
 );
 

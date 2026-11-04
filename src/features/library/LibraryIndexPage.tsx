@@ -1,6 +1,6 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Feather, Search } from "lucide-react";
+import { ArrowRight, BookOpen, Feather, Lock, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { getRouteApi } from "@tanstack/react-router";
@@ -272,14 +272,24 @@ export function LibraryIndexPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {pagedPoems.map((poem) => (
+                {pagedPoems.map((poem) => {
+                  const locked = poem.isExclusive;
+                  return (
                   <article
                     key={poem.id}
-                    className="group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
+                    className="relative group rounded-2xl border border-neon/15 bg-ink-2 p-5 sm:p-6 flex flex-col justify-between transition-all hover:border-neon/40 hover:-translate-y-1 overflow-hidden min-w-0 shadow-md"
                   >
+                    {locked && (
+                      <div className="absolute inset-0 z-10 flex items-center justify-center bg-ink/30">
+                        <Lock className="h-7 w-7 text-neon" strokeWidth={1.5} />
+                      </div>
+                    )}
                     <div className="min-w-0 overflow-hidden">
                       <div className="flex items-start justify-between gap-2">
-                        <h2 className="font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2 break-words min-w-0">
+                        <h2 className={`font-display text-2xl sm:text-[1.75rem] font-medium leading-tight text-paper group-hover:text-neon transition-colors line-clamp-2 break-words min-w-0 ${locked ? "blur-sm opacity-60 pointer-events-none" : ""}`}>
+                          {locked ? (
+                            <span>{poem.title}</span>
+                          ) : (
                           <Link
                             to="/library/$id"
                             params={{ id: poem.id }}
@@ -287,6 +297,7 @@ export function LibraryIndexPage() {
                           >
                             {poem.title}
                           </Link>
+                          )}
                         </h2>
                         <span className="shrink-0 rounded bg-neon/10 px-2 py-0.5 text-[9.5px] uppercase tracking-wider text-neon font-mono border border-neon/20">
                           {poem.form || "Free Verse"}
@@ -298,7 +309,9 @@ export function LibraryIndexPage() {
                       </p>
 
                       {/* First stanza preview */}
-                      <div className="mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3 overflow-hidden min-w-0">
+                      <div
+                        className={`mt-4 font-display text-base text-paper-dim/90 leading-relaxed italic border-l border-neon/20 pl-3 overflow-hidden min-w-0 ${locked ? "blur-sm opacity-60 pointer-events-none" : ""}`}
+                      >
                         {poem.stanzas[0]?.slice(0, 3).map((line, lIdx) => (
                           <p key={lIdx} className="truncate block w-full">
                             {line}
@@ -331,18 +344,29 @@ export function LibraryIndexPage() {
 
                     <div className="mt-6 pt-4 border-t border-neon/10 flex items-center justify-between">
                       <span className="text-xs text-paper-faint">{poem.linesCount} lines</span>
-                      <Link
-                        to="/library/$id"
-                        params={{ id: poem.id }}
-                        search={{ from: filteredPoemIds }}
-                        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
-                      >
-                        <span>Read</span>
-                        <ArrowRight className="h-3 w-3" />
-                      </Link>
+                      {locked ? (
+                        <Link
+                          to="/streak"
+                          className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-amber-400 inkline font-medium"
+                        >
+                          <Lock className="h-3 w-3" />
+                          <span>Unlock in Daily Streak</span>
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/library/$id"
+                          params={{ id: poem.id }}
+                          search={{ from: filteredPoemIds }}
+                          className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-neon inkline font-medium"
+                        >
+                          <span>Read</span>
+                          <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      )}
                     </div>
                   </article>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

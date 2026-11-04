@@ -12,6 +12,7 @@ export interface PublishedPoemRow {
   excerpt: string | null;
   status: string;
   featured: boolean;
+  isExclusive: boolean;
   tags: string[];
   year: string;
   linesCount: number;
@@ -49,6 +50,7 @@ export interface UiPoem {
   note?: string;
   featured: boolean;
   form: string;
+  isExclusive: boolean;
   lineNotes?: Record<number, { count: number; excerpt: string }>;
 }
 
@@ -70,6 +72,7 @@ export function mapPoemRowToUi(row: PublishedPoemRow): UiPoem {
     tags: row.tags,
     featured: row.featured,
     form: row.form ?? "Free Verse",
+    isExclusive: row.isExclusive,
     collectionAuthor: collectionVisible ? row.collection!.author.name : null,
     literaryWorldName: row.literaryWorld?.name ?? null,
     ...(row.note !== null ? { note: row.note } : {}),
@@ -85,6 +88,7 @@ const poemSelectShape = {
   excerpt: true,
   status: true,
   featured: true,
+  isExclusive: true,
   tags: true,
   year: true,
   linesCount: true,
@@ -119,7 +123,7 @@ export async function getPublishedPoemRaw(id: string): Promise<UiPoem | null> {
 
 export async function getPublishedPoemsListRaw(): Promise<UiPoem[]> {
   const rows = await prisma.poem.findMany({
-    where: { status: "PUBLISHED", isExclusive: false },
+    where: { status: "PUBLISHED" },
     select: poemSelectShape,
     orderBy: [{ publishedAt: { sort: "desc", nulls: "last" } }, { updatedAt: "desc" }],
   });

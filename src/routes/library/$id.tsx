@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { LibraryPoemPage } from "@/features/library/LibraryPoemPage";
 import { getPublishedPoem, getPublishedPoemsList } from "@/lib/poems.functions";
@@ -24,6 +24,9 @@ export const Route = createFileRoute("/library/$id")({
       getPublishedPoemsList(),
       isPoemSavedFn({ data: params.id }),
     ]);
+    // Exclusive poems are deliberately not readable at their URL — they are
+    // only teased in the library grid and unlocked via the Daily Streak.
+    if (!poem) throw notFound();
     return { poem, poems, isSaved };
   },
   head: ({ match }) => {

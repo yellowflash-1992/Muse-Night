@@ -346,6 +346,7 @@ export interface PoemCore {
   readTime: string;
   tags: string[];
   form?: string;
+  isExclusive?: boolean;
   stanzas: string[][];
   note?: string;
   featured?: boolean;

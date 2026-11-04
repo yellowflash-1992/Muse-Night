@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, CheckCircle2, Circle, Flame, Lock, Unlock } from "lucide-react";
+import { BookOpen, CheckCircle2, Circle, Flame, Lock, Sparkles, Unlock } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { MemberGate } from "@/components/auth/MemberGate";
@@ -163,8 +163,15 @@ function StreakContent() {
                 params={{ id: streak.bonusPoem.id }}
                 className="block rounded-2xl bg-gradient-to-br from-ink-2 via-purple-950 to-ink p-6 text-center hover:from-ink-2/80 hover:via-purple-900 transition-all"
               >
+                <div className="mb-3 flex items-center justify-center gap-2">
+                  <span className="font-display text-sm text-paper">{streak.bonusPoem.title}</span>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60 bg-gradient-to-r from-amber-400/25 via-amber-200/20 to-amber-400/25 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.35)]">
+                    <Sparkles className="h-3 w-3 text-amber-300" strokeWidth={2} />
+                    Exclusive
+                  </span>
+                </div>
                 <p className="mb-3 text-[10px] uppercase tracking-wide text-amber-400/80">
-                  exclusive bonus poem &mdash; unlocked today only
+                  bonus poem &mdash; unlocked today only
                 </p>
                 <p className="font-display italic leading-relaxed text-paper whitespace-pre-line">
                   {streak.bonusPoem.excerpt || streak.bonusPoem.title}
@@ -172,6 +179,11 @@ function StreakContent() {
                 <p className="mt-3 text-xs text-paper-dim">&mdash; {streak.bonusPoem.authorName}</p>
               </Link>
             )}
+
+            <p className="text-center text-xs text-paper-faint leading-relaxed">
+              Muse Night has {streak?.totalExclusiveCount ?? 0} exclusive poems. Keep your streak
+              alive to discover them all.
+            </p>
           </>
         )}
       </div>

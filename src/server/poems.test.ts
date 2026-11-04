@@ -28,6 +28,7 @@ function baseRow(overrides: Partial<PublishedPoemRow> = {}): PublishedPoemRow {
     excerpt: "The desk keeps its own small weather,\na lamp the size of a held breath,",
     status: "PUBLISHED",
     featured: true,
+    isExclusive: false,
     tags: ["Solitude", "Night"],
     year: "2023",
     linesCount: 4,
