@@ -38,12 +38,50 @@ export function LibraryPoemPage() {
   const { from, source, collectionId } = useSearch({
     from: "/library/$id",
   }) as { from?: string; source?: string; collectionId?: string };
-
-  // Database-backed read (loader in src/routes/library/$id.tsx). The loader
-  // returns null for missing/unpublished poems; there is no static fallback.
   const loaderData = routeApi.useLoaderData();
-  const loaderPoem = loaderData.poem;
-  const poem = loaderPoem ?? undefined;
+
+  if (!loaderData.poem) {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center px-4 text-center">
+        <h1 className="mb-2 font-display text-3xl text-paper">Work not found</h1>
+        <p className="mb-6 text-paper-dim">
+          This poem might be exclusive to our daily readers, or it doesn&apos;t exist.
+        </p>
+        <Link
+          to="/daily"
+          className="rounded-full bg-neon px-6 py-2 font-medium text-ink hover:bg-neon/90"
+        >
+          Go to the Daily Game to unlock it
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <LibraryPoemContent
+      id={id}
+      from={from}
+      source={source}
+      collectionId={collectionId}
+      loaderData={loaderData}
+    />
+  );
+}
+
+function LibraryPoemContent({
+  id,
+  from,
+  source,
+  collectionId,
+  loaderData,
+}: {
+  id: string;
+  from?: string | undefined;
+  source?: string | undefined;
+  collectionId?: string | undefined;
+  loaderData: ReturnType<typeof routeApi.useLoaderData>;
+}) {
+  const poem = loaderData.poem!;
   const allPoems = loaderData.poems;
   const literaryWorld = poem?.literaryWorldName
     ? { id: poem.literaryWorldId, name: poem.literaryWorldName }
@@ -140,26 +178,6 @@ export function LibraryPoemPage() {
       ? getPoemNavigation(navigationPoems, poem.id)
       : { previous: undefined, next: undefined };
   }, [navigationPoems, poem]);
-
-  if (!poem) {
-    return (
-      <div className="py-20 text-center mx-auto max-w-lg px-6">
-        <h1 className="font-display text-4xl text-paper">Work not found</h1>
-        <p className="mt-3 text-paper-dim">
-          The work you are looking for does not exist or may have been re-indexed.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/library"
-            className="inline-flex items-center gap-2 rounded bg-neon px-4 py-2 text-xs uppercase tracking-[0.2em] font-medium text-ink"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Return to Library</span>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   const lineNotes = poem?.lineNotes ?? readerData.lineNotes;
 

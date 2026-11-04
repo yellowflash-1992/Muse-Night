@@ -109,9 +109,16 @@ const poemSelectShape = {
   literaryWorld: { select: { id: true, name: true } },
 } as const;
 
-export async function getPublishedPoemRaw(id: string): Promise<UiPoem | null> {
+export async function getPublishedPoemRaw(
+  id: string,
+  includeExclusive = false,
+): Promise<UiPoem | null> {
   const row = await prisma.poem.findFirst({
-    where: { id, status: "PUBLISHED", isExclusive: false },
+    where: {
+      id,
+      status: "PUBLISHED",
+      ...(includeExclusive ? {} : { isExclusive: false }),
+    },
     select: poemSelectShape,
   });
 

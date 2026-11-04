@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { LibraryPoemPage } from "@/features/library/LibraryPoemPage";
 import { getPublishedPoem, getPublishedPoemsList } from "@/lib/poems.functions";
@@ -19,14 +19,12 @@ export const Route = createFileRoute("/library/$id")({
     };
   },
   loader: async ({ params }) => {
-    const [poem, poems, isSaved] = await Promise.all([
+    const [poem, poems] = await Promise.all([
       getPublishedPoem({ data: params.id }),
       getPublishedPoemsList(),
-      isPoemSavedFn({ data: params.id }),
     ]);
-    // Exclusive poems are deliberately not readable at their URL — they are
-    // only teased in the library grid and unlocked via the Daily Streak.
-    if (!poem) throw notFound();
+    if (!poem) return { poem: null, poems, isSaved: false };
+    const isSaved = await isPoemSavedFn({ data: params.id });
     return { poem, poems, isSaved };
   },
   head: ({ match }) => {
